@@ -1,0 +1,206 @@
+.eigen-container{
+  position: relative;
+
+  .main-title{
+    font-size: 52px;
+    font-weight: bold;
+  }
+  
+  .sub-title{
+    font-size: 20px;
+  }
+  
+  .header-container{
+    position: absolute;
+    width: 100%;
+    z-index: 99;
+
+    .header{
+      width: 980px;
+      margin: 0 auto;
+      font-family: "Myriad Pro Regular";
+      font-size: 12px;
+      line-height: 116px;
+      color: white;
+
+      .language-icons{
+        margin-right: 240px;
+        color: rgba(255, 255, 255, 0.5);
+
+        .active{
+          color: rgba(255, 255, 255, 1);
+        }
+      }
+
+      .top-menu{
+        .menu-item{
+          margin-right: 28px;
+        }
+        .menu-item:last-child{
+          margin-right: 0;
+        }
+      }
+
+      .social-icons{
+        float: right;
+
+        .social-icon{
+          display: inline-block;
+          background-repeat: no-repeat;
+          background-position: 50% 50%;
+          width: 16px;
+          height: 16px;
+          margin-right: 32px;
+          margin-bottom: -3px;
+        }
+        .social-icon:last-child{
+          margin-right: 0;
+        }
+      }
+    }
+  }
+  
+  .content-container{
+    width: 980px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .page-container{
+    width: 100%;
+
+    .banner{
+      width: 100%;
+      height: 800px;//100vh;
+      background-position: 50% 50%;
+      background-repeat: no-repeat;
+      background-size: cover;
+
+      .circus-arrow{
+        width: 72px;
+        height: 72px;
+        border: 1px solid #9d9d9d;
+        border-radius: 36px;
+        position: absolute;
+        top: 320px;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+      }
+
+      .left-circus-arrow{
+        background-image: url("../image/pages/index/leftArrow.png");
+      }
+      
+      .right-circus-arrow{
+        background-image: url("../image/pages/index/rightArrow.png");
+        right: 0;
+      }
+
+      .banner-titles{
+        color: white;
+        text-align: center;
+        width: 600px;
+        height: 300px;
+        margin: 0 auto;
+        padding-top: 210px;
+        font-family: "PT Serif Regular";
+
+        .banner-logo{
+          background-position: 50% 50%;
+          background-repeat: no-repeat;
+          height: 66px;
+          width: 66px;
+          margin: 0 auto 20px;
+        }
+
+        .sub-title{
+          color: rgba(255, 255, 255, 0.7)
+        }
+      }
+    }
+
+    .index-form{
+      height: 160px;
+      background-color: #3d3d3d;
+
+      .form-content{
+        padding-top: 57px;
+
+        .email{
+          width: 208px;
+          margin-right: 15px;
+        }
+
+        .investment{
+          width: 524px;
+        }
+      }
+
+      .start-button{
+        width: 164px;
+        height: 46px;
+        border-radius: 23px;
+        background-color: #2e71f2;
+        border: none;
+        float: right;
+        color: white;
+        font-family: "Montserrat Bold";
+        font-size: 10px;
+        font-weight: bold;
+      }
+    }
+
+    .index-section{
+      margin-top: 108px;
+
+      .title-content{
+        width: 600px;
+        height: 300px;
+        margin: 0 auto;
+        text-align: center;
+
+        .icon{
+          background-position: 50% 50%;
+          background-repeat: no-repeat;
+          height: 150px;
+          width: 150px;
+          margin: 0 auto 20px;
+        }
+        .sub-title{
+          color: #666;
+        }
+      }
+
+      .section-columns{
+        margin-top: 65px;
+        margin-bottom: 90px;
+
+        .section-column{
+          width: 230px;
+          margin-right: 20px;
+          text-align: center;
+          display: inline-block;
+        }
+        .section-column:last-child{
+          margin-right: 0px;
+        }
+        .icon{
+          width: 32px;
+          height: 32px;
+          background-position: 50% 50%;
+          background-repeat: no-repeat;
+          margin: 0 auto 20px;
+        }
+        .main-title{
+          font-size: 12px;
+          font-weight: bold;
+        }
+        .sub-title{
+          font-size: 14px;
+          color: #666;
+        }
+      }
+    }
+  }
+
+}
