@@ -2,13 +2,13 @@
 
 const fs = require('fs');
 const path = require('path');
-const utils = require('../utils/index');
+const readdirSync = require('../utils/readdirSync');
 
 const cwd = process.cwd();
 const appSrcPath = path.resolve(cwd,'src');
 const appDistPath = path.resolve(cwd,'dist');
 
-const dirAndFileMap = utils.readdirSync(appSrcPath);
+const dirAndFileMap = readdirSync(appSrcPath);
 const { fileMap: entry, dirMap: alias } = dirAndFileMap;
 
 const commonConfig = {
@@ -64,7 +64,10 @@ const commonConfig = {
   resolve: {
     extensions: [ ".js", ".jsx", ".tsx", ".json" ],
     alias,// import, require加载时的别名
-  }
+  },
+  // plugins: [
+  //   new webpack.optimize.CommonsChunkPlugin('common.js'),
+  // ]
 };
 
 module.exports = commonConfig;

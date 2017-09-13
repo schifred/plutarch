@@ -11,16 +11,24 @@ class ServerCommand extends Command {
       port: {
         type: 'number',
         default: 3001,
-        description: 'the port',
+        alias: "p",
+        description: 'dev server port'
       },
+      host: {
+        type: 'string',
+        default: '127.0.0.1',
+        alias: 'h',
+        description: 'dev server host'
+      }
     };
   }
 
-  * run({ argv }) {
-    //console.log('git clone %s to %s with depth %d', argv._[0], argv._[1], argv.depth);
+  * run({ cwd, env, argv, rawArgv }) {
     const runServerPath = path.join(__dirname, "../src/runServer.js");
-    this.helper.forkNode(runServerPath,[""],{
-      cwd: process.cwd
+    const { port, host } = argv;
+    const forkNodeArgv = this.helper.unparseArgv({port});
+    this.helper.forkNode(runServerPath,[ forkNodeArgv ],{
+      cwd: cwd,
     });
   }
 

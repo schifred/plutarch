@@ -3,7 +3,7 @@
 const path = require('path');
 const fs = require('fs');
 
-exports.readdirSync = function(dirPath,cb){
+module.exports = function readdirSync(dirPath,cb){
   let dirMap = {};
   let fileMap = {};
 
