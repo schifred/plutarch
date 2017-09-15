@@ -19,9 +19,6 @@ const { fileMap: entry, dirMap: alias } = dirAndFileMap;
 const serverConfig = {
   devtool: "inline-source-map",
   plugins: [
-    new CleanWebpackPlugin([ appDistPath ],{
-      dry: false
-    }),
     new HtmlWebpackPlugin({
       title: 'Plutarch App',
       showErrors: true,

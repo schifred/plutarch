@@ -26,6 +26,7 @@
     "common-bin": "^2.7.0",
     "css-loader": "^0.28.7",
     "csv-loader": "^2.1.1",
+    "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
     "html-loader": "^0.5.1",
     "html-webpack-plugin": "^2.30.1",

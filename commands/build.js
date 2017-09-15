@@ -3,7 +3,7 @@
 const Command = require('common-bin');
 const path = require('path');
 
-class ServerCommand extends Command {
+class BuildCommand extends Command {
   constructor(rawArgv) {
     super(rawArgv);
 
@@ -18,10 +18,10 @@ class ServerCommand extends Command {
   }
 
   * run({ cwd, env, argv, rawArgv }) {
-    const runPublicPath = path.join(__dirname, "../src/runPublic.js");
+    const runBuildPath = path.join(__dirname, "../src/runBuild.js");
     const { watch } = argv;
     const forkNodeArgv = this.helper.unparseArgv({watch});
-    this.helper.forkNode(runPublicPath,[ forkNodeArgv ],{
+    this.helper.forkNode(runBuildPath,[ forkNodeArgv ],{
       cwd: cwd,
     });
   }
@@ -31,4 +31,4 @@ class ServerCommand extends Command {
   }
 }
 
-module.exports = ServerCommand;
+module.exports = BuildCommand;

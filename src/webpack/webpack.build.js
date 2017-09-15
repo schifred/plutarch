@@ -24,11 +24,11 @@ const publicConfig = {
   },
   devtool: "source-map",
   externals: {
-    'react-router': {
-      amd: 'react-router',
-      root: 'ReactRouter',
-      commonjs: 'react-router',
-      commonjs2: 'react-router'
+    'jquery': {
+      amd: 'jquery',
+      root: 'jQuery',
+      commonjs: 'jquery',
+      commonjs2: 'jquery'
     },
     'react': {
       amd: 'react',
@@ -41,7 +41,25 @@ const publicConfig = {
       root: 'ReactDOM',
       commonjs: 'react-dom',
       commonjs2: 'react-dom'
-    }
+    },
+    'redux': {
+      amd: 'redux',
+      root: 'Redux',
+      commonjs: 'redux',
+      commonjs2: 'redux'
+    },
+    'react-redux': {
+      amd: 'react-redux',
+      root: 'ReactRedux',
+      commonjs: 'react-redux',
+      commonjs2: 'react-redux'
+    },
+    'react-router': {
+      amd: 'react-router',
+      root: 'ReactRouter',
+      commonjs: 'react-router',
+      commonjs2: 'react-router'
+    },
   },
   plugins: [
     new CleanWebpackPlugin([ appDistPath ],{
@@ -51,12 +69,11 @@ const publicConfig = {
       'process.env.NODE_ENV': JSON.stringify('production')
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.DedupePlugin(),
     new ExtractTextPlugin({
       filename: `common.css`,
       allChunks: true,
     }),
-    new webpack.optimize.CommonsChunkPlugin('common.js'),
+    new webpack.optimize.CommonsChunkPlugin('common'),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         screw_ie8: true, // React doesn't support IE8

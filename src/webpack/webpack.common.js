@@ -14,7 +14,7 @@ const { fileMap: entry, dirMap: alias } = dirAndFileMap;
 const commonConfig = {
   entry: entry,// 入口文件[ string | array | object ]
   output: {
-    filename: "index.js",
+    filename: "[name].js",
     chunkFilename: "[name].chunk.js",// require.ensure异步加载脚本的打包文件名
     path: appDistPath,
     publicPath: "/",
@@ -64,7 +64,7 @@ const commonConfig = {
   resolve: {
     extensions: [ ".js", ".jsx", ".tsx", ".json" ],
     alias,// import, require加载时的别名
-  },
+  }
   // plugins: [
   //   new webpack.optimize.CommonsChunkPlugin('common.js'),
   // ]
