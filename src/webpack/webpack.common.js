@@ -2,14 +2,31 @@
 
 const fs = require('fs');
 const path = require('path');
+const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const readdirSync = require('../utils/readdirSync');
 
 const cwd = process.cwd();
 const appSrcPath = path.resolve(cwd,'src');
 const appDistPath = path.resolve(cwd,'dist');
+const appPublicPath = path.resolve(cwd,'public');
 
 const dirAndFileMap = readdirSync(appSrcPath);
 const { fileMap: entry, dirMap: alias } = dirAndFileMap;
+
+const plugins = [
+  new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify('production')
+  }),
+  fs.existsSync(appPublicPath) ? 
+    new CopyWebpackPlugin([{
+      from: appPublicPath,
+      to: appDistPath
+    }]) : "",
+  new webpack.optimize.CommonsChunkPlugin({
+    name: "common"
+  })
+];
 
 const commonConfig = {
   entry: entry,// 入口文件[ string | array | object ]
@@ -64,10 +81,8 @@ const commonConfig = {
   resolve: {
     extensions: [ ".js", ".jsx", ".tsx", ".json" ],
     alias,// import, require加载时的别名
-  }
-  // plugins: [
-  //   new webpack.optimize.CommonsChunkPlugin('common.js'),
-  // ]
+  },
+  plugins: plugins.filter(plugin=>!!plugin)
 };
 
 module.exports = commonConfig;

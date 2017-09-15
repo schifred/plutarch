@@ -65,15 +65,11 @@ const publicConfig = {
     new CleanWebpackPlugin([ appDistPath ],{
       dry: false
     }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
-    }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new ExtractTextPlugin({
       filename: `common.css`,
       allChunks: true,
     }),
-    new webpack.optimize.CommonsChunkPlugin('common'),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         screw_ie8: true, // React doesn't support IE8

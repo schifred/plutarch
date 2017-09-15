@@ -5,7 +5,8 @@ const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const readdirSync = require('../utils/readdirSync');
 const commonConfig = require('./webpack.common.js');
 
@@ -25,12 +26,14 @@ const serverConfig = {
       template: `${appSrcPath}/index.html`
     }),
     new webpack.HotModuleReplacementPlugin(),
+    new CaseSensitivePathsPlugin(),// 解决不同操作系统文件路径问题
+    new WatchMissingNodeModulesPlugin(),
   ],
   devServer: {
     disableHostCheck: true,
     compress: true,
     hot: true,
-    contentBase: appSrcPath,// 额外的静态资源所在目录
+    contentBase: appDistPath,// 额外的静态资源所在目录
     publicPath: "/",// 内存中编译文件由服务器加载时的文件位
     quiet: false,// 是否关闭控制台日志打印
     clientLogLevel: "warning",// 控制台打印日志级别

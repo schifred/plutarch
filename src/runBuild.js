@@ -3,10 +3,10 @@
 const fs = require("fs");
 const path = require("path");
 const yargs = require("yargs");
-const chalk = require("chalk");
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const WebpackDevServer = require('webpack-dev-server');
+const logger = require('./utils/logger');
 
 const defaultConfig = require('./webpack/webpack.build');
 const readPlutarchConfig = require('./utils/readPlutarchConfig');
@@ -16,6 +16,8 @@ const { watch } = argv;
 
 function mergeConfig(prevConfig,customConfig){
   let currentConfig = merge(prevConfig,customConfig);
+
+  console.log(currentConfig)
 
   return currentConfig;
 };
@@ -28,11 +30,16 @@ function runBuild(){
   const compiler = webpack(currentConfig);
 
   compiler.run((err,stats)=>{
+    if ( err ){
+      logger.red("本地项目打包失败");
+      return;
+    };
+
     const compilerLog = stats.toString({
       colors: true
     });
-    console.log(compilerLog);
-    console.log(chalk.blue("build successful."));
+    logger.log(compilerLog);
+    logger.blue("本地项目打包成功");
   });
 };
 

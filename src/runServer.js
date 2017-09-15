@@ -3,10 +3,10 @@
 const fs = require("fs");
 const path = require("path");
 const yargs = require("yargs");
-const chalk = require("chalk");
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const WebpackDevServer = require('webpack-dev-server');
+const logger = require('./utils/logger');
 
 const defaultConfig = require('./webpack/webpack.server');
 const readPlutarchConfig = require('./utils/readPlutarchConfig');
@@ -36,9 +36,12 @@ function runServer(){
 
   devServer.listen(devServerConfig.port, devServerConfig.host, (err) => {
     if (err) {
-      return console.log(chalk.red(`本地dev调试服务启动失败. msg: ${err.message}; err: ${err.stack}`));
-    }
-    console.log(chalk.blue(`本地dev调试服务已启动: http://${devServerConfig.host}:${devServerConfig.port}`));
+      logger.red("本地dev调试服务启动失败");
+      logger.red(err.stack || err.message)
+      return;
+    };
+
+    logger.blue(`本地dev调试服务已启动: http://${devServerConfig.host}:${devServerConfig.port}`);
   });
 };
 
