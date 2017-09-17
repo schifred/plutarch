@@ -17,7 +17,7 @@ const { watch } = argv;
 function mergeConfig(prevConfig,customConfig){
   let currentConfig = merge(prevConfig,customConfig);
 
-  console.log(currentConfig)
+  //console.log(currentConfig)
 
   return currentConfig;
 };

@@ -11,6 +11,8 @@ const logger = require('./utils/logger');
 const defaultConfig = require('./webpack/webpack.server');
 const readPlutarchConfig = require('./utils/readPlutarchConfig');
 const cwd = process.cwd();
+//const appMockPath = path.resolve(cwd,'./plutarch.mock.js');
+//const appMock = require(appMockPath);
 const argv = yargs.argv;
 const { port } = argv;
 
@@ -20,7 +22,7 @@ function mergeConfig(prevConfig,customConfig){
   if ( port && currentConfig.devServer.port != port ) 
     currentConfig.devServer.port = port;
 
-  console.log(currentConfig)
+  // console.log(currentConfig)
 
   return currentConfig;
 };
@@ -33,11 +35,13 @@ function runServer(){
   const compiler = webpack(currentConfig);
 
   const devServer = new WebpackDevServer(compiler, devServerConfig);
+  //const devApp = devServer.app;
+  //require(appMockPath)(devApp);
 
   devServer.listen(devServerConfig.port, devServerConfig.host, (err) => {
     if (err) {
       logger.red("本地dev调试服务启动失败");
-      logger.red(err.stack || err.message)
+      logger.red(err.stack || err.message);
       return;
     };
 

@@ -11,7 +11,7 @@ const Logger = {
     this.log(chalk.red(str));
   },
   blue: function(str){
-    this.log(chalk.blue(str));
+    console.log(chalk.red(str));
   },
   green: function(str){
     this.log(chalk.green(str));

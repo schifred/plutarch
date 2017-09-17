@@ -23,6 +23,9 @@ class BuildCommand extends Command {
     const forkNodeArgv = this.helper.unparseArgv({watch});
     this.helper.forkNode(runBuildPath,[ forkNodeArgv ],{
       cwd: cwd,
+      env: {
+        "NODE_ENV": "'production'"
+      }
     });
   }
 

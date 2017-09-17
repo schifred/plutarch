@@ -16,7 +16,7 @@ class ServerCommand extends Command {
       },
       host: {
         type: 'string',
-        default: '127.0.0.1',
+        default: '0.0.0.0',
         alias: 'h',
         description: 'dev server host'
       }
@@ -29,6 +29,9 @@ class ServerCommand extends Command {
     const forkNodeArgv = this.helper.unparseArgv({port});
     this.helper.forkNode(runServerPath,[ forkNodeArgv ],{
       cwd: cwd,
+      env: {
+        "NODE_ENV": "'development'"
+      }
     });
   }
 
