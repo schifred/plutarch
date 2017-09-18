@@ -7,9 +7,11 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const WebpackDevServer = require('webpack-dev-server');
 const logger = require('./utils/logger');
+const wrapServer = require('./utils/ServerWrapper');
 
 const defaultConfig = require('./webpack/webpack.server');
 const readPlutarchConfig = require('./utils/readPlutarchConfig');
+const readPlutarchServer = require('./utils/readPlutarchServer');
 const cwd = process.cwd();
 //const appMockPath = path.resolve(cwd,'./plutarch.mock.js');
 //const appMock = require(appMockPath);
@@ -35,9 +37,12 @@ function runServer(){
   const compiler = webpack(currentConfig);
 
   const devServer = new WebpackDevServer(compiler, devServerConfig);
-  //const devApp = devServer.app;
-  //require(appMockPath)(devApp);
+  const serverWrapper = wrapServer(devServer.app);
+  const plutarchServerWrapper = readPlutarchServer(cwd);
 
+  serverWrapper.add(plutarchServerWrapper);
+  serverWrapper.wrap();
+  
   devServer.listen(devServerConfig.port, devServerConfig.host, (err) => {
     if (err) {
       logger.red("本地dev调试服务启动失败");

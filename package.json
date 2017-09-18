@@ -38,6 +38,7 @@
     "less": "^2.7.2",
     "less-loader": "^4.0.5",
     "lodash": "^4.17.4",
+    "node-sass": "^4.5.3",
     "react-dev-utils": "^4.0.1",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
