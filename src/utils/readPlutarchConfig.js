@@ -2,6 +2,7 @@
 
 const path = require('path');
 const fs = require('fs');
+const webpack = require('webpack');
 const isString = require('lodash/isString');
 const isPlainObject = require('lodash/isPlainObject');
 
@@ -10,9 +11,11 @@ module.exports = function readConfig(cwd){
   let plutarchConfig = {};
 
   if ( fs.existsSync(plutarchConfigPath) ){
+
     plutarchConfig = require(plutarchConfigPath);
 
-    let { entry, output, resolve, externals } = plutarchConfig;
+    let { entry, output, resolve } = plutarchConfig;
+
     if ( entry ){
       if ( isString(entry) ) {
         plutarchConfig.entry = path.resolve(cwd,entry);
@@ -39,8 +42,9 @@ module.exports = function readConfig(cwd){
         alias[key] = path.resolve(cwd,alias[key]);
       });
       
-      resolve.alias = alias;
+      plutarchConfig.resolve.alias = alias;
     };
+
   };
 
   return plutarchConfig;

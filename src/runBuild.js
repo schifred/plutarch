@@ -23,7 +23,7 @@ function mergeConfig(prevConfig,customConfig){
 };
 
 function runBuild(){
-  const plutarchConfig = readPlutarchConfig(cwd);
+  const plutarchConfig = readPlutarchConfig(cwd,true);
   const currentConfig = mergeConfig(defaultConfig,plutarchConfig);
   const devServerConfig = currentConfig.devServer;
 
