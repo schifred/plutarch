@@ -3,7 +3,7 @@
 const path = require('path');
 const fs = require('fs');
 const isString = require('lodash/isString');
-
+const isPlainObject = require('lodash/isPlainObject');
 
 module.exports = function readConfig(cwd){
   const plutarchConfigPath = path.resolve(cwd,"./plutarch.config.js");
