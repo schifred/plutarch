@@ -5,6 +5,9 @@ const path = require("path");
 const yargs = require("yargs");
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+const webpackValidator = require('webpack/lib/validateSchema');// webpack配置校验
+const webpackOptionsSchema = require('webpack/schemas/webpackOptionsSchema.json');// webpack配置校验规则
+const WebpackOptionsValidationError = require('webpack/lib/WebpackOptionsValidationError');
 const WebpackDevServer = require('webpack-dev-server');
 const logger = require('./utils/logger');
 const wrapServer = require('./utils/ServerWrapper');
@@ -14,8 +17,6 @@ const defaultConfig = require('./webpack/webpack.server');
 const readPlutarchConfig = require('./utils/readPlutarchConfig');
 const readPlutarchServer = require('./utils/readPlutarchServer');
 const cwd = process.cwd();
-//const appMockPath = path.resolve(cwd,'./plutarch.mock.js');
-//const appMock = require(appMockPath);
 const argv = yargs.argv;
 const { port } = argv;
 
@@ -24,8 +25,6 @@ function mergeConfig(prevConfig,customConfig){
 
   if ( port && currentConfig.devServer.port != port ) 
     currentConfig.devServer.port = port;
-
-  // console.log(currentConfig)
 
   return currentConfig;
 };
@@ -75,6 +74,20 @@ function compileDll(webpackConfig){
 };
 
 function runServer(webpackConfig){
+  const webpackOptionsValidationErrors = webpackValidator(webpackOptionsSchema,webpackConfig);
+
+  if ( webpackOptionsValidationErrors.length ){
+    logger.red("webpack配置文件有误：");
+    webpackOptionsValidationErrors.map(err=>{
+      logger.red(JSON.stringify({
+        dataPath: err.dataPath,
+        data: err.data,
+      }));
+    });
+
+    throw new WebpackOptionsValidationError(webpackOptionsValidationErrors);
+  };
+
   const devServerConfig = webpackConfig.devServer;
   const compiler = webpack(webpackConfig);
 
@@ -88,7 +101,7 @@ function runServer(webpackConfig){
   devServer.listen(devServerConfig.port, devServerConfig.host, (err) => {
     if (err) {
       logger.red("本地dev调试服务启动失败");
-      logger.red(err.stack || err.message);
+      logger.log(err.stack || err.message);
       return;
     };
 

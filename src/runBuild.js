@@ -25,6 +25,7 @@ function mergeConfig(prevConfig,customConfig){
 function runBuild(){
   const plutarchConfig = readPlutarchConfig(cwd,true);
   const currentConfig = mergeConfig(defaultConfig,plutarchConfig);
+  delete currentConfig.dll;
   const devServerConfig = currentConfig.devServer;
 
   const compiler = webpack(currentConfig);
