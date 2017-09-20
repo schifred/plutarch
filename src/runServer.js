@@ -16,6 +16,8 @@ const getDllConfig = require('./utils/getDllConfig');
 const defaultConfig = require('./webpack/webpack.server');
 const readPlutarchConfig = require('./utils/readPlutarchConfig');
 const readPlutarchServer = require('./utils/readPlutarchServer');
+const applyMock = require('./utils/applyMock');
+
 const cwd = process.cwd();
 const argv = yargs.argv;
 const { port } = argv;
@@ -93,9 +95,19 @@ function runServer(webpackConfig){
 
   const devServer = new WebpackDevServer(compiler, devServerConfig);
   const serverWrapper = wrapServer(devServer.app);
-  const plutarchServerWrapper = readPlutarchServer(cwd);
 
+  // plutarch.server.js配置文件可以为调试服务器添加中间件
+  const plutarchServerWrapper = readPlutarchServer(cwd);
   serverWrapper.add(plutarchServerWrapper);
+
+  // plutarch.mock.js配置文件可以为调试服务器添加模拟路由
+  const plutarchMockWrapper = applyMock({
+    cwd,
+    mockDirPath: "./mocks",
+    mockRouterPath: "./plutarch.mock.js"
+  });
+  serverWrapper.add(plutarchMockWrapper);
+  
   serverWrapper.wrap();
 
   devServer.listen(devServerConfig.port, devServerConfig.host, (err) => {
