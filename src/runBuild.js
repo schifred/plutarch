@@ -4,31 +4,24 @@ const fs = require("fs");
 const path = require("path");
 const yargs = require("yargs");
 const webpack = require('webpack');
-const merge = require('webpack-merge');
 const WebpackDevServer = require('webpack-dev-server');
 const logger = require('./utils/logger');
 
 const defaultConfig = require('./webpack/webpack.build');
 const readPlutarchConfig = require('./utils/readPlutarchConfig');
+const plutarchMerge = require('./utils/plutarchMerge');
+
 const cwd = process.cwd();
 const argv = yargs.argv;
 const { watch } = argv;
 
-function mergeConfig(prevConfig,customConfig){
-  let currentConfig = merge(prevConfig,customConfig);
-
-  //console.log(currentConfig)
-
-  return currentConfig;
-};
-
 function runBuild(){
-  const plutarchConfig = readPlutarchConfig(cwd,true);
-  const currentConfig = mergeConfig(defaultConfig,plutarchConfig);
-  delete currentConfig.dll;
-  const devServerConfig = currentConfig.devServer;
+  const { plutarchConfig } = readPlutarchConfig(cwd);
+  const webpackConfig = plutarchMerge(defaultConfig,plutarchConfig);
+  
+  const devServerConfig = webpackConfig.devServer;
 
-  const compiler = webpack(currentConfig);
+  const compiler = webpack(webpackConfig);
 
   compiler.run((err,stats)=>{
     if ( err ){

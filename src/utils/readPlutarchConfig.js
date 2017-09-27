@@ -11,7 +11,7 @@ const isPlainObject = require('lodash/isPlainObject');
 module.exports = function readPlutarchConfig(cwd){
   const plutarchConfigPath = path.resolve(cwd,"./plutarch.config.js");
 
-  if ( fs.existsSync(plutarchConfigPath) ) return {};
+  if ( !fs.existsSync(plutarchConfigPath) ) return {};
 
   let plutarchConfig = require(plutarchConfigPath);
 
@@ -20,7 +20,9 @@ module.exports = function readPlutarchConfig(cwd){
     "plutarch.config.js should export as a plain object"
   );
 
-  let { entry, output, resolve } = plutarchConfig;
+  let { entry, output, resolve, extra = {} } = plutarchConfig;
+
+  delete plutarchConfig.extra;
 
   if ( entry ){
     if ( isString(entry) ) {
@@ -39,6 +41,7 @@ module.exports = function readPlutarchConfig(cwd){
 
   if ( output ){
     if ( output.path ) plutarchConfig.output.path = path.resolve(cwd,output.path);
+    if ( output.publicPath ) plutarchConfig.devServer.publicPath = output.publicPath;
   };
 
   if ( resolve && resolve.alias ){
@@ -51,6 +54,6 @@ module.exports = function readPlutarchConfig(cwd){
     plutarchConfig.resolve.alias = alias;
   };
 
-  return plutarchConfig;
+  return { plutarchConfig, extra };
   
 };

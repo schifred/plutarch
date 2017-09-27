@@ -2,13 +2,13 @@
 
 const fs = require("fs");
 const path = require("path");
-const yargs = require("yargs");
+
 const webpack = require('webpack');
-const merge = require('webpack-merge');
 const webpackValidator = require('webpack/lib/validateSchema');// webpack配置校验
 const webpackOptionsSchema = require('webpack/schemas/webpackOptionsSchema.json');// webpack配置校验规则
 const WebpackOptionsValidationError = require('webpack/lib/WebpackOptionsValidationError');
 const WebpackDevServer = require('webpack-dev-server');
+
 const logger = require('./utils/logger');
 const wrapServer = require('./utils/ServerWrapper');
 const getDllConfig = require('./utils/getDllConfig');
@@ -16,33 +16,13 @@ const getDllConfig = require('./utils/getDllConfig');
 const defaultConfig = require('./webpack/webpack.server');
 const readPlutarchConfig = require('./utils/readPlutarchConfig');
 const readPlutarchServer = require('./utils/readPlutarchServer');
+const plutarchMerge = require('./utils/plutarchMerge');
 const applyMock = require('./utils/applyMock');
 
 const cwd = process.cwd();
-const argv = yargs.argv;
-const { port } = argv;
 
-console.log(process.pwd)
-
-function mergeConfig(prevConfig,customConfig){
-  let currentConfig = merge(prevConfig,customConfig);
-
-  if ( port && currentConfig.devServer.port != port ) 
-    currentConfig.devServer.port = port;
-
-  return currentConfig;
-};
-
-function getConfig(){
-  const plutarchConfig = readPlutarchConfig(cwd);
-  const webpackConfig = mergeConfig(defaultConfig,plutarchConfig);
-
-  return webpackConfig;
-};
-
-function compileDll(webpackConfig){
-  const dllConfig = getDllConfig(cwd,webpackConfig.dll);
-  delete webpackConfig.dll;
+function compileDll(webpackConfig,extra){
+  const dllConfig = getDllConfig(cwd,extra.dll);
   const dllCompiler = webpack(dllConfig);
   
   const manifestPath = path.resolve(cwd,'./dist/plutarch-manifest.json');
@@ -124,10 +104,11 @@ function runServer(webpackConfig){
 };
 
 function init(){
-  const webpackConfig = getConfig();
+  const { plutarchConfig, extra } = readPlutarchConfig(cwd);
+  const webpackConfig = plutarchMerge(defaultConfig,plutarchConfig);
 
-  if ( webpackConfig.dll ){
-    compileDll(webpackConfig);
+  if ( extra.dll ){
+    compileDll(webpackConfig,extra);
   }else{
     runServer(webpackConfig);
   };
