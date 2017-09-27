@@ -4,18 +4,18 @@ const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
+
+const getCommandArgvs = require('../utils/getCommandArgvs');
+const getPaths = require('../utils/getPaths');
 const readdirSync = require('../utils/readdirSync');
 const commonConfig = require('./webpack.common.js');
 
-const cwd = process.cwd();
-const appSrcPath = path.resolve(cwd,'src');
-const appDistPath = path.resolve(cwd,'dist');
-
-const dirAndFileMap = readdirSync(appSrcPath);
-const { fileMap: entry, dirMap: alias } = dirAndFileMap;
+const { cwd } = getCommandArgvs(process);
+const { appSrcPath, appDistPath, appPublicPath, appNodeModulesPath } = getPaths(cwd);
 
 const serverConfig = {
   devtool: "inline-source-map",

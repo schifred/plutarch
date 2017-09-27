@@ -22,6 +22,8 @@ const cwd = process.cwd();
 const argv = yargs.argv;
 const { port } = argv;
 
+console.log(process.pwd)
+
 function mergeConfig(prevConfig,customConfig){
   let currentConfig = merge(prevConfig,customConfig);
 
@@ -32,7 +34,7 @@ function mergeConfig(prevConfig,customConfig){
 };
 
 function getConfig(){
-  const plutarchConfig = readPlutarchConfig(cwd,false);
+  const plutarchConfig = readPlutarchConfig(cwd);
   const webpackConfig = mergeConfig(defaultConfig,plutarchConfig);
 
   return webpackConfig;

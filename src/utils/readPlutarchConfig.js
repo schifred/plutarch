@@ -2,50 +2,55 @@
 
 const path = require('path');
 const fs = require('fs');
+const invariant = require('invariant');
 const webpack = require('webpack');
 const isString = require('lodash/isString');
 const isPlainObject = require('lodash/isPlainObject');
 
-module.exports = function readConfig(cwd){
+// 获取plutarch.config.js配置文件，用于配置webpackConfig、dllConfig
+module.exports = function readPlutarchConfig(cwd){
   const plutarchConfigPath = path.resolve(cwd,"./plutarch.config.js");
-  let plutarchConfig = {};
 
-  if ( fs.existsSync(plutarchConfigPath) ){
+  if ( fs.existsSync(plutarchConfigPath) ) return {};
 
-    plutarchConfig = require(plutarchConfigPath);
+  let plutarchConfig = require(plutarchConfigPath);
 
-    let { entry, output, resolve } = plutarchConfig;
+  invariant(
+    isPlainObject(plutarchConfig),
+    "plutarch.config.js should export as a plain object"
+  );
 
-    if ( entry ){
-      if ( isString(entry) ) {
-        plutarchConfig.entry = path.resolve(cwd,entry);
-      } else if ( Array.isArray(entry) ) {
-        plutarchConfig.entry = entry.map(item=>{
-          return path.resolve(cwd,item);
-        });
-      } else if( isPlainObject(entry) ) {
-        plutarchConfig.entry = {};
-        Object.keys(entry).map(key=>{
-          plutarchConfig.entry[key] = path.resolve(cwd,entry[key]);
-        });
-      };
-    };
+  let { entry, output, resolve } = plutarchConfig;
 
-    if ( output ){
-      if ( output.path ) plutarchConfig.output.path = path.resolve(cwd,output.path);
-    };
-
-    if ( resolve && resolve.alias ){
-      let alias = {};
-
-      Object.keys(resolve.alias).map(key=>{
-        alias[key] = path.resolve(cwd,alias[key]);
+  if ( entry ){
+    if ( isString(entry) ) {
+      plutarchConfig.entry = path.resolve(cwd,entry);
+    } else if ( Array.isArray(entry) ) {
+      plutarchConfig.entry = entry.map(item=>{
+        return path.resolve(cwd,item);
       });
-      
-      plutarchConfig.resolve.alias = alias;
+    } else if( isPlainObject(entry) ) {
+      plutarchConfig.entry = {};
+      Object.keys(entry).map(key=>{
+        plutarchConfig.entry[key] = path.resolve(cwd,entry[key]);
+      });
     };
+  };
 
+  if ( output ){
+    if ( output.path ) plutarchConfig.output.path = path.resolve(cwd,output.path);
+  };
+
+  if ( resolve && resolve.alias ){
+    let alias = {};
+
+    Object.keys(resolve.alias).map(key=>{
+      alias[key] = path.resolve(cwd,alias[key]);
+    });
+    
+    plutarchConfig.resolve.alias = alias;
   };
 
   return plutarchConfig;
+  
 };

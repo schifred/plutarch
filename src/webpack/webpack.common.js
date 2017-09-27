@@ -3,22 +3,17 @@
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
+
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+const getCommandArgvs = require('../utils/getCommandArgvs');
+const getPaths = require('../utils/getPaths');
 const readdirSync = require('../utils/readdirSync');
 
-const cwd = process.cwd();
-const env = process.env;
-const NODE_ENV = env['NODE_ENV'];
-const isProd = NODE_ENV==="production";
-
-const appSrcPath = path.resolve(cwd,'src');
-const appDistPath = path.resolve(cwd,'dist');
-const appPublicPath = path.resolve(cwd,'public');
-const appNodeModulesPath = path.resolve(cwd,'node_modules');
-
-const dirAndFileMap = readdirSync(appSrcPath);
-const { fileMap: entry, dirMap: alias } = dirAndFileMap;
+const { cwd, env, NODE_ENV, isProd } = getCommandArgvs(process);
+const { appSrcPath, appDistPath, appPublicPath, appNodeModulesPath } = getPaths(cwd);
+const { fileMap: entry, dirMap: alias } = readdirSync(appSrcPath);
 
 const plugins = [
   new webpack.DefinePlugin({
@@ -42,6 +37,7 @@ const plugins = [
 const commonConfig = {
   target: "web",// 打包文件使用平台形势，默认值
   entry: entry,// 入口文件[ string | array | object ]
+  context: path.resolve(__dirname,"../../"),
   output: {
     path: appDistPath,
     publicPath: "/",
@@ -65,8 +61,8 @@ const commonConfig = {
       use: {
         loader: 'babel-loader',
         options: {
-          presets: [ 'es2015', 'react', 'stage-0' ],
-          plugins: [ 'transform-runtime', 'add-module-exports' ],
+          presets: [ 'env', 'react', 'stage-0' ],// “babel-preset-env”用于替代es015
+          plugins: [ require('babel-plugin-transform-runtime'), require('babel-plugin-add-module-exports') ],
           cacheDirectory: true
         }
       }

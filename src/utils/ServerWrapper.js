@@ -2,6 +2,7 @@
 
 const isFunction = require('lodash/isFunction');
 
+// 装饰扩展devServerApp
 class ServerWrapper{
   constructor(app){
     this.app = app;
