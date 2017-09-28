@@ -23,16 +23,16 @@ const commonConfig = {
     path: appDistPath,
     publicPath: "/",
     filename: "[name].js",
-    chunkFilename: "[name].chunk.js",// require.ensure异步加载脚本的打包文件名
+    chunkFilename: "[name].chunk.js",// 非入口文件名，require.ensure异步加载脚本文件
     crossOriginLoading: "anonymous",// 启用跨域加载脚本
     // devtoolLineToLine: false,// 编辑脚本是否启用行到行SourceMap的映射，默认值
+    // sourceMapFilename: "[file].map",// SourceMap文件名，默认值
     // hotUpdateChunkFilename: "[id].[hash].hot-update.js",// 热更新加载的文件名，默认值
     // hotUpdateFunction: "webpackHotUpdate",// 热更新加载jsonp函数，默认值
     // hotUpdateMainFilename: "[hash].hot-update.json",// 热更新加载的主文件名，默认值
     // jsonpFunction: "webpackJsonp",// 懒加载jsonp函数名，默认值
     // library: pluginName,// 是否导出为独立发布的文件，开发插件时需要
     // libraryTarget: "commonjs2",// 插件导出形式
-    // sourceMapFilename: "[file].map",// SourceMap文件名，默认值
   },
   module: {
     rules: [{ 
