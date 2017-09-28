@@ -9,11 +9,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const getCommandArgvs = require('../utils/getCommandArgvs');
+const getProcessArgvs = require('../utils/getProcessArgvs');
 const getPaths = require('../utils/getPaths');
 const commonConfig = require('./webpack.common.js');
 
-const { cwd} = getCommandArgvs(process);
+const { cwd} = getProcessArgvs(process);
 const { appDistPath  } = getPaths(cwd);
 
 const publicConfig = {

@@ -9,12 +9,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 
-const getCommandArgvs = require('../utils/getCommandArgvs');
+const getProcessArgvs = require('../utils/getProcessArgvs');
 const getPaths = require('../utils/getPaths');
 const readdirSync = require('../utils/readdirSync');
 const commonConfig = require('./webpack.common.js');
 
-const { cwd } = getCommandArgvs(process);
+const { cwd, platform } = getProcessArgvs(process);
 const { appSrcPath, appDistPath, appPublicPath, appNodeModulesPath } = getPaths(cwd);
 
 const serverConfig = {
@@ -26,9 +26,9 @@ const serverConfig = {
       template: `${appSrcPath}/index.html`
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new CaseSensitivePathsPlugin(),// 解决不同操作系统文件路径问题
+    platform !== "Windows_NT" ? new CaseSensitivePathsPlugin() : null,// 解决不同操作系统文件路径问题
     new WatchMissingNodeModulesPlugin(),
-  ],
+  ].filter(plugin=>!!plugin),
   devServer: {
     disableHostCheck: true,
     compress: true,

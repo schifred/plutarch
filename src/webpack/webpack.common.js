@@ -7,32 +7,13 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const getCommandArgvs = require('../utils/getCommandArgvs');
+const getProcessArgvs = require('../utils/getProcessArgvs');
 const getPaths = require('../utils/getPaths');
 const readdirSync = require('../utils/readdirSync');
 
-const { cwd, env, NODE_ENV, isProd } = getCommandArgvs(process);
+const { cwd, env, NODE_ENV, isProd } = getProcessArgvs(process);
 const { appSrcPath, appDistPath, appPublicPath, appNodeModulesPath } = getPaths(cwd);
 const { fileMap: entry, dirMap: alias } = readdirSync(appSrcPath);
-
-const plugins = [
-  new webpack.DefinePlugin({
-    'process.env.NODE_ENV': NODE_ENV
-  }),
-  // 将模块作为变量导出
-  // new webpack.ProvidePlugin({
-  //   $: 'jquery',
-  //   jQuery: 'jquery'
-  // }),
-  fs.existsSync(appPublicPath) ? 
-    new CopyWebpackPlugin([{
-      from: appPublicPath,
-      to: appDistPath
-    }]) : "",
-  new webpack.optimize.CommonsChunkPlugin({
-    name: "common"
-  })
-];
 
 const commonConfig = {
   target: "web",// 打包文件使用平台形势，默认值
@@ -61,8 +42,16 @@ const commonConfig = {
       use: {
         loader: 'babel-loader',
         options: {
-          presets: [ 'env', 'react', 'stage-0' ],// “babel-preset-env”用于替代es015
-          plugins: [ require('babel-plugin-transform-runtime'), require('babel-plugin-add-module-exports') ],
+          presets: [ 
+            require.resolve('babel-preset-react'),// “babel-preset-env”用于替代es015
+            require.resolve('babel-preset-env'), 
+            require.resolve('babel-preset-stage-0'), 
+          ],
+          plugins: [ 
+            require.resolve('babel-plugin-transform-decorators-legacy'), 
+            require.resolve('babel-plugin-transform-runtime'), 
+            require.resolve('babel-plugin-add-module-exports') 
+          ],
           cacheDirectory: true
         }
       }
@@ -119,7 +108,24 @@ const commonConfig = {
     extensions: [ ".js", ".jsx", ".tsx", ".json" ],
     alias,// import, require加载时的别名
   },
-  plugins: plugins.filter(plugin=>!!plugin)
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': NODE_ENV
+    }),
+    // 将模块作为变量导出
+    // new webpack.ProvidePlugin({
+    //   $: 'jquery',
+    //   jQuery: 'jquery'
+    // }),
+    fs.existsSync(appPublicPath) ? 
+      new CopyWebpackPlugin([{
+        from: appPublicPath,
+        to: appDistPath
+      }]) : "",
+    new webpack.optimize.CommonsChunkPlugin({
+      name: "common"
+    })
+  ].filter(plugin=>!!plugin)
 };
 
 module.exports = commonConfig;

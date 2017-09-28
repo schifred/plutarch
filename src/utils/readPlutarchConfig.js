@@ -41,7 +41,11 @@ module.exports = function readPlutarchConfig(cwd){
 
   if ( output ){
     if ( output.path ) plutarchConfig.output.path = path.resolve(cwd,output.path);
-    if ( output.publicPath ) plutarchConfig.devServer.publicPath = output.publicPath;
+    
+    if ( output.publicPath ) 
+      plutarchConfig.devServer = plutarchConfig.devServer ? 
+        Object.assign(plutarchConfig.devServer,{ publicPath: output.publicPath }) : 
+        { publicPath: output.publicPath };
   };
 
   if ( resolve && resolve.alias ){
