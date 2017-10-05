@@ -7,9 +7,9 @@ import WebpackDevServer from 'webpack-dev-server';
 
 import logger from '../utils/logger';
 import wrapServer from '../utils/ServerWrapper';
-import getDllConfig from '../utils/getDllConfig';
 import readPlutarchServer from '../utils/readPlutarchServer';
 import getDefaultConfig from '../webpack/webpack.server';
+import getDllConfig from '../webpack/webpack.dll';
 
 import { getYargsArgv, getProcessArgv, getPaths, resolvePlutarchConfig } from '../utils';
 import applyMock from '../utils/applyMock';
@@ -44,7 +44,7 @@ function exec(){
  */
 function compileDll(webpackConfig,extra){
   const { dll: rebuild } = yargsArgv;
-  const dllConfig = getDllConfig(cwd, extra.dll);
+  const dllConfig = getDllConfig(paths, extra.dll);
   const dllCompiler = webpack(dllConfig);
   
   const manifestPath = resolveApp('dist/plutarch-manifest.json');

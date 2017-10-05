@@ -1,10 +1,15 @@
 'use strict';
 
-import path from 'path';
+import debug from 'debug';
 import webpack from 'webpack';
 
-export default function getDllConfig(cwd,dllOptions){
-  const { include } = dllOptions;
+const _debug = debug('plutarch');
+
+function getDllConfig(paths, options){
+  _debug(`get dll config`)
+
+  const { include } = options;
+  const { appSrcPath, appDistPath, resolveApp } = paths;
 
   // 第三方公共库以dll方式加载编译，避免重复编译
   const dllConfig = {
@@ -12,18 +17,20 @@ export default function getDllConfig(cwd,dllOptions){
       'plutarch': include
     },
     output: {
-      path: path.join(cwd, 'dist'),
+      path: appDistPath,
       filename: '[name].dll.js',
       library: '[name]',// 全局变量名，与DllPlugin中name保持一致
     },
     plugins: [
       new webpack.DllPlugin({
-        path: path.join(cwd, 'dist', '[name]-manifest.json'),// 导出manifest.json
+        path: resolveApp('dist/[name]-manifest.json'),// 导出manifest.json
         name: '[name]',
-        context: path.resolve(cwd,'./src')// 与DllReferencePlugin中context保持一致
+        context: appSrcPath// 与DllReferencePlugin中context保持一致
       })
     ]
   };
 
   return dllConfig;
-}
+};
+
+export default getDllConfig;
