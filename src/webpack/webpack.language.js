@@ -1,11 +1,13 @@
 'use strict';
 
-const path = require("path");
-const I18nPlugin = require("i18n-webpack-plugin");
+import path from 'path';
+import I18nPlugin from 'i18n-webpack-plugin';
+
 var languages = {
 	"en": null,
 	"de": require("./de.json")
 };
+
 module.exports = function(languages){
   return Object.keys(languages).map(language=>{
     return {

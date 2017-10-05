@@ -1,7 +1,8 @@
 'use strict';
 
-let chalk = require("chalk");chalk
-chalk = new chalk.constructor({level: 1})
+import Chalk from 'chalk';
+
+const chalk = new Chalk.constructor({level: 1})
 
 // 控制台输出
 const Logger = {
@@ -23,4 +24,4 @@ const Logger = {
   }
 };
 
-module.exports = Logger
+export default Logger

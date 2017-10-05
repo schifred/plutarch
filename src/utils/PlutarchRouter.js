@@ -1,9 +1,9 @@
 'use strict';
 
-const path = require('path');
-const fs = require('fs');
-const isFunction = require('lodash/isFunction');
-const isString = require('lodash/isString');
+import path from 'path';
+import fs from 'fs';
+import isFunction from 'lodash/isFunction';
+import isString from 'lodash/isString';
 
 class PlutarchRouter{
   
@@ -129,4 +129,4 @@ class PlutarchRouter{
 
 };
 
-module.exports = PlutarchRouter;
+export default PlutarchRouter;

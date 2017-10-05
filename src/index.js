@@ -1,8 +1,8 @@
 "use strict";
 
-const path = require('path');
-const Command = require('common-bin');
-const pkg = require('./package.json');
+import path from 'path';
+import Command from 'common-bin';
+import pkg from '../package.json';
 
 class MainCommand extends Command {
   constructor(rawArgv) {
@@ -17,12 +17,12 @@ class MainCommand extends Command {
     // this.add(path.join(__dirname, 'test_command.js'));
 
     // more custom with `yargs` api, such as you can use `plutarch -V`
-    this.yargs.alias('V', 'version');
+    this.yargs.alias('v', 'version');
   }
 
   get version() {
-    return 'v1.0.0';
+    return pkg.version || '1.0.0';
   }
 }
 
-module.exports = MainCommand;
+export default MainCommand;

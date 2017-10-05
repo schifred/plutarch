@@ -1,5 +1,6 @@
 "use strict";
 
+import "underscore";
 import dva from "dva";
 import { browserHistory } from 'dva/router';
 import 'babel-polyfill';

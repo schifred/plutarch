@@ -1,9 +1,9 @@
 'use strict';
 
-const path = require('path');
-const webpack = require('webpack');
+import path from 'path';
+import webpack from 'webpack';
 
-module.exports = function getDllConfig(cwd,dllOptions){
+export default function getDllConfig(cwd,dllOptions){
   const { include } = dllOptions;
 
   // 第三方公共库以dll方式加载编译，避免重复编译

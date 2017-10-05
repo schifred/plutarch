@@ -2,5 +2,7 @@
 
 'use strict';
 
-const Command = require('../index');
-new Command().start();
+// sudo npm link注册为命令
+const Command = require('../lib/index');
+const commander = new Command();
+commander.start();

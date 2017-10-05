@@ -1,12 +1,12 @@
 'use strict';
 
-const path = require('path');
-const fs = require('fs');
-const isFunction = require('lodash/isFunction');
-const isPlainObject = require('lodash/isPlainObject');
-const PlutarchRouter = require('./PlutarchRouter');
+import path from 'path';
+import fs from 'fs';
+import isFunction from 'lodash/isFunction';
+import isPlainObject from 'lodash/isPlainObject';
+import PlutarchRouter from './PlutarchRouter';
 
-module.exports = function applyMock(options){
+export default function applyMock(options){
   const { cwd, mockDirPath, mockRouterPath } = options;
   const appMockRouterPath = path.resolve(cwd,mockRouterPath);
 

@@ -1,6 +1,6 @@
 "use strict";
 
-const isFunction = require('lodash/isFunction');
+import isFunction from 'lodash/isFunction';
 
 // 装饰扩展devServerApp
 class ServerWrapper{
@@ -23,7 +23,7 @@ class ServerWrapper{
   }
 };
 
-module.exports = function wrapServer(app){
+export default function wrapServer(app){
   const serverWrapper = new ServerWrapper(app);
   return serverWrapper;
 };
