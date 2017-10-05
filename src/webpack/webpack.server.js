@@ -27,7 +27,7 @@ function getServerConfig(paths, processArgv, yargsArgv){
         template: `${appSrcPath}/index.html`
       }),
       new webpack.HotModuleReplacementPlugin(),
-      platform !== "Windows_NT" ? new CaseSensitivePathsPlugin() : null,// 解决不同操作系统文件路径问题
+      platform !== 'Windows_NT' ? new CaseSensitivePathsPlugin() : null,// 解决不同操作系统文件路径问题
       new WatchMissingNodeModulesPlugin(),
     ].filter(plugin=>!!plugin),
     devServer: {
@@ -35,9 +35,9 @@ function getServerConfig(paths, processArgv, yargsArgv){
       compress: true,
       hot: true,
       contentBase: appDistPath,// 额外的静态资源所在目录
-      publicPath: "/",// 内存中编译文件由服务器加载时的文件位
+      publicPath: '/',// 内存中编译文件由服务器加载时的文件位
       quiet: false,// 是否关闭控制台日志打印
-      clientLogLevel: "warning",// 控制台打印日志级别
+      clientLogLevel: 'warning',// 控制台打印日志级别
       stats: {
         colors: true
       },//终端中输出结果为彩色
@@ -45,14 +45,14 @@ function getServerConfig(paths, processArgv, yargsArgv){
         //ignored: /node_modules/,
       },
       historyApiFallback: true,//不跳转
-      host: "0.0.0.0",
+      host: '127.0.0.1',
       port: 3001,
     }
   };
 
   const commonConfig = getCommonConfig(paths, processArgv, yargsArgv);
 
-  _debug(`merge common config into server config`)
+  _debug('merge common config into server config');
 
   const webpackConfig = merge(commonConfig,serverConfig);
 

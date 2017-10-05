@@ -71,26 +71,26 @@ function getCommonConfig(paths, processArgv, yargsArgv){
       },{
         test: /\.less$/,
         use: isProd ? ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: [ "css-loader", "less-loader" ]
+          fallback: 'style-loader',
+          use: [ 'css-loader', 'less-loader' ]
         }) : [{
-          loader: "style-loader"// creates style nodes from JS strings
+          loader: 'style-loader'// creates style nodes from JS strings
         }, {
-          loader: "css-loader"// translates CSS into CommonJS
+          loader: 'css-loader'// translates CSS into CommonJS
         }, {
-          loader: "less-loader"// compiles Less to CSS
+          loader: 'less-loader'// compiles Less to CSS
         }]
       },{
         test: /\.scss$/,
         use: isProd ? ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: [ "css-loader", "sass-loader" ]
+          fallback: 'style-loader',
+          use: [ 'css-loader', 'less-loader' ]
         }) : [{
-          loader: "style-loader"
+          loader: 'style-loader'
         }, {
-          loader: "css-loader"
+          loader: 'css-loader'
         }, {
-          loader: "sass-loader"
+          loader: 'less-loader'
         }]
       },{
         test: /\.(png|svg|jpg|gif)$/,
@@ -111,7 +111,7 @@ function getCommonConfig(paths, processArgv, yargsArgv){
     },
     resolve: {
       modules: [ appNodeModulesPath, 'node_modules' ],
-      extensions: [ ".js", ".jsx", ".tsx", ".json" ],
+      extensions: [ '.js', '.jsx', '.tsx', '.json' ],
       alias,// import, require加载时的别名
     },
     plugins: [
@@ -147,7 +147,7 @@ function getCommonConfig(paths, processArgv, yargsArgv){
         }]) : null,
   
       new webpack.optimize.CommonsChunkPlugin({
-        name: "common"
+        name: 'common'
       })
     ].filter(plugin=>!!plugin)
   };

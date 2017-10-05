@@ -16,7 +16,7 @@ const _debug = debug('plutarch');
 export function getPaths(cwd,opts){
   _debug(`get app and pltarch own paths with cwd: ${cwd}`);
 
-  const { config } = opts;
+  const { config, server, mock, mocks } = opts;
   const appDirPath = realpathSync(cwd);
 
   function resolveApp(relativePath) {
@@ -36,6 +36,9 @@ export function getPaths(cwd,opts){
     appNodeModulesPath: resolveApp('node_modules'),
     dllManifestPath: resolveApp('manifest.json'),
     plutarchConfigPath: resolveApp(config),
+    plutarchServerPath: server ? resolveApp(server) : null,
+    plutarchMockPath: mock ? resolveApp(mock) : null,
+    plutarchMocksPath: mocks ? resolveApp(mocks) : null,
     appBabelCachePath: resolveApp('node_modules/.cache/babel-loader'),
     resolveApp,
     resolveOwn
@@ -152,19 +155,15 @@ export function validateWebpackConfig(webpackConfig){
   };
 };
 
-// 混入yargs执行脚本文件的参数port、host等
+// 混入yargs执行脚本文件的参数port等
 export function applyYargsArgv(webpackConfig){
-  const { port, host } = getYargsArgv();
+  const { port } = getYargsArgv();
 
-  _debug(`apply yargs argv as port ${port}, host ${host} to webpack config`);
+  _debug(`apply yargs argv as port ${port} to webpack config`);
 
   if ( port ){
     if ( !webpackConfig.devServer ) webpackConfig.devServer = {};
     if ( webpackConfig.devServer.port !== port ) webpackConfig.devServer.port = port;
-  };
-
-  if ( host && webpackConfig.devServer.host != host ){
-    webpackConfig.devServer.host = host;
   };
 };
 

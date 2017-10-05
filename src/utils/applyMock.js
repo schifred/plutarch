@@ -1,29 +1,33 @@
 'use strict';
 
-import path from 'path';
-import fs from 'fs';
-import isFunction from 'lodash/isFunction';
-import isPlainObject from 'lodash/isPlainObject';
+import { existsSync, statSync } from 'fs';
+import { isFunction, isPlainObject } from 'lodash';
 import PlutarchRouter from './PlutarchRouter';
+import { traverseDirectory } from './index';
 
 export default function applyMock(options){
-  const { cwd, mockDirPath, mockRouterPath } = options;
-  const appMockRouterPath = path.resolve(cwd,mockRouterPath);
-
-  if ( !fs.existsSync(appMockRouterPath) ) return;
+  const { plutarchMocksPath, plutarchMockPath } = options;
+  
+  if ( !existsSync(plutarchMockPath) ) return;
 
   return function(devServerApp){
 
     const plutarchRouter = new PlutarchRouter(devServerApp,{
-      mockDirPath: path.resolve(cwd,mockDirPath)
+      mockDirPath: plutarchMocksPath
     });
     
-    const stat = fs.statSync(appMockRouterPath);
+    const stat = statSync(plutarchMockPath);
     const isDir = stat.isDirectory();
     const isFile = stat.isFile();
 
     if ( isFile ){
-      const appMockRouter = require(appMockRouterPath);
+      applyRoute(plutarchMockPath);
+    }else if( isDir ){
+      traverse(plutarchMockPath);
+    };
+
+    function applyRoute(filePath){
+      const appMockRouter = require(filePath);
 
       if ( isFunction(appMockRouter) ){
         appMockRouter(plutarchRouter);
@@ -39,13 +43,16 @@ export default function applyMock(options){
           plutarchRouter[method](path,appMockRouter[key]);
         });
       };
-  
-      throw new Error("plutarch.mock配置文件只接受对象或函数形式的数据")
+      
+      throw new Error("mock should export a function or object")
     };
-
-    // if ( isDir ){
-
-    // };
+    
+    function traverse(path){
+      traverseDirectory(path, (fileName,dirOrFilePath,isFile)=>{
+        if ( isFile ) applyRoute(dirOrFilePath);
+        if ( isDir ) traverse(dirOrFilePath);
+      });
+    };
     
   };
 

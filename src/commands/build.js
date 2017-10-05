@@ -30,7 +30,7 @@ class BuildCommand extends Command {
       env: 'prod'
     });
 
-    this.helper.forkNode(runBuildPath, forkNodeArgv);
+    this.helper.forkNode(runBuildPath, forkNodeArgv, { cwd });
   }
 
   get description() {

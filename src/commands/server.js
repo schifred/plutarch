@@ -14,17 +14,28 @@ class ServerCommand extends Command {
         alias: "p",
         description: 'dev server port'
       },
-      h: {
-        type: 'string',
-        default: '127.0.0.1',
-        alias: 'host',
-        description: 'dev server host'
-      },
       config: {
         type: 'string',
         default: constants.PlutarchConfigPath,
         alias: 'c',
-        description: 'plutarch config filePath'
+        description: 'plutarch config file path'
+      },
+      server: {
+        type: 'string',
+        default: constants.PlutarchServerPath,
+        alias: 's',
+        description: 'plutarch server file path'
+      },
+      mock: {
+        type: 'string',
+        default: constants.PlutarchMockPath,
+        alias: 'm',
+        description: 'plutarch mock file path'
+      },
+      mocks: {
+        type: 'string',
+        default: constants.PlutarchMocksPath,
+        description: 'plutarch mock directory path'
       },
       dll: {
         type: 'boolean',
@@ -36,7 +47,6 @@ class ServerCommand extends Command {
   }
 
   * run({ cwd, env, argv, rawArgv }) {
-    console.log(argv.host)
     const runServerPath = require.resolve("../exec/runServer.js");
     const forkNodeArgv = this.helper.unparseArgv({
       ...argv, 
