@@ -20,6 +20,7 @@ function getCommonConfig(paths, processArgv, yargsArgv){
   const NODE_ENV = isProd ? 'production' : 'development';
   const { appSrcPath, appDistPath, appPublicPath, appNodeModulesPath, resolveOwn } = paths;
   const { fileMap: entry, dirMap: alias } = traverseDirectory(appSrcPath);
+  const debug = processArgv.NODE_ENV==='test';
 
   const commonConfig = {
     target: "web",// 打包文件使用平台形势，默认值
@@ -54,9 +55,11 @@ function getCommonConfig(paths, processArgv, yargsArgv){
               require.resolve('babel-preset-stage-0'), 
             ],
             plugins: [ 
-              require.resolve('babel-plugin-transform-decorators-legacy'), 
-              require.resolve('babel-plugin-transform-runtime'), 
-              require.resolve('babel-plugin-add-module-exports')
+              // require.resolve('babel-plugin-transform-decorators-legacy'), 
+              // require.resolve('babel-plugin-transform-runtime'), 
+              require.resolve('babel-plugin-add-module-exports'),
+              require.resolve('babel-plugin-syntax-dynamic-import'),
+              require.resolve('babel-plugin-react-require')
             ],
             cacheDirectory: true
           }
@@ -146,9 +149,9 @@ function getCommonConfig(paths, processArgv, yargsArgv){
           to: appDistPath
         }]) : null,
   
-      new webpack.optimize.CommonsChunkPlugin({
+      !debug ? new webpack.optimize.CommonsChunkPlugin({
         name: 'common'
-      })
+      }) : null
     ].filter(plugin=>!!plugin)
   };
 

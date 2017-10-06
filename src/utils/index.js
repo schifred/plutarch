@@ -9,6 +9,7 @@ import webpack,{ validate, WebpackOptionsValidationError } from 'webpack';
 import merge from 'webpack-merge';
 import yargs from 'yargs';
 import logger from './logger';
+import * as constants from '../constants';
 
 const _debug = debug('plutarch');
 
@@ -35,10 +36,10 @@ export function getPaths(cwd,opts){
     appSrcPath: resolveApp('src'),
     appNodeModulesPath: resolveApp('node_modules'),
     dllManifestPath: resolveApp('manifest.json'),
-    plutarchConfigPath: resolveApp(config),
-    plutarchServerPath: server ? resolveApp(server) : null,
-    plutarchMockPath: mock ? resolveApp(mock) : null,
-    plutarchMocksPath: mocks ? resolveApp(mocks) : null,
+    plutarchConfigPath: config ? resolveApp(config) : resolveApp(constants.PlutarchConfigPath),
+    plutarchServerPath: server ? resolveApp(server) : resolveApp(constants.PlutarchServerPath),
+    plutarchMockPath: mock ? resolveApp(mock) : resolveApp(constants.PlutarchMockPath),
+    plutarchMocksPath: mocks ? resolveApp(mocks) : resolveApp(constants.PlutarchMocksPath),
     appBabelCachePath: resolveApp('node_modules/.cache/babel-loader'),
     resolveApp,
     resolveOwn
@@ -174,10 +175,11 @@ export function getYargsArgv(){
 
 // 获取process携带参数
 export function getProcessArgv(){
-  const { cwd, platform } = process;
+  const { cwd, platform, env:{ NODE_ENV } } = process;
 
   return {
     cwd: cwd(),
+    NODE_ENV, 
     platform
   };
 };

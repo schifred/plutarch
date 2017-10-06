@@ -14,13 +14,15 @@ const _debug = debug('plutarch');
 function getBuildConfig(paths, processArgv, yargsArgv){
   _debug(`get build config`)
 
-  const { appDistPath } = paths;
+  const { appDistPath, appDirPath } = paths;
+  const { NODE_ENV } = processArgv;
+  const debug = NODE_ENV==='test';
 
   const buildConfig = {
     output: {
       libraryTarget: 'umd'
     },
-    devtool: "source-map",
+    devtool: !debug ? 'source-map' : '',
     externals: {
       'jquery': {
         amd: 'jquery',
@@ -60,15 +62,16 @@ function getBuildConfig(paths, processArgv, yargsArgv){
       },
     },
     plugins: [
-      new CleanWebpackPlugin([ appDistPath ],{
-        dry: false
+      new CleanWebpackPlugin([ 'dist' ],{
+        root: appDirPath,
+        //dry: false
       }),
       new webpack.optimize.OccurrenceOrderPlugin(),
       new ExtractTextPlugin({
         filename: `common.css`,
         allChunks: true,
       }),
-      new webpack.optimize.UglifyJsPlugin({
+      !debug ? new webpack.optimize.UglifyJsPlugin({
         compress: {
           screw_ie8: true, // React doesn't support IE8
           warnings: false,
@@ -81,8 +84,8 @@ function getBuildConfig(paths, processArgv, yargsArgv){
           screw_ie8: true,
           ascii_only: true,
         },
-      })
-    ]
+      }) : null
+    ].filter(plugin=>!!plugin)
   };
   
   const commonConfig = getCommonConfig(paths, processArgv, yargsArgv);
