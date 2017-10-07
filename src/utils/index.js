@@ -4,7 +4,7 @@ import debug from "debug";
 import invariant from 'invariant';
 import { realpathSync, existsSync, readdirSync, statSync } from 'fs';
 import { resolve } from 'path';
-import { isPlainObject, isFunction, isString, isRegExp } from 'lodash';
+import { isPlainObject, isFunction, isString, isRegExp, mergeWith, sortedUniqBy } from 'lodash';
 import webpack,{ validate, WebpackOptionsValidationError } from 'webpack';
 import merge from 'webpack-merge';
 import yargs from 'yargs';
@@ -41,6 +41,7 @@ export function getPaths(cwd,opts){
     plutarchMockPath: mock ? resolveApp(mock) : resolveApp(constants.PlutarchMockPath),
     plutarchMocksPath: mocks ? resolveApp(mocks) : resolveApp(constants.PlutarchMocksPath),
     appBabelCachePath: resolveApp('node_modules/.cache/babel-loader'),
+    ownNodeModulesPath: resolveOwn('node_modules'),
     resolveApp,
     resolveOwn
   };
@@ -68,6 +69,7 @@ export function resolvePlutarchConfig(paths, defaultConfig){
   }else if( isPlainObject(plutarchConfig) ){
     plutarchConfig = transform(plutarchConfig);
     let { webpackConfig } = plutarchConfig;
+    applyExtraConfig(webpackConfig, plutarchConfig.extra, paths);
     webpackConfig = plutarchMerge(defaultConfig, webpackConfig);
     applyYargsArgv(webpackConfig);
     validateWebpackConfig(webpackConfig);
@@ -123,9 +125,31 @@ export function resolvePlutarchConfig(paths, defaultConfig){
 export function plutarchMerge(defaultConfig,customConfig){
   const webpackConfig = merge({
     customizeObject(a, b, key) {
-      if (key === 'module') {
+      if ( ['entry', 'externals'].indexOf(key) !== -1 ) return b || a;
+
+      if ( key === 'resolve' ){
         return {
-          rules: merge.smart([a.module.rules, b.module.rules])
+          ...mergeWith(a,b), 
+          extensions: [ ...b.extensions, ...a.extensions ]
+        }
+      };
+
+      if (key === 'module') {
+        const module = merge.smart(a, b);
+        let { rules } = module;
+        let tests = [];
+        rules = rules.reverse().filter(rule=>{
+          if ( tests.indexOf(rule.test + '') === -1 ){
+            tests.push(rule.test + '');
+            return true;
+          } else {
+            return false;
+          };
+        });
+
+        return {
+          ...module,
+          rules: rules.reverse()
         };
       };
 
@@ -166,6 +190,71 @@ export function applyYargsArgv(webpackConfig){
     if ( !webpackConfig.devServer ) webpackConfig.devServer = {};
     if ( webpackConfig.devServer.port !== port ) webpackConfig.devServer.port = port;
   };
+};
+
+// 混入特殊的参数如define等
+export function applyExtraConfig(webpackConfig, extraConfig, paths){
+  const { env } = getYargsArgv();
+  const { define, externals, resolveExtensions, babelIncludes, babelPresets, babelPlugins, 
+    disableCSSModules } = extraConfig;
+  const { appSrcPath, resolveApp } = paths;
+  const { BabelOptions } = constants;
+
+  _debug(`apply extra config as define, externals, resolveExtensions, babelIncludes, babelPresets, 
+    babelPlugins ... to webpack config`);
+
+  if ( define ){
+    invariant(isPlainObject(define), 'extra.define should be an object');
+    
+    if ( !webpackConfig.plugins ) webpackConfig.plugins = [];
+    webpackConfig.plugins.push(
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': env==='prod' ? 'production' : 'development',
+        ...define
+      })
+    )
+  };
+
+  if ( externals ){
+    webpackConfig.externals = externals;
+  };
+
+  if ( resolveExtensions ){
+    if ( !webpackConfig.resolve ) webpackConfig.resolve = {};
+    webpackConfig.resolve.extensions = resolveExtensions;
+  };
+
+  if ( babelIncludes || babelPresets || babelPlugins ){
+    if ( !webpackConfig.module ) webpackConfig.module = {};
+    if ( !webpackConfig.module.rules ) webpackConfig.module.rules = [];
+    webpackConfig.module.rules.push({ 
+      test: /\.js|\.jsx$/,
+      include: [ 
+        appSrcPath, 
+        ...( babelIncludes || [] ).map(path => resolveApp(path))
+      ],
+      exclude: /(node_modules|bower_components)/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          ...BabelOptions,
+          presets: [ 
+            ...BabelOptions.presets,
+            ...babelPresets || []
+          ],
+          plugins: [ 
+            ...BabelOptions.plugins,
+            ...babelPlugins || []
+          ]
+        }
+      }
+    });
+  };
+
+  if ( disableCSSModules ){
+
+  };
+
 };
 
 // 获取yargs执行脚本文件的参数

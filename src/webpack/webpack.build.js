@@ -16,6 +16,7 @@ function getBuildConfig(paths, processArgv, yargsArgv){
 
   const { appDistPath, appDirPath } = paths;
   const { NODE_ENV } = processArgv;
+  const { clean } = yargsArgv;
   const debug = NODE_ENV==='test';
 
   const buildConfig = {
@@ -62,10 +63,10 @@ function getBuildConfig(paths, processArgv, yargsArgv){
       },
     },
     plugins: [
-      new CleanWebpackPlugin([ 'dist' ],{
+      clean ? new CleanWebpackPlugin([ 'dist' ],{
         root: appDirPath,
         //dry: false
-      }),
+      }) : null,
       new webpack.optimize.OccurrenceOrderPlugin(),
       new ExtractTextPlugin({
         filename: `common.css`,

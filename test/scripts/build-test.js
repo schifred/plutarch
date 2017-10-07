@@ -20,7 +20,6 @@ function testBuild(cwd, done) {
     cwd,
   });
   subProcess.on('close', (err) => {
-    console.log(err);
     try {
       assertResult(join(cwd, 'dist'), join(cwd, 'expected'));
     } catch (e) {
@@ -40,7 +39,6 @@ describe('build', () => {
       const fn = dir.indexOf('-only') > -1 ? it.only : it;
       fn(dir, (done) => {
         const cwd = join(buildPath, dir);
-        console.log(cwd)
         process.chdir(cwd);// process.chdir改变工作目录
         testBuild(cwd, done);
       });

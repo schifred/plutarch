@@ -9,6 +9,7 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import NpmInstallPlugin from 'npm-install-webpack-plugin';
 
 import { traverseDirectory } from '../utils';
+import { BabelOptions } from '../constants';
 
 const _debug = debug('plutarch');
 
@@ -18,19 +19,20 @@ function getCommonConfig(paths, processArgv, yargsArgv){
   const { env } = yargsArgv
   const isProd = env==='prod';
   const NODE_ENV = isProd ? 'production' : 'development';
-  const { appSrcPath, appDistPath, appPublicPath, appNodeModulesPath, resolveOwn } = paths;
+  const { appSrcPath, appDistPath, appPublicPath, appNodeModulesPath, ownNodeModulesPath, resolveApp } 
+    = paths;
   const { fileMap: entry, dirMap: alias } = traverseDirectory(appSrcPath);
   const debug = processArgv.NODE_ENV==='test';
 
   const commonConfig = {
     target: "web",// 打包文件使用平台形势，默认值
     entry: entry,// 入口文件[ string | array | object ]
-    context: resolveOwn(''),
+    context: resolveApp(''),
     output: {
       path: appDistPath,
       publicPath: "/",
       filename: "[name].js",
-      chunkFilename: "[name].chunk.js",// 非入口文件名，require.ensure异步加载脚本文件
+      chunkFilename: "[name].async.js",// 非入口文件名，require.ensure异步加载脚本文件
       crossOriginLoading: "anonymous",// 启用跨域加载脚本
       // devtoolLineToLine: false,// 编辑脚本是否启用行到行SourceMap的映射，默认值
       // sourceMapFilename: "[file].map",// SourceMap文件名，默认值
@@ -48,29 +50,25 @@ function getCommonConfig(paths, processArgv, yargsArgv){
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: 'babel-loader',
-          options: {
-            presets: [ 
-              require.resolve('babel-preset-react'),// “babel-preset-env”用于替代es015
-              require.resolve('babel-preset-env'), 
-              require.resolve('babel-preset-stage-0'), 
-            ],
-            plugins: [ 
-              // require.resolve('babel-plugin-transform-decorators-legacy'), 
-              // require.resolve('babel-plugin-transform-runtime'), 
-              require.resolve('babel-plugin-add-module-exports'),
-              require.resolve('babel-plugin-syntax-dynamic-import'),
-              require.resolve('babel-plugin-react-require')
-            ],
-            cacheDirectory: true
-          }
+          options: BabelOptions
         }
       },{
         test: /\.css$/,
         use: isProd ? ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [ 'css-loader' ]
-        }) : 
-          [ 'style-loader', 'css-loader' ]
+        }) : [{
+          loader: 'style-loader'
+        }, {
+          loader: 'css-loader',
+          options: {
+            importLoaders: 1,// 'css-loader'加载前的loader个数
+            modules: true,
+            camelCase: true,
+            localIdentName: '[local]___[hash:base64:5]',
+            sourceMap: true
+          }
+        }]
       },{
         test: /\.less$/,
         use: isProd ? ExtractTextPlugin.extract({
@@ -113,8 +111,8 @@ function getCommonConfig(paths, processArgv, yargsArgv){
       }]
     },
     resolve: {
-      modules: [ appNodeModulesPath, 'node_modules' ],
-      extensions: [ '.js', '.jsx', '.tsx', '.json' ],
+      modules: [ appNodeModulesPath, ownNodeModulesPath ],
+      extensions: [ '.js', '.jsx', '.tsx', '.json' ],// 可忽略扩展名的模块，靠前的优先级最高
       alias,// import, require加载时的别名
     },
     plugins: [

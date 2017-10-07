@@ -162,17 +162,34 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-Promise.all([__webpack_require__.e/* import() */(1).then(__webpack_require__.bind(null, 1)), __webpack_require__.e/* import() */(0).then(__webpack_require__.bind(null, 2))]).then(function (_ref) {
-  var _ref2 = _slicedToArray(_ref, 2),
-      a = _ref2[0],
-      b = _ref2[1];
-
-  console.log('all done: ' + a + ', ' + b);
+__webpack_require__(1)(function (ret) {
+  console.log(ret + ' done');
+});
+__webpack_require__(2)(function (ret) {
+  console.log(ret + ' done');
 });
 
 console.log('index');
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = function(cb) {
+	__webpack_require__.e/* require.ensure */(1).then((function(require) {
+		cb(__webpack_require__(3));
+	}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
+}
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = function(cb) {
+	__webpack_require__.e/* require.ensure */(0).then((function(require) {
+		cb(__webpack_require__(4));
+	}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
+}
 
 /***/ })
 /******/ ]);

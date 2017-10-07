@@ -1,4 +1,4 @@
-webpackJsonp([0],{
+webpackJsonp([1],{
 
 /***/ 3:
 /***/ (function(module, exports, __webpack_require__) {
@@ -9,9 +9,10 @@ webpackJsonp([0],{
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-console.log('b');
 
-exports.default = 'b';
+console.log('a');
+
+exports.default = 'a';
 module.exports = exports['default'];
 
 /***/ })
