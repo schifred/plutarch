@@ -9,14 +9,14 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import NpmInstallPlugin from 'npm-install-webpack-plugin';
 
 import { traverseDirectory } from '../utils';
-import { BabelOptions } from '../constants';
+import { BabelOptions, CssLoadersWithModules, CssLoadersWithoutModules } from '../constants';
 
 const _debug = debug('plutarch');
 
 function getCommonConfig(paths, processArgv, yargsArgv){
   _debug(`get common config`)
 
-  const { env } = yargsArgv
+  const { env } = yargsArgv;
   const isProd = env==='prod';
   const NODE_ENV = isProd ? 'production' : 'development';
   const { appSrcPath, appDistPath, appPublicPath, appNodeModulesPath, ownNodeModulesPath, resolveApp } 
@@ -53,46 +53,84 @@ function getCommonConfig(paths, processArgv, yargsArgv){
           options: BabelOptions
         }
       },{
-        test: /\.css$/,
-        use: isProd ? ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [ 'css-loader' ]
-        }) : [{
-          loader: 'style-loader'
-        }, {
-          loader: 'css-loader',
+        test: /\.tsx?$/,
+        include: [ appSrcPath ],
+        use: [{
+          loader: 'babel-loader',
+          options: BabelOptions,
+        },
+        {
+          loader: 'awesome-typescript-loader',
           options: {
-            importLoaders: 1,// 'css-loader'加载前的loader个数
-            modules: true,
-            camelCase: true,
-            localIdentName: '[local]___[hash:base64:5]',
-            sourceMap: true
-          }
-        }]
+            transpileOnly: true,
+          },
+        }],
+      },{
+        test: /\.css$/,
+        include: [ appSrcPath ],
+        use: isProd || debug ? ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: CssLoadersWithModules.slice(1)
+        }) : CssLoadersWithModules
       },{
         test: /\.less$/,
-        use: isProd ? ExtractTextPlugin.extract({
+        include: [ appSrcPath ],
+        use: isProd || debug ? ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: [ 'css-loader', 'less-loader' ]
-        }) : [{
-          loader: 'style-loader'// creates style nodes from JS strings
-        }, {
-          loader: 'css-loader'// translates CSS into CommonJS
-        }, {
-          loader: 'less-loader'// compiles Less to CSS
-        }]
+          use: [ 
+            ...CssLoadersWithModules.slice(1),
+            { loader: 'less-loader' }// compiles Less to CSS
+          ]
+        }) : [ 
+          ...CssLoadersWithModules,
+          { loader: 'less-loader' }
+        ]
       },{
         test: /\.scss$/,
-        use: isProd ? ExtractTextPlugin.extract({
+        include: [ appSrcPath ],
+        use: isProd || debug ? ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: [ 'css-loader', 'less-loader' ]
-        }) : [{
-          loader: 'style-loader'
-        }, {
-          loader: 'css-loader'
-        }, {
-          loader: 'less-loader'
-        }]
+          use: [ 
+            ...CssLoadersWithModules.slice(1),
+            { loader: 'sass-loader' }
+          ]
+        }) : [
+          ...CssLoadersWithModules,
+          { loader: 'sass-loader' }
+        ]
+      },{
+        test: /\.css$/,
+        include: [ appNodeModulesPath ],
+        use: isProd || debug ? ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: CssLoadersWithoutModules.slice(1)
+        }) : CssLoadersWithModules
+      },{
+        test: /\.less$/,
+        include: [ appNodeModulesPath ],
+        use: isProd || debug ? ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [ 
+            ...CssLoadersWithoutModules.slice(1),
+            { loader: 'less-loader' }// compiles Less to CSS
+          ]
+        }) : [ 
+          ...CssLoadersWithoutModules,
+          { loader: 'less-loader' }
+        ]
+      },{
+        test: /\.scss$/,
+        include: [ appNodeModulesPath ],
+        use: isProd || debug ? ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [ 
+            ...CssLoadersWithoutModules.slice(1),
+            { loader: 'sass-loader' }
+          ]
+        }) : [
+          ...CssLoadersWithoutModules,
+          { loader: 'sass-loader' }
+        ]
       },{
         test: /\.(png|svg|jpg|gif)$/,
         use: [ 'file-loader' ]

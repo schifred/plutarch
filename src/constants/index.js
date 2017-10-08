@@ -21,3 +21,40 @@ export const BabelOptions = {
   ],
   cacheDirectory: true
 };
+
+export const CssLoadersWithModules = [{
+  loader: 'style-loader'// creates style nodes from JS strings
+}, {
+  loader: 'css-loader',// translates CSS into CommonJS
+  options: {
+    importLoaders: 1,// 'css-loader'加载前的loader个数
+    modules: true,
+    camelCase: true,
+    localIdentName: '[local]___[hash:base64:5]',
+    sourceMap: true
+  }
+}, {
+  loader: 'postcss-loader',
+  options: {
+    plugins: [
+      require('autoprefixer')()
+    ]
+  }
+}];
+
+export const CssLoadersWithoutModules = [{
+  loader: 'style-loader'// creates style nodes from JS strings
+}, {
+  loader: 'css-loader',// translates CSS into CommonJS
+  options: {
+    importLoaders: 1,// 'css-loader'加载前的loader个数
+    sourceMap: true
+  }
+}, {
+  loader: 'postcss-loader',
+  options: {
+    plugins: [
+      require('autoprefixer')()
+    ]
+  }
+}];

@@ -4,7 +4,7 @@ import debug from "debug";
 import invariant from 'invariant';
 import { realpathSync, existsSync, readdirSync, statSync } from 'fs';
 import { resolve } from 'path';
-import { isPlainObject, isFunction, isString, isRegExp, mergeWith, sortedUniqBy } from 'lodash';
+import { isPlainObject, isFunction, isString, isRegExp, mergeWith, isEqual } from 'lodash';
 import webpack,{ validate, WebpackOptionsValidationError } from 'webpack';
 import merge from 'webpack-merge';
 import yargs from 'yargs';
@@ -137,19 +137,29 @@ export function plutarchMerge(defaultConfig,customConfig){
       if (key === 'module') {
         const module = merge.smart(a, b);
         let { rules } = module;
-        let tests = [];
-        rules = rules.reverse().filter(rule=>{
-          if ( tests.indexOf(rule.test + '') === -1 ){
-            tests.push(rule.test + '');
-            return true;
-          } else {
-            return false;
-          };
+        
+        rules = rules.filter((rule,idx)=>{
+          let hasSame = rules.slice(idx+1).some(r=>{
+            let result = false;
+
+            switch(r.strategy){
+              case 'babel':
+                result = r.test + '' === rule.test + '';
+                break;
+            };
+
+            delete r.strategy;
+            return result;
+          });
+
+          if ( hasSame ) return false;
+          
+          return true;
         });
 
         return {
           ...module,
-          rules: rules.reverse()
+          rules: rules
         };
       };
 
@@ -196,12 +206,12 @@ export function applyYargsArgv(webpackConfig){
 export function applyExtraConfig(webpackConfig, extraConfig, paths){
   const { env } = getYargsArgv();
   const { define, externals, resolveExtensions, babelIncludes, babelPresets, babelPlugins, 
-    disableCSSModules } = extraConfig;
+    cssModulesExclude } = extraConfig;
   const { appSrcPath, resolveApp } = paths;
   const { BabelOptions } = constants;
 
   _debug(`apply extra config as define, externals, resolveExtensions, babelIncludes, babelPresets, 
-    babelPlugins ... to webpack config`);
+    babelPlugins, cssModulesExclude ... to webpack config`);
 
   if ( define ){
     invariant(isPlainObject(define), 'extra.define should be an object');
@@ -228,6 +238,7 @@ export function applyExtraConfig(webpackConfig, extraConfig, paths){
     if ( !webpackConfig.module ) webpackConfig.module = {};
     if ( !webpackConfig.module.rules ) webpackConfig.module.rules = [];
     webpackConfig.module.rules.push({ 
+      strategy: 'babel', 
       test: /\.js|\.jsx$/,
       include: [ 
         appSrcPath, 
@@ -251,8 +262,8 @@ export function applyExtraConfig(webpackConfig, extraConfig, paths){
     });
   };
 
-  if ( disableCSSModules ){
-
+  if ( cssModulesExclude ){
+    
   };
 
 };

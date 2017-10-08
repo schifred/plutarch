@@ -1,9 +1,11 @@
 'use strict';
 
 import debug from 'debug';
+import { existsSync } from 'fs';
 import webpack from 'webpack';
 import merge from 'webpack-merge';
 
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CleanWebpackPlugin from 'clean-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
@@ -14,7 +16,7 @@ const _debug = debug('plutarch');
 function getBuildConfig(paths, processArgv, yargsArgv){
   _debug(`get build config`)
 
-  const { appDistPath, appDirPath } = paths;
+  const { appDistPath, appDirPath, resolveApp } = paths;
   const { NODE_ENV } = processArgv;
   const { clean } = yargsArgv;
   const debug = NODE_ENV==='test';
@@ -69,7 +71,7 @@ function getBuildConfig(paths, processArgv, yargsArgv){
       }) : null,
       new webpack.optimize.OccurrenceOrderPlugin(),
       new ExtractTextPlugin({
-        filename: `common.css`,
+        filename: `common.css`,// '[name].css'
         allChunks: true,
       }),
       !debug ? new webpack.optimize.UglifyJsPlugin({
