@@ -1,9 +1,10 @@
 "use strict";
 
 import debug from 'debug';
-import { existsSync, unlinkSync, readFileSync, writeFileSync, mkdir } from 'fs';
+import { existsSync, readFileSync, writeFileSync, mkdir } from 'fs';
 import { relative } from 'path';
 
+import logger from '../utils/logger';
 import { getProcessArgv, getYargsArgv, getPaths, traverseDirectory } from '../utils';
 
 const _debug = debug('plutarch');
@@ -17,7 +18,12 @@ const { appSrcPath, resolveApp, resolveOwn } = paths;
 const templateRootPath = resolveOwn(`templates/${type}-project`);
 
 function exec(){
-  scanAndCopyFile(templateRootPath);
+  _debug(`init ${type} project`);
+  try{
+    scanAndCopyFile(templateRootPath);
+  }catch(e){
+    logger.red('init failed, you should retry');
+  };
 };
 
 function scanAndCopyFile(path){
@@ -30,7 +36,7 @@ function scanAndCopyFile(path){
     }else{
       let relativePath = relative(templateRootPath,dirOrFilePath);
       let appPath = resolveApp(relativePath);
-      mkdir(relativePath);
+      if( !existsSync(relativePath) ) mkdir(relativePath);
       scanAndCopyFile(dirOrFilePath);
     };
   },/\.ejs$|\.js|\.json$/)
