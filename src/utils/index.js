@@ -303,14 +303,15 @@ export function traverseDirectory(dirPath, cb, filePattern=/\.(js|tsx?)$/){
     const isDir = dirOrFileStat.isDirectory();
     const isFile = dirOrFileStat.isFile();
 
-    if ( isDir ) dirMap[dirOrFileName] = dirOrFilePath;
-
-    if ( isFile && dirOrFilePath.match(filePattern) ){
+    if ( isDir ){
+      dirMap[dirOrFileName] = dirOrFilePath;
+      cb && cb(dirOrFileName,dirOrFilePath,isFile);
+    } else if ( isFile && dirOrFilePath.match(filePattern) ){
       const fileName = dirOrFileName.replace(filePattern, '');
       fileMap[fileName] = dirOrFilePath;
+      cb && cb(fileName,dirOrFilePath,isFile);
     };
 
-    cb && cb(fileName,dirOrFilePath,isFile);
   });
 
   return {
