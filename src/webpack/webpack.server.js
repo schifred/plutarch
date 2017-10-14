@@ -2,12 +2,14 @@
 
 import debug from 'debug';
 import webpack from 'webpack';
+import { existsSync } from 'fs';
 import merge from 'webpack-merge';
 
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
 
+import { traverseDirectory } from '../utils';
 import getCommonConfig from './webpack.common';
 
 const _debug = debug('plutarch');
@@ -16,15 +18,18 @@ function getServerConfig(paths, processArgv, yargsArgv){
   _debug(`get server config`)
 
   const { platform } = processArgv;
-  const { appSrcPath, appDistPath } = paths;
+  const { appSrcPath, appDistPath, resolveApp } = paths;
+  const { fileMap: htmlPathsMap } = traverseDirectory('src',/\.html$|\.ejs$/);
 
   const serverConfig = {
     devtool: "inline-source-map",
     plugins: [
-      new HtmlWebpackPlugin({
-        title: 'Plutarch App',
-        showErrors: true,
-        template: `${appSrcPath}/index.html`
+      ...Object.keys(htmlPathsMap).map(fileName=>{
+        return new HtmlWebpackPlugin({
+          title: fileName,
+          showErrors: true,
+          template: htmlPathsMap[fileName]
+        })
       }),
       new webpack.HotModuleReplacementPlugin(),
       platform !== 'Windows_NT' ? new CaseSensitivePathsPlugin() : null,// 解决不同操作系统文件路径问题

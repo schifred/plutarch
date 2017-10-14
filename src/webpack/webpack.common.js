@@ -18,7 +18,7 @@ function getCommonConfig(paths, processArgv, yargsArgv){
 
   const { env } = yargsArgv;
   const isProd = env==='prod';
-  const NODE_ENV = isProd ? 'production' : 'development';
+  const NODE_ENV = isProd ? "'production'" : "'development'";
   const { appSrcPath, appDistPath, appPublicPath, appNodeModulesPath, ownNodeModulesPath, resolveApp } 
     = paths;
   const { fileMap: entry, dirMap: alias } = traverseDirectory(appSrcPath);

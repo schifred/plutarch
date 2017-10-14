@@ -4,9 +4,11 @@
 
 ### 配置
 
+基本配置同webpack，extra属性设置额外属性。
+
 plutarch.config.js
 
-    {
+    module.exports = {
       entry: {
         index: "./src/index.js"
       }

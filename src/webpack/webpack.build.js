@@ -1,7 +1,6 @@
 'use strict';
 
 import debug from 'debug';
-import { existsSync } from 'fs';
 import webpack from 'webpack';
 import merge from 'webpack-merge';
 
@@ -9,6 +8,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CleanWebpackPlugin from 'clean-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
+import { traverseDirectory } from '../utils';
 import getCommonConfig from './webpack.common';
 
 const _debug = debug('plutarch');
@@ -20,6 +20,7 @@ function getBuildConfig(paths, processArgv, yargsArgv){
   const { NODE_ENV } = processArgv;
   const { clean } = yargsArgv;
   const debug = NODE_ENV==='test';
+  const { fileMap: htmlPathsMap } = traverseDirectory('src',/\.html$|\.ejs$/);  
 
   const buildConfig = {
     output: {
@@ -65,6 +66,13 @@ function getBuildConfig(paths, processArgv, yargsArgv){
       },
     },
     plugins: [
+      ...Object.keys(htmlPathsMap).map(fileName=>{
+        return new HtmlWebpackPlugin({
+          title: fileName,
+          showErrors: true,
+          template: htmlPathsMap[fileName]
+        })
+      }),
       clean ? new CleanWebpackPlugin([ 'dist' ],{
         root: appDirPath,
         //dry: false

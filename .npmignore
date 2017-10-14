@@ -1,0 +1,6 @@
+npm-debug.log
+yarn.lock
+/test/
+/examples/
+/node_modules/
+/.vscode/

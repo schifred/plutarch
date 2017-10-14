@@ -31,7 +31,7 @@ export function getPaths(cwd,opts){
   let paths = {
     appDirPath,
     appDistPath: resolveApp('dist'),
-    appPublicPuth: resolveApp('public'),
+    appPublicPath: resolveApp('public'),
     appPackageJsonPath: resolveApp('package.json'),
     appSrcPath: resolveApp('src'),
     appNodeModulesPath: resolveApp('node_modules'),
@@ -107,9 +107,9 @@ export function resolvePlutarchConfig(paths, defaultConfig){
     };
   
     if ( resolve && resolve.alias ){
-      let alias = {};
+      let alias = resolve.alias;
   
-      Object.keys(resolve.alias).map(key=>{
+      Object.keys(alias).map(key=>{
         alias[key] = resolveApp(alias[key]);
       });
       
@@ -130,7 +130,8 @@ export function plutarchMerge(defaultConfig,customConfig){
       if ( key === 'resolve' ){
         return {
           ...mergeWith(a,b), 
-          extensions: [ ...b.extensions, ...a.extensions ]
+          extensions: b.extensions ? 
+            [ ...b.extensions, ...a.extensions ] : a.extensions
         }
       };
 

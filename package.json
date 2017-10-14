@@ -1,6 +1,6 @@
 {
   "name": "plutarch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Cli tool for serve and build react app, support JSON pattern config.",
   "main": "index.js",
   "bin": {
@@ -29,6 +29,10 @@
   "bugs": {
     "url": "https://github.com/schifred/plutarch/issues"
   },
+  "repository": { 
+    "type": "git", 
+    "url": "git://github.com/schifred/plutarch.git"
+  }, 
   "nyc": {
     "include": [
       "src/**/*.js"
