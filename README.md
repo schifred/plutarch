@@ -2,6 +2,10 @@
 
 前端脚手架
 
+### 初始化
+
+plutarch init 创建dva项目 
+
 ### 配置
 
 基本配置同webpack，extra属性设置额外属性。
