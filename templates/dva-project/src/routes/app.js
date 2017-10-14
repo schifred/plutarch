@@ -14,7 +14,6 @@ const App = ({ children, dispatch, app, loading, location }) => {
   const { user, siderFold, darkTheme, isNavbar, menuPopoverVisible, navOpenKeys, menu, permissions } = app
   let { pathname } = location
   pathname = pathname.startsWith('/') ? pathname : `/${pathname}`
-  const { iconFontJS, iconFontCSS, logo } = config
   const href = window.location.href
 
   if (lastHref !== href) {
@@ -28,11 +27,8 @@ const App = ({ children, dispatch, app, loading, location }) => {
   return (
     <div>
       <Helmet>
-        <title>ANTD ADMIN</title>
+        <title>DVA DEMO</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="icon" href={logo} type="image/x-icon" />
-        {iconFontJS && <script src={iconFontJS} />}
-        {iconFontCSS && <link rel="stylesheet" href={iconFontCSS} />}
       </Helmet>
       <div>
         { children }

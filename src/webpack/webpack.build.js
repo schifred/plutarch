@@ -27,7 +27,7 @@ function getBuildConfig(paths, processArgv, yargsArgv){
       libraryTarget: 'umd'
     },
     devtool: !debug ? 'source-map' : '',
-    externals: {
+    externals: {// 打包文件不包含jquery,react，需要script节点注入
       'jquery': {
         amd: 'jquery',
         root: 'jQuery',
