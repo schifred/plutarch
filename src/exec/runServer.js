@@ -4,6 +4,9 @@ import debug from 'debug';
 import { existsSync, unlinkSync } from 'fs';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
+import clearConsole from 'react-dev-utils/clearConsole';
+import openBrowser from 'react-dev-utils/openBrowser';
+import { choosePort, createCompiler, prepareProxy, prepareUrls } from 'react-dev-utils/WebpackDevServerUtils';
 
 import logger from '../utils/logger';
 import wrapServer from '../utils/ServerWrapper';
@@ -90,6 +93,9 @@ function runServer(webpackConfig){
   const { devServer: devServerConfig } = webpackConfig;
   const compiler = webpack(webpackConfig);
 
+  const protocol = devServerConfig.https === 'true' ? 'https' : 'http';
+  const urls = prepareUrls(protocol, devServerConfig.host, devServerConfig.port);
+
   const devServer = new WebpackDevServer(compiler, devServerConfig);
   const serverWrapper = wrapServer(devServer.app, paths);
 
@@ -111,6 +117,8 @@ function runServer(webpackConfig){
     };
 
     logger.blue(`create dev server successful: http://${devServerConfig.host}:${devServerConfig.port}`);
+
+    openBrowser(urls.localUrlForBrowser);
   });
 };
 

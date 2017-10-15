@@ -22,7 +22,7 @@ function exec(){
   try{
     scanAndCopyFile(templateRootPath);
   }catch(e){
-    logger.red('init failed, you should retry');
+    logger.red('initialize project failed, you should retry');
   };
 };
 
