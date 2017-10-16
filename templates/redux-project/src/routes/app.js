@@ -29,7 +29,6 @@ class App extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  inputValue: ownProps.location.pathname.substring(1)
 })
 
 export default withRouter(connect(mapStateToProps)(App))

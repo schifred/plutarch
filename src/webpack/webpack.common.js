@@ -9,7 +9,7 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import NpmInstallPlugin from 'npm-install-webpack-plugin';
 
 import { traverseDirectory } from '../utils';
-import { BabelOptions, CssLoadersWithModules, CssLoadersWithoutModules } from '../constants';
+import { BabelOptions, eslintLoader, CssLoadersWithModules, CssLoadersWithoutModules } from '../constants';
 
 const _debug = debug('plutarch');
 
@@ -19,7 +19,7 @@ function getCommonConfig(paths, processArgv, yargsArgv){
   const { env } = yargsArgv;
   const isProd = env==='prod';
   const NODE_ENV = isProd ? "'production'" : "'development'";
-  const { appSrcPath, appDistPath, appPublicPath, appNodeModulesPath, ownNodeModulesPath, resolveApp } 
+  const { appSrcPath, appDistPath, appPublicPath, appNodeModulesPath, ownNodeModulesPath, resolveOwn } 
     = paths;
   const { fileMap: entry, dirMap: alias } = traverseDirectory(appSrcPath);
   const debug = processArgv.NODE_ENV==='test';
@@ -27,7 +27,7 @@ function getCommonConfig(paths, processArgv, yargsArgv){
   const commonConfig = {
     target: "web",// 打包文件使用平台形势，默认值
     entry: entry,// 入口文件[ string | array | object ]
-    context: resolveApp(''),
+    context: resolveOwn(''),
     output: {
       path: appDistPath,
       publicPath: "/",
@@ -45,13 +45,13 @@ function getCommonConfig(paths, processArgv, yargsArgv){
     },
     module: {
       rules: [{ 
-        test: /\.js|\.jsx$/,
+        test: /\.jsx?$/,
         include: [ appSrcPath ],
-        exclude: /(node_modules|bower_components)/,
-        use: {
+        exclude: [ appNodeModulesPath ],
+        use: [{
           loader: 'babel-loader',
           options: BabelOptions
-        }
+        }, eslintLoader]
       },{
         test: /\.tsx?$/,
         include: [ appSrcPath ],

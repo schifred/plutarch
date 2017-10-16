@@ -22,6 +22,9 @@ function getServerConfig(paths, processArgv, yargsArgv){
   const { fileMap: htmlPathsMap } = traverseDirectory('src',/\.html$|\.ejs$/);
 
   const serverConfig = {
+    entry: {
+      devClient: require.resolve('react-dev-utils/webpackHotDevClient'),// 报错页面
+    },
     devtool: "inline-source-map",
     plugins: [
       ...Object.keys(htmlPathsMap).map(fileName=>{

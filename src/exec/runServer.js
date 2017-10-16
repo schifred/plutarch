@@ -7,6 +7,8 @@ import WebpackDevServer from 'webpack-dev-server';
 import clearConsole from 'react-dev-utils/clearConsole';
 import openBrowser from 'react-dev-utils/openBrowser';
 import { choosePort, createCompiler, prepareProxy, prepareUrls } from 'react-dev-utils/WebpackDevServerUtils';
+import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware';
+import noopServiceWorkerMiddleware from 'react-dev-utils/noopServiceWorkerMiddleware';
 
 import logger from '../utils/logger';
 import wrapServer from '../utils/ServerWrapper';
@@ -109,6 +111,8 @@ function runServer(webpackConfig){
   _debug('extend dev server');
   serverWrapper.wrap();
 
+  devServer.use(errorOverlayMiddleware);
+
   devServer.listen(devServerConfig.port, devServerConfig.host, (err) => {
     if (err) {
       logger.red("create dev server failed");
@@ -119,6 +123,13 @@ function runServer(webpackConfig){
     logger.blue(`create dev server successful: http://${devServerConfig.host}:${devServerConfig.port}`);
 
     openBrowser(urls.localUrlForBrowser);
+  });
+  
+  ['SIGINT', 'SIGTERM'].forEach(function(sig) {
+    process.on(sig, function() {
+      devServer.close();
+      process.exit();
+    });
   });
 };
 

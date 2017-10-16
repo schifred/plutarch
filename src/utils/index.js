@@ -83,17 +83,24 @@ export function resolvePlutarchConfig(paths, defaultConfig){
     let { entry, output, resolve } = webpackConfig;
 
     if ( entry ){
+      const devClientPath = require.resolve('react-dev-utils/webpackHotDevClient');
       if ( isString(entry) ) {
-        webpackConfig.entry = resolveApp(entry);
+        webpackConfig.entry = [ resolveApp(entry) ];
+
+        webpackConfig.entry.push(devClientPath);
       } else if ( Array.isArray(entry) ) {
         webpackConfig.entry = entry.map(item=>{
           return resolveApp(item);
         });
+        
+        webpackConfig.entry.push(devClientPath);
       } else if( isPlainObject(entry) ) {
         webpackConfig.entry = {};
         Object.keys(entry).map(key=>{
           webpackConfig.entry[key] = resolveApp(entry[key]);
         });
+        
+        webpackConfig.entry.devClient = devClientPath;
       };
     };
   
@@ -123,6 +130,7 @@ export function resolvePlutarchConfig(paths, defaultConfig){
 
 // 合并webpack.config默认配置和自定义配置
 export function plutarchMerge(defaultConfig,customConfig){
+
   const webpackConfig = merge({
     customizeObject(a, b, key) {
       if ( ['entry', 'externals'].indexOf(key) !== -1 ) return b || a;
@@ -149,7 +157,7 @@ export function plutarchMerge(defaultConfig,customConfig){
                 break;
             };
 
-            delete r.strategy;
+            //delete r.strategy;
             return result;
           });
 
@@ -157,6 +165,8 @@ export function plutarchMerge(defaultConfig,customConfig){
           
           return true;
         });
+
+        console.log(rules)
 
         return {
           ...module,
@@ -208,8 +218,8 @@ export function applyExtraConfig(webpackConfig, extraConfig, paths){
   const { env } = getYargsArgv();
   const { define, externals, resolveExtensions, babelIncludes, babelPresets, babelPlugins, 
     cssModulesExclude } = extraConfig;
-  const { appSrcPath, resolveApp } = paths;
-  const { BabelOptions } = constants;
+  const { appSrcPath, appNodeModulesPath, resolveApp } = paths;
+  const { BabelOptions, eslintLoader } = constants;
 
   _debug(`apply extra config as define, externals, resolveExtensions, babelIncludes, babelPresets, 
     babelPlugins, cssModulesExclude ... to webpack config`);
@@ -240,13 +250,13 @@ export function applyExtraConfig(webpackConfig, extraConfig, paths){
     if ( !webpackConfig.module.rules ) webpackConfig.module.rules = [];
     webpackConfig.module.rules.push({ 
       strategy: 'babel', 
-      test: /\.js|\.jsx$/,
+      test: /\.jsx?$/,
       include: [ 
         appSrcPath, 
         ...( babelIncludes || [] ).map(path => resolveApp(path))
       ],
-      exclude: /(node_modules|bower_components)/,
-      use: {
+      exclude: [ appNodeModulesPath ],
+      use: [{
         loader: 'babel-loader',
         options: {
           ...BabelOptions,
@@ -259,7 +269,7 @@ export function applyExtraConfig(webpackConfig, extraConfig, paths){
             ...babelPlugins || []
           ]
         }
-      }
+      }, eslintLoader]
     });
   };
 

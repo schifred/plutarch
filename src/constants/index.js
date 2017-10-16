@@ -1,5 +1,7 @@
 'use strict';
 
+import eslintFormatter from 'react-dev-utils/eslintFormatter';
+
 export const PlutarchConfigPath = 'plutarch.config.js';
 export const PlutarchServerPath = 'plutarch.server.js';
 export const PlutarchMockPath = 'plutarch.mock.js';
@@ -20,6 +22,18 @@ export const BabelOptions = {
     require.resolve('babel-plugin-react-require')
   ],
   cacheDirectory: true
+};
+
+export const eslintLoader = {
+  loader: 'eslint-loader',
+  options: {
+    // Pass the formatter:
+    formatter: eslintFormatter,
+    useEslintrc: false,
+    baseConfig: {
+      extends: [require.resolve('eslint-config-react-app')],
+    },
+  }
 };
 
 export const CssLoadersWithModules = [{
