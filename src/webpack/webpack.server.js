@@ -8,6 +8,7 @@ import merge from 'webpack-merge';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
+import InterpolateHtmlPlugin from 'react-dev-utils/InterpolateHtmlPlugin';
 
 import { traverseDirectory } from '../utils';
 import getCommonConfig from './webpack.common';
@@ -27,6 +28,14 @@ function getServerConfig(paths, processArgv, yargsArgv){
     },
     devtool: "inline-source-map",
     plugins: [
+      // Makes the public URL available as %PUBLIC_URL% in index.html, e.g.:
+      // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+      // new InterpolateHtmlPlugin({
+      //   PUBLIC_URL: "/"
+      //   // You can pass any key-value pairs, this was just an example.
+      //   // WHATEVER: 42 will replace %WHATEVER% with 42 in index.html.
+      // }),
+      
       ...Object.keys(htmlPathsMap).map(fileName=>{
         return new HtmlWebpackPlugin({
           title: fileName,

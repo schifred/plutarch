@@ -7,6 +7,7 @@ import { existsSync } from 'fs';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import NpmInstallPlugin from 'npm-install-webpack-plugin';
+import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
 
 import { traverseDirectory } from '../utils';
 import { BabelOptions, eslintLoader, CssLoadersWithModules, CssLoadersWithoutModules } from '../constants';
@@ -154,6 +155,12 @@ function getCommonConfig(paths, processArgv, yargsArgv){
       alias,// import, require加载时的别名
     },
     plugins: [
+      // If you require a missing module and then `npm install` it, you still have
+      // to restart the development server for Webpack to discover it. This plugin
+      // makes the discovery automatic so you don't have to restart.
+      // See https://github.com/facebookincubator/create-react-app/issues/186
+      new WatchMissingNodeModulesPlugin(appNodeModulesPath),
+
       new NpmInstallPlugin({
         // Use --save or --save-dev
         dev: false,

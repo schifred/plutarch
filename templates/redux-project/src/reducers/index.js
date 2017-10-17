@@ -1,5 +1,3 @@
-import * as ActionTypes from '../actions'
-import merge from 'lodash/merge'
 import { combineReducers } from 'redux'
 import { getTypesNamespace } from '../utils'
 
