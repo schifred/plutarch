@@ -147,7 +147,7 @@ extra: {
 
 devServer: {
   proxy: {
-    
+
   }
 }
 
@@ -155,28 +155,32 @@ devServer: {
 
 通过plutarch.mock.js文件或mocks文件夹配置数据模拟脚本，在dev server中直接挂载控制器实现。
 
-plutarch.mock.js
+### plutarch.mock.js
 
-  module.exports = function(app){
+```bash
+module.exports = function(app){
 
-    app.get("/api/test.json",(req,res)=>{
-      res.send("test");
-    });
-
-  };
-
-  // 或者
-  module.exports = {
-    "get /api/test.json": "test"
-  };
-
-  // 或者
-  module.exports = {
-    app.get("/api/test.json","mocks.test");
-  };
-
-mocks/test.js
-
-  module.exports = function(req,res){
+  app.get("/api/test.json",(req,res)=>{
     res.send("test");
-  };
+  });
+
+};
+
+// 或者
+module.exports = {
+  "get /api/test.json": "test"
+};
+
+// 或者
+module.exports = {
+  app.get("/api/test.json","mocks.test");
+};
+```
+
+### mocks/test.js
+
+```bash
+module.exports = function(req,res){
+  res.send("test");
+};
+```
