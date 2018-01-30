@@ -143,36 +143,40 @@ extra: {
   cssModulesExclude// 暂不使用
 };
 
+### 其他配置
+
+devServer: {
+  proxy: {
+    
+  }
+}
+
 ## 数据模拟
 
 通过plutarch.mock.js文件或mocks文件夹配置数据模拟脚本，在dev server中直接挂载控制器实现。
 
 plutarch.mock.js
 
-    module.exports = function(app){
+  module.exports = function(app){
 
-      app.get("/api/test.json",(req,res)=>{
-        res.send("test");
-      });
+    app.get("/api/test.json",(req,res)=>{
+      res.send("test");
+    });
 
-    };
+  };
 
-或
+  // 或者
+  module.exports = {
+    "get /api/test.json": "test"
+  };
 
-    module.exports = {
-      "get /api/test.json": "test"
-    };
-
-或
-
-    module.exports = {
-
-      app.get("/api/test.json","mocks.test");
-
-    };
+  // 或者
+  module.exports = {
+    app.get("/api/test.json","mocks.test");
+  };
 
 mocks/test.js
 
-    module.exports = function(req,res){
-      res.send("test");
-    };
+  module.exports = function(req,res){
+    res.send("test");
+  };
