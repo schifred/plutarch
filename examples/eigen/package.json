@@ -11,10 +11,10 @@
   "license": "MIT",
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "dva": "^2.0.1",
-    "prop-types": "^15.5.10",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
+    "dva": "^2.1.0",
+    "prop-types": "^15.6.0",
+    "react": "^15.6.2",
+    "react-dom": "^15.6.2",
     "roadhog": "^1.2.2",
     "underscore": "^1.8.3"
   }
