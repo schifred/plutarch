@@ -166,8 +166,6 @@ export function plutarchMerge(defaultConfig,customConfig){
           return true;
         });
 
-        console.log(rules)
-
         return {
           ...module,
           rules: rules

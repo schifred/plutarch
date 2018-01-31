@@ -36,6 +36,8 @@ export const eslintLoader = {
   }
 };
 
+// css modules方式加载css文件，工程文件夹下资源采用css modules方式加载，node_modules下不采用css modules方式
+// 参考文档：[CSS Modules 用法教程](http://www.ruanyifeng.com/blog/2016/06/css_modules.html)
 export const CssLoadersWithModules = [{
   loader: 'style-loader'// creates style nodes from JS strings
 }, {

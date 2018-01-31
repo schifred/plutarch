@@ -4,6 +4,7 @@ import debug from 'debug';
 import { existsSync, unlinkSync } from 'fs';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
+// clearConsole 用于清空控制台
 import clearConsole from 'react-dev-utils/clearConsole';
 import openBrowser from 'react-dev-utils/openBrowser';
 import { choosePort, createCompiler, prepareProxy, prepareUrls } from 'react-dev-utils/WebpackDevServerUtils';

@@ -105,7 +105,7 @@ function getCommonConfig(paths, processArgv, yargsArgv){
         use: isProd || debug ? ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: CssLoadersWithoutModules.slice(1)
-        }) : CssLoadersWithModules
+        }) : CssLoadersWithoutModules
       },{
         test: /\.less$/,
         include: [ appNodeModulesPath ],
