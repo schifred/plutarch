@@ -1,8 +1,6 @@
-"use strict";
-
 import "css/common.less";
 import "css/index.less";
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "dva";
 import Header from "script/components/Header";
 

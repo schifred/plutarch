@@ -15,7 +15,7 @@ import { BabelOptions, eslintLoader, CssLoadersWithModules, CssLoadersWithoutMod
 const _debug = debug('plutarch');
 
 function getCommonConfig(paths, processArgv, yargsArgv){
-  _debug(`get common config`)
+  _debug(`get common config`);
 
   const { env } = yargsArgv;
   const isProd = env==='prod';
@@ -133,8 +133,8 @@ function getCommonConfig(paths, processArgv, yargsArgv){
           { loader: 'sass-loader' }
         ]
       },{
-        test: /\.(png|svg|jpg|gif)$/,
-        use: [ 'file-loader' ]
+        test: /\.(png|jpeg|jpg|gif|svg)$/,
+        use: [ 'url-loader?limit=1024' ]// url-loader内部封装了file-loader，大于限制长度的采用file-loader加载
       },{
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         use: [ 'file-loader' ]

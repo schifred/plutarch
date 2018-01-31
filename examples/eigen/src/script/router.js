@@ -1,8 +1,6 @@
-"use stict";
-
 import React from 'react';
 import PropTypes from 'prop-types';
-import { HashRouter, Route, Redirect } from 'dva/router';
+import { HashRouter, Route } from 'dva/router';
 
 import App from 'script/routes/app';
 import IndexPage from 'script/routes/pages/index';

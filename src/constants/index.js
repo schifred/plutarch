@@ -24,6 +24,8 @@ export const BabelOptions = {
   cacheDirectory: true
 };
 
+// js代码检测
+// 参考文档：[ESLint 介绍](https://www.jianshu.com/p/9724ad299ff6)
 export const eslintLoader = {
   loader: 'eslint-loader',
   options: {

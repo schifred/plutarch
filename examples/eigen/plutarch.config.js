@@ -4,7 +4,7 @@ module.exports = {
   },
   extra: {
     dll: {
-      include: ["react","react-dom","redux","react-redux","react-router","dva","babel-ployfill"]
+      include: ["react","react-dom","redux","react-redux","react-router","dva"]
     }
   }
   // output: {

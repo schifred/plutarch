@@ -1,6 +1,4 @@
-"use strict";
-
-import React, { Component } from "react";
+import React from "react";
 
 const Header = function({locale,language}){
   const { Languages, TopMenus, SocialIcons } = locale;
@@ -11,7 +9,7 @@ const Header = function({locale,language}){
         <span className="language-icons">
           {
             Languages.map((lang,idx)=>{
-              let ele = lang.key==language ? <a className="active">{lang.title}</a> :
+              let ele = lang.key===language ? <a className="active">{lang.title}</a> :
                 <a>{lang.title}</a>;
               return idx!==Languages.length-1 ? <span key={lang.key}>{ele} / </span> : 
                 <span key={lang.key}>{ele}</span>;
@@ -28,7 +26,7 @@ const Header = function({locale,language}){
         <span className="social-icons">
           {
             SocialIcons.map(item=>{
-              return <a key={item.key} className="social-icon" 
+              return <i key={item.key} className="social-icon" 
                 style={{backgroundImage:`url(${item.link})`}}/>
             })
           }
