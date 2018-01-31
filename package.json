@@ -1,6 +1,6 @@
 {
   "name": "plutarch",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Cli tool for serve and build react app, support JSON pattern config.",
   "main": "index.js",
   "bin": {
