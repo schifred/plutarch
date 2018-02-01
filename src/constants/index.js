@@ -76,3 +76,11 @@ export const CssLoadersWithoutModules = [{
     ]
   }
 }];
+
+// 雪碧图加载器
+export const svgSpriteLoader = {
+  loader: 'svg-sprite-loader',
+  options: {
+    symbolId: 'icon-[name]'
+  }
+};

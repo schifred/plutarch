@@ -10,7 +10,7 @@ $ npm i plutarch -g
 
 ## 获取版本
 $ plutarch -v
-1.0.3
+1.0.5
 
 ## 创建redux项目，默认创建dva项目
 $ plutarch init -t redux
@@ -79,6 +79,7 @@ plutarch.config.js
   - rule.use.options | rule.use.query，传入loader的配置项，如 use: [{ loader: "css-loader", options: { modules: true } }。
   
   - rule.parser，配置解析选项，约定模块可以使用的模块化加载语法，默认值为
+    ```bash
     parser: {
       amd: false, // 禁用 AMD
       commonjs: false, // 禁用 CommonJS
@@ -92,9 +93,11 @@ plutarch.config.js
       node: false, // 禁用 __dirname, __filename, module, require.extensions, require.main 等。
       node: {...} // 在模块级别(module level)上重新配置 [node](/configuration/node) 层(layer)
     }
+    ```
 
   - rule.rules，配置嵌套规则。
   - rule.oneOf，以数组顺序优先选用嵌套规则，如
+    ```bash
     use: [{
       test: /.css$/,
       oneOf: [
@@ -108,6 +111,7 @@ plutarch.config.js
         }
       ]
     }]
+    ```
 
   - rule.enforce，指定 loader 调用顺序，可选值为'pre'（前置）, 'inline'（行内）, 'normal'（普通）, 'post'（后置），留空即为默认值'normal'。
 
@@ -144,19 +148,30 @@ extra: {
   cssModules,// 是否开启css modules编译src文件夹下的css脚本，默认为否
   cssModulesExclude,// 启用css modules编译css脚本时需排除的文件，字符串、数组、正则或函数形式
   cssModulesIncludes,// 启用css modules编译的css脚本，src 目录文件除外，数据格式为相对项目目录路径字符串数组
+  svgSpriteIncludes,// 启用svg-sprite-loader加载的svg图片，数据格式为相对项目目录路径字符串数组
   dll,// 以dll方式编译的第三方类库，html页面须注入plutarch.dll.js；同时视dist下是否有plutarch-manifest.json启动dll重复编译
-  
-
 };
 ```
 
 ### 其他配置
 
-devServer: {
-  proxy: {
+#### devServer服务配置
 
-  }
-}
+参考文档[devServer](https://webpack.js.org/configuration/dev-server/)
+
+```bash
+devServer: {
+  proxy: {// 服务器代理设置
+    "/api": {
+      target: "http://localhost:3000",
+      pathRewrite: {"^/api" : ""}
+    }
+  },
+  https,// 是否开启https服务，默认为否，即开启http服务
+  host,// 主机，默认为127.0.0.1
+  port,// 端口号，默认为3001
+};
+```
 
 ## 数据模拟
 

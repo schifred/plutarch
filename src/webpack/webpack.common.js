@@ -10,7 +10,9 @@ import NpmInstallPlugin from 'npm-install-webpack-plugin';
 import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
 
 import { getPlutarchConfig, traverseDirectory } from '../utils';
-import { BabelOptions, eslintLoader, CssLoadersWithModules, CssLoadersWithoutModules } from '../constants';
+import { 
+  BabelOptions, eslintLoader, CssLoadersWithModules, CssLoadersWithoutModules, svgSpriteLoader 
+} from '../constants';
 
 const _debug = debug('plutarch');
 
@@ -29,7 +31,7 @@ function getCommonConfig(paths, processArgv, yargsArgv){
 
   const customConfig = getPlutarchConfig(paths);
   const { extra } = customConfig;
-  const { cssModules, cssModulesExclude, cssModulesIncludes } = extra || {};
+  const { cssModules, cssModulesExclude, cssModulesIncludes, svgSpriteIncludes } = extra || {};
 
   const commonConfig = {
     target: "web",// 打包文件使用平台形势，默认值
@@ -146,6 +148,8 @@ function getCommonConfig(paths, processArgv, yargsArgv){
         ]
       },{
         test: /\.(png|jpeg|jpg|gif|svg)$/,
+        exclude: svgSpriteIncludes ? 
+          [ ...svgSpriteIncludes.map(path=>resolveApp(path)) ] : () => false,
         use: [ 'url-loader?limit=10000' ]// url-loader内部封装了file-loader，大于限制长度的采用file-loader加载
         // url-loader加载图片时，import img from imgPath 将生成图片路径，css导入以相对路径形式
       },{
@@ -160,6 +164,11 @@ function getCommonConfig(paths, processArgv, yargsArgv){
       },{
         test: /\.html$/,
         use: [ 'html-loader' ]
+      },{
+        test: /\.svg$/,
+        include: svgSpriteIncludes ? 
+          [ ...svgSpriteIncludes.map(path=>resolveApp(path)) ] : () => false,
+        use: [ svgSpriteLoader ]
       }]
     },
     resolve: {

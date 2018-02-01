@@ -31,7 +31,7 @@ const { webpackConfig, extra } = resolvePlutarchConfig(paths, defaultConfig);
 
 function exec(){
   if ( extra && extra.dll ){
-    compileDll(webpackConfig,extra);
+    compileDll(webpackConfig, extra);
   }else{
     runServer(webpackConfig);
   };
@@ -41,12 +41,12 @@ function exec(){
  * plutarch.config.js: 
  * { 
  *   extra: {
- *     include: ['react']
+ *     dll: ['react']
  *   } 
  * }
  * 提前编译稳定的插件，这些插件在各次编译时无须重复编译，提高性能
  */
-function compileDll(webpackConfig,extra){
+function compileDll(webpackConfig, extra){
   const { dll: rebuild } = yargsArgv;
   const dllConfig = getDllConfig(paths, extra.dll);
   const dllCompiler = webpack(dllConfig);
@@ -97,7 +97,7 @@ function runServer(webpackConfig){
   const { devServer: devServerConfig } = webpackConfig;
   const compiler = webpack(webpackConfig);
 
-  const protocol = devServerConfig.https === 'true' ? 'https' : 'http';
+  const protocol = devServerConfig.https ? 'https' : 'http';
   const urls = prepareUrls(protocol, devServerConfig.host, devServerConfig.port);
 
   const devServer = new WebpackDevServer(compiler, devServerConfig);
