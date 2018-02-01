@@ -49,6 +49,19 @@ export function getPaths(cwd,opts){
   return paths;
 };
 
+// 获取plutarch.config.js配置文件，若为对象，返回该对象，其他返回空对象
+export function getPlutarchConfig(paths){
+  const { plutarchConfigPath } = paths;
+
+  if ( !existsSync(plutarchConfigPath) ) return {};
+
+  const plutarchConfig = require(plutarchConfigPath);
+
+  if ( isFunction(plutarchConfig) ) return {};
+
+  return plutarchConfig;
+};
+
 // 获取plutarch.config.js配置文件，用于配置webpackConfig、dllConfig
 export function resolvePlutarchConfig(paths, defaultConfig){
   const { plutarchConfigPath, resolveApp } = paths;
@@ -189,6 +202,13 @@ export function validateWebpackConfig(webpackConfig){
   if ( webpackOptionsValidationErrors.length ){
     logger.red("there is an error in webpack config options: ");
     webpackOptionsValidationErrors.map(err=>{
+
+      logger.log('</br>');
+
+      logger.red(JSON.stringify(webpackConfig[err.dataPath.slice(1)]));
+
+      logger.log('</br>');
+
       logger.red(JSON.stringify({
         dataPath: err.dataPath,
         data: err.data,

@@ -133,15 +133,21 @@ plutarch.config.js
 
 通过在plutarch.config.js文件导出对象的extra属性中配置。
 
+```bash
 extra: {
   define, // 定义通过 WebpackDefinePlugin 插件注入页面的变量，对象形式
   externals,// 即 webpack 中 externals 配置项，打包时无需编译的模块
   resolveExtensions,// 即 webpack 中 resolve.extensions 配置项，自动解析的扩展名
-  babelIncludes,// 指定需要通过 babel 编译的脚本文件，src目录文件除外
-  babelPresets,// babel-preset配置，react, env, stage-0除外
-  babelPlugins,// babel-plugin配置，add-module-exports、syntax-dynamic-import、react-require除外
-  cssModulesExclude// 暂不使用
+  babelIncludes,// 指定需要通过 babel 编译的脚本文件，src 目录文件除外，数据格式为相对项目目录路径字符串数组
+  babelPresets,// babel-preset 额外配置，react, env, stage-0 已配置
+  babelPlugins,// babel-plugin 额外配置，add-module-exports、syntax-dynamic-import、react-require 已配置
+  cssModules,// 是否开启css modules编译src文件夹下的css脚本，默认为否
+  cssModulesExclude,// 启用css modules编译css脚本时需排除的文件，字符串、数组、正则或函数形式
+  cssModulesIncludes,// 启用css modules编译的css脚本，src 目录文件除外，数据格式为相对项目目录路径字符串数组
+  dll,// 
+
 };
+```
 
 ### 其他配置
 

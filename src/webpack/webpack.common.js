@@ -9,7 +9,7 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import NpmInstallPlugin from 'npm-install-webpack-plugin';
 import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
 
-import { traverseDirectory } from '../utils';
+import { getPlutarchConfig, traverseDirectory } from '../utils';
 import { BabelOptions, eslintLoader, CssLoadersWithModules, CssLoadersWithoutModules } from '../constants';
 
 const _debug = debug('plutarch');
@@ -20,10 +20,16 @@ function getCommonConfig(paths, processArgv, yargsArgv){
   const { env } = yargsArgv;
   const isProd = env==='prod';
   const NODE_ENV = isProd ? "'production'" : "'development'";
-  const { appSrcPath, appDistPath, appPublicPath, appNodeModulesPath, ownNodeModulesPath, resolveOwn } 
-    = paths;
+  const { 
+    appSrcPath, appDistPath, appPublicPath, appNodeModulesPath, ownNodeModulesPath, 
+    resolveOwn, resolveApp 
+  } = paths;
   const { fileMap: entry, dirMap: alias } = traverseDirectory(appSrcPath);
   const debug = processArgv.NODE_ENV==='test';
+
+  const customConfig = getPlutarchConfig(paths);
+  const { extra } = customConfig;
+  const { cssModules, cssModulesExclude, cssModulesIncludes } = extra || {};
 
   const commonConfig = {
     target: "web",// 打包文件使用平台形势，默认值
@@ -47,7 +53,7 @@ function getCommonConfig(paths, processArgv, yargsArgv){
     module: {
       rules: [{ 
         test: /\.jsx?$/,
-        include: [ appSrcPath ],
+        include: [ appSrcPath ],// 校验时非空字符串、非null
         exclude: [ appNodeModulesPath ],
         use: [{
           loader: 'babel-loader',
@@ -68,35 +74,41 @@ function getCommonConfig(paths, processArgv, yargsArgv){
         }],
       },{
         test: /\.css$/,
-        include: [ appSrcPath ],
+        include: cssModulesIncludes ? 
+          [ appSrcPath, ...cssModulesIncludes.map(path=>resolveApp(path)) ] : [ appSrcPath ],
+        exclude: cssModules ? cssModulesExclude : () => false,
         use: isProd || debug ? ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: CssLoadersWithModules.slice(1)
-        }) : CssLoadersWithModules
+          use: cssModules ? CssLoadersWithModules.slice(1) : CssLoadersWithoutModules.slice(1)
+        }) : cssModules ? CssLoadersWithModules : CssLoadersWithoutModules
       },{
         test: /\.less$/,
-        include: [ appSrcPath ],
+        include: cssModulesIncludes ? 
+          [ appSrcPath, ...cssModulesIncludes.map(path=>resolveApp(path)) ] : [ appSrcPath ],
+        exclude: cssModules ? cssModulesExclude : () => false,
         use: isProd || debug ? ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [ 
-            ...CssLoadersWithModules.slice(1),
+            ...(cssModules ? CssLoadersWithModules.slice(1) : CssLoadersWithoutModules.slice(1)),
             { loader: 'less-loader' }// compiles Less to CSS
           ]
         }) : [ 
-          ...CssLoadersWithModules,
+          ...(cssModules ? CssLoadersWithModules : CssLoadersWithoutModules),
           { loader: 'less-loader' }
         ]
       },{
         test: /\.scss$/,
-        include: [ appSrcPath ],
+        include: cssModulesIncludes ? 
+          [ appSrcPath, ...cssModulesIncludes.map(path=>resolveApp(path)) ] : [ appSrcPath ],
+        exclude: cssModules ? cssModulesExclude : () => false,
         use: isProd || debug ? ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [ 
-            ...CssLoadersWithModules.slice(1),
+            ...(cssModules ? CssLoadersWithModules.slice(1) : CssLoadersWithoutModules.slice(1)),
             { loader: 'sass-loader' }
           ]
         }) : [
-          ...CssLoadersWithModules,
+          ...(cssModules ? CssLoadersWithModules : CssLoadersWithoutModules),
           { loader: 'sass-loader' }
         ]
       },{
@@ -134,7 +146,7 @@ function getCommonConfig(paths, processArgv, yargsArgv){
         ]
       },{
         test: /\.(png|jpeg|jpg|gif|svg)$/,
-        use: [ 'url-loader?limit=1024' ]// url-loader内部封装了file-loader，大于限制长度的采用file-loader加载
+        use: [ 'url-loader?limit=10000' ]// url-loader内部封装了file-loader，大于限制长度的采用file-loader加载
       },{
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         use: [ 'file-loader' ]

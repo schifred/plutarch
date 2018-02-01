@@ -11,7 +11,7 @@ import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
 import InterpolateHtmlPlugin from 'react-dev-utils/InterpolateHtmlPlugin';
 
-import { traverseDirectory } from '../utils';
+import { traverseDirectory, getPlutarchConfig } from '../utils';
 import getCommonConfig from './webpack.common';
 
 const _debug = debug('plutarch');
@@ -20,7 +20,7 @@ function getServerConfig(paths, processArgv, yargsArgv){
   _debug(`get server config`)
 
   const { platform } = processArgv;
-  const { appSrcPath, appDistPath, resolveApp } = paths;
+  const { appSrcPath, appDistPath, plutarchConfigPath, resolveApp  } = paths;
   const { fileMap: htmlPathsMap } = traverseDirectory('src',/\.html$|\.ejs$/);
 
   const serverConfig = {
