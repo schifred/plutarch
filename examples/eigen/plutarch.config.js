@@ -4,11 +4,18 @@ module.exports = {
   },
   extra: {
     dll: {
-      include: ["react","react-dom","redux","react-redux","react-router","dva","babel-polyfill"]
-    }
+      include: ["react","react-dom","redux","react-redux","react-router","dva"]
+    },
+    // babelPlugins: [
+    //   [ 
+    //     require.resolve('babel-plugin-transform-runtime'),
+    //     {
+    //       "helpers": false,
+    //       "polyfill": false,
+    //       "regenerator": true,
+    //       "moduleName": "babel-runtime"
+    //     }
+    //   ]
+    // ]
   }
-  // output: {
-  //   path: './dist',
-  //   publicPath: './dist'
-  // }
 }

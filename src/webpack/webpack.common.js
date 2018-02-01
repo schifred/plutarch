@@ -147,6 +147,7 @@ function getCommonConfig(paths, processArgv, yargsArgv){
       },{
         test: /\.(png|jpeg|jpg|gif|svg)$/,
         use: [ 'url-loader?limit=10000' ]// url-loader内部封装了file-loader，大于限制长度的采用file-loader加载
+        // url-loader加载图片时，import img from imgPath 将生成图片路径，css导入以相对路径形式
       },{
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         use: [ 'file-loader' ]

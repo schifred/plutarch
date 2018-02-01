@@ -144,7 +144,8 @@ extra: {
   cssModules,// 是否开启css modules编译src文件夹下的css脚本，默认为否
   cssModulesExclude,// 启用css modules编译css脚本时需排除的文件，字符串、数组、正则或函数形式
   cssModulesIncludes,// 启用css modules编译的css脚本，src 目录文件除外，数据格式为相对项目目录路径字符串数组
-  dll,// 
+  dll,// 以dll方式编译的第三方类库，html页面须注入plutarch.dll.js；同时视dist下是否有plutarch-manifest.json启动dll重复编译
+  
 
 };
 ```

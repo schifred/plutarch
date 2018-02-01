@@ -4,8 +4,7 @@ import debug from 'debug';
 import { existsSync, unlinkSync } from 'fs';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
-// clearConsole 用于清空控制台
-import clearConsole from 'react-dev-utils/clearConsole';
+import clearConsole from 'react-dev-utils/clearConsole';// clearConsole 用于清空控制台
 import openBrowser from 'react-dev-utils/openBrowser';
 import { choosePort, createCompiler, prepareProxy, prepareUrls } from 'react-dev-utils/WebpackDevServerUtils';
 import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware';
@@ -65,6 +64,8 @@ function compileDll(webpackConfig,extra){
 
   function compile(dllCompiler,webpackConfig){
     _debug('compile webpack dll config，create mainfest.json');
+
+    logger.blue('try to create dll.js and mainfest.json');
 
     dllCompiler.run((err,stats)=>{
       if ( err ){
@@ -128,6 +129,8 @@ function runServer(webpackConfig){
   
   ['SIGINT', 'SIGTERM'].forEach(function(sig) {
     process.on(sig, function() {
+      // logger.info('\n');
+      // logger.red("stopping dev server");
       devServer.close();
       process.exit();
     });

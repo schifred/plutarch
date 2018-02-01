@@ -1,6 +1,6 @@
 {
   "name": "plutarch",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Cli tool for serve and build react app, support JSON pattern config.",
   "main": "index.js",
   "bin": {
@@ -100,7 +100,7 @@
     "uglifyjs-webpack-plugin": "^0.4.6",
     "url-loader": "^0.6.2",
     "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.7.1",
+    "webpack-dev-server": "2.11.0",
     "webpack-merge": "^4.1.0",
     "xml-loader": "^1.2.1",
     "yargs": "^8.0.2"
