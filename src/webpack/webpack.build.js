@@ -18,7 +18,6 @@ function getBuildConfig(paths, processArgv, yargsArgv){
 
   const { appDistPath, appDirPath, resolveApp } = paths;
   const { NODE_ENV } = processArgv;
-  const { clean } = yargsArgv;
   const debug = NODE_ENV==='test';
   const { fileMap: htmlPathsMap } = traverseDirectory('src',/\.html$|\.ejs$/);  
 
@@ -73,10 +72,10 @@ function getBuildConfig(paths, processArgv, yargsArgv){
           template: htmlPathsMap[fileName]
         })
       }),
-      clean ? new CleanWebpackPlugin([ 'dist' ],{
+      new CleanWebpackPlugin([ 'dist' ],{
         root: appDirPath,
         //dry: false
-      }) : null,
+      }),
       new webpack.optimize.OccurrenceOrderPlugin(),
       new ExtractTextPlugin({
         filename: `common.css`,// '[name].css'

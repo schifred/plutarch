@@ -81,7 +81,21 @@ function getCommonConfig(paths, processArgv, yargsArgv){
         exclude: cssModules ? cssModulesExclude : () => false,
         use: isProd || debug ? ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: cssModules ? CssLoadersWithModules.slice(1) : CssLoadersWithoutModules.slice(1)
+          use: cssModules ? 
+            [ {
+              loader: CssLoadersWithModules[1].loader, 
+              options: {
+                ...CssLoadersWithModules[1].options,
+                minimize: true
+              }
+            }, CssLoadersWithModules[2] ] : 
+            [ {
+              loader: CssLoadersWithoutModules[1].loader, 
+              options: {
+                ...CssLoadersWithoutModules[1].options,
+                minimize: true
+              }
+            }, CssLoadersWithoutModules[2] ]
         }) : cssModules ? CssLoadersWithModules : CssLoadersWithoutModules
       },{
         test: /\.less$/,
@@ -91,7 +105,23 @@ function getCommonConfig(paths, processArgv, yargsArgv){
         use: isProd || debug ? ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [ 
-            ...(cssModules ? CssLoadersWithModules.slice(1) : CssLoadersWithoutModules.slice(1)),
+            ...(
+              cssModules ? 
+                [ {
+                  loader: CssLoadersWithModules[1].loader, 
+                  options: {
+                    ...CssLoadersWithModules[1].options,
+                    minimize: true
+                  }
+                }, CssLoadersWithModules[2] ] : 
+                [ {
+                  loader: CssLoadersWithModules[1].loader, 
+                  options: {
+                    ...CssLoadersWithModules[1].options,
+                    minimize: true
+                  }
+                }, CssLoadersWithModules[2] ]
+            ),
             { loader: 'less-loader' }// compiles Less to CSS
           ]
         }) : [ 
@@ -106,7 +136,23 @@ function getCommonConfig(paths, processArgv, yargsArgv){
         use: isProd || debug ? ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [ 
-            ...(cssModules ? CssLoadersWithModules.slice(1) : CssLoadersWithoutModules.slice(1)),
+            ...(
+              cssModules ? 
+              [ {
+                loader: CssLoadersWithModules[1].loader, 
+                options: {
+                  ...CssLoadersWithModules[1].options,
+                  minimize: true
+                }
+              }, CssLoadersWithModules[2] ] : 
+              [ {
+                loader: CssLoadersWithModules[1].loader, 
+                options: {
+                  ...CssLoadersWithModules[1].options,
+                  minimize: true
+                }
+              }, CssLoadersWithModules[2] ]
+            ),
             { loader: 'sass-loader' }
           ]
         }) : [
@@ -118,7 +164,13 @@ function getCommonConfig(paths, processArgv, yargsArgv){
         include: [ appNodeModulesPath ],
         use: isProd || debug ? ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: CssLoadersWithoutModules.slice(1)
+          use: [ {
+            loader: CssLoadersWithoutModules[1].loader, 
+            options: {
+              ...CssLoadersWithoutModules[1].options,
+              minimize: true
+            }
+          }, CssLoadersWithoutModules[2] ]
         }) : CssLoadersWithoutModules
       },{
         test: /\.less$/,
@@ -126,7 +178,13 @@ function getCommonConfig(paths, processArgv, yargsArgv){
         use: isProd || debug ? ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [ 
-            ...CssLoadersWithoutModules.slice(1),
+            ...[ {
+              loader: CssLoadersWithoutModules[1].loader, 
+              options: {
+                ...CssLoadersWithoutModules[1].options,
+                minimize: true
+              }
+            }, CssLoadersWithoutModules[2] ],
             { loader: 'less-loader' }// compiles Less to CSS
           ]
         }) : [ 
@@ -139,7 +197,13 @@ function getCommonConfig(paths, processArgv, yargsArgv){
         use: isProd || debug ? ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [ 
-            ...CssLoadersWithoutModules.slice(1),
+            ...[ {
+              loader: CssLoadersWithoutModules[1].loader, 
+              options: {
+                ...CssLoadersWithoutModules[1].options,
+                minimize: true
+              }
+            }, CssLoadersWithoutModules[2] ],
             { loader: 'sass-loader' }
           ]
         }) : [
@@ -148,9 +212,8 @@ function getCommonConfig(paths, processArgv, yargsArgv){
         ]
       },{
         test: /\.(png|jpeg|jpg|gif|svg)$/,
-        exclude: svgSpriteIncludes ? 
-          [ ...svgSpriteIncludes.map(path=>resolveApp(path)) ] : () => false,
-        use: [ 'url-loader?limit=10000' ]// url-loader内部封装了file-loader，大于限制长度的采用file-loader加载
+        exclude: svgSpriteIncludes ? svgSpriteIncludes : () => false,
+        use: [ 'url-loader?limit=100000' ]// url-loader内部封装了file-loader，大于限制长度的采用file-loader加载
         // url-loader加载图片时，import img from imgPath 将生成图片路径，css导入以相对路径形式
       },{
         test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -166,8 +229,7 @@ function getCommonConfig(paths, processArgv, yargsArgv){
         use: [ 'html-loader' ]
       },{
         test: /\.svg$/,
-        include: svgSpriteIncludes ? 
-          [ ...svgSpriteIncludes.map(path=>resolveApp(path)) ] : () => false,
+        include: svgSpriteIncludes ? svgSpriteIncludes : () => false,
         use: [ svgSpriteLoader ]
       }]
     },

@@ -20,11 +20,6 @@ class BuildCommand extends Command {
         alias: 'c',
         description: 'plutarch config filePath'
       },
-      clean: {
-        type: 'boolean',
-        default: false,
-        description: 'clean dists'
-      },
       debug: {
         type: 'boolean',
         default: false,

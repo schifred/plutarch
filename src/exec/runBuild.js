@@ -18,7 +18,7 @@ const paths = getPaths(cwd,yargsArgv);
 const { appSrcPath ,resolveApp } = paths;
 
 const defaultConfig = getDefaultConfig(paths, processArgv, yargsArgv);
-const { webpackConfig, extra } = resolvePlutarchConfig(paths, defaultConfig);
+const { webpackConfig, extra } = resolvePlutarchConfig(paths, defaultConfig, true);
 
 function exec(){
   if ( extra && extra.dll ){

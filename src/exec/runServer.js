@@ -94,6 +94,7 @@ function compileDll(webpackConfig, extra){
 
 // 启动本地调试服务
 function runServer(webpackConfig){
+  console.log(webpackConfig);
   const { devServer: devServerConfig } = webpackConfig;
   const compiler = webpack(webpackConfig);
 
