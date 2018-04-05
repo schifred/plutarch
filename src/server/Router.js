@@ -53,18 +53,18 @@ class Router {
   }
 
   // 通过文件路径获取单个控制器
-  _getControllerFromFile(path){
+  _getFileController(path){
     const { paths: { plmcs } } = this.context;
-    path = resolve(plmcs);
+    const fullpath = resolve(plmcs, path);
     let ext = extname(path) || '.js';
 
-    if ( ext !== '.json' || ext !== '.js' || !existsSync(path) || !statSync(path).isFile() )
+    if ( ext !== '.json' || ext !== '.js' || !existsSync(fullpath) || !statSync(fullpath).isFile() )
       throw new Error(`controller ${path} should be a json file or a js file`);
 
     if ( this.controllers[path] )
       return this.controllers[path];
 
-    let controller = require(path);
+    let controller = require(fullpath);
     
     if ( ext === '.json' )
       controller = (req, res) => {

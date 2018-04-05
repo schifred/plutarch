@@ -87,7 +87,7 @@ class Options extends AbstractOptions{
 
     let { config } = this;
 
-    this.config.output = {
+    output = {
       ...output,
       path: resolve(app, path),// 输出目录的绝对路径
       publicPath: isBuild ? './' : publicPath,
@@ -169,6 +169,12 @@ class Options extends AbstractOptions{
   setDevServer(devServer, opts){
     let { config, isBuild } = this;
     let { output } = config;
+
+    if ( devServer )
+      opts.devServer = {
+        ...opts.devServer,
+        ...devServer
+      };
 
     if ( isBuild )
       delete config.devServer;
