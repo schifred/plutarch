@@ -1,5 +1,3 @@
-'use strict';
-
 import debug from "debug";
 import invariant from 'invariant';
 import { realpathSync, existsSync, readdirSync, statSync } from 'fs';
@@ -63,7 +61,7 @@ export function getPlutarchConfig(paths){
 };
 
 // 获取plutarch.config.js配置文件，用于配置webpackConfig、dllConfig
-export function resolvePlutarchConfig(paths, defaultConfig){
+export function resolvePlutarchConfig(paths, defaultConfig, isBuild){
   const { plutarchConfigPath, resolveApp } = paths;
 
   if ( !existsSync(plutarchConfigPath) ) return {};
@@ -100,20 +98,20 @@ export function resolvePlutarchConfig(paths, defaultConfig){
       if ( isString(entry) ) {
         webpackConfig.entry = [ resolveApp(entry) ];
 
-        webpackConfig.entry.push(devClientPath);
+        if ( !isBuild ) webpackConfig.entry.push(devClientPath);
       } else if ( Array.isArray(entry) ) {
         webpackConfig.entry = entry.map(item=>{
           return resolveApp(item);
         });
         
-        webpackConfig.entry.push(devClientPath);
+        if ( !isBuild ) webpackConfig.entry.push(devClientPath);
       } else if( isPlainObject(entry) ) {
         webpackConfig.entry = {};
         Object.keys(entry).map(key=>{
           webpackConfig.entry[key] = resolveApp(entry[key]);
         });
         
-        webpackConfig.entry.devClient = devClientPath;
+        if ( !isBuild ) webpackConfig.entry.devClient = devClientPath;
       };
     };
   
