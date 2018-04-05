@@ -4,7 +4,7 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-/lib
+/src
 yarn.lock
 .DS_Store
 package-lock.json
