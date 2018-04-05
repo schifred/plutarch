@@ -11,7 +11,7 @@ const _debug = debug('plutarch');
 const context = new Context();
 const opts = require(context.paths.plrc);// 客户配置
 
-let options = new Options(opts, context, true);
+let options = new Options(opts, context);
 let compiler = new ProdCompiler(options, context);
 let dllOptions;
 let dllCompiler;

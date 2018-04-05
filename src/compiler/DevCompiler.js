@@ -7,7 +7,7 @@ import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware';
 import noopServiceWorkerMiddleware from 'react-dev-utils/noopServiceWorkerMiddleware';
 
 import Compiler from './Compiler';
-import logger from '../utils/logger';
+import logger from '../logger';
 import applyMockRoutes from '../server/applyMockRoutes';
 
 class DevCompiler extends Compiler {

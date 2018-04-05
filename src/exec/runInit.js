@@ -1,7 +1,7 @@
 import debug from 'debug';
 import { resolve } from 'path';
 
-import logger from '../utils/logger';
+import logger from '../logger';
 import Context from '../Context';
 
 const _debug = debug('plutarch');

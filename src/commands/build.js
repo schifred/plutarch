@@ -37,10 +37,15 @@ class BuildCommand extends Command {
     const runBuildPath = require.resolve("../exec/runBuild.js");
     const forkNodeArgv = this.helper.unparseArgv({
       ...argv, 
-      env: 'prod'
+      isBuild: true
     });
 
-    this.helper.forkNode(runBuildPath, forkNodeArgv, { cwd });
+    this.helper.forkNode(runBuildPath, forkNodeArgv, { 
+      cwd,
+      env: {
+        "NODE_ENV": "'development'"
+      } 
+    });
   }
 
   get description() {

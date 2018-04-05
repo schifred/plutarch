@@ -4,8 +4,8 @@ import { override } from 'core-decorators';
 import AbstractOptions from './AbstractOptions';
 
 class DefaultOptions extends AbstractOptions {
-  constructor(context, isBuild){
-    super(context, isBuild);
+  constructor(context){
+    super(context);
     this.init();
   }
 

@@ -7,8 +7,8 @@ import DefaultOptions from './DefaultOptions';
 import { extend } from './helpers/index';
 
 class Options extends AbstractOptions{
-  constructor(opts, context, isBuild){
-    super(context, isBuild);
+  constructor(opts, context){
+    super(context);
     this.validateOpts(opts);
     this.init(opts);
   }

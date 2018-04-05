@@ -13,7 +13,7 @@ import * as helpers from './helpers';
 // webpack 选项抽象类
 // module.rules 以对象形式呈现，由 getWebpackConfig 方法转化为可注入 webpack 的配置项
 class AbstractOptions{
-  constructor(context, isBuild = false){
+  constructor(context){
     Object.defineProperty(this, 'context', {
       enumerable: true,
       configurable: false,
@@ -23,7 +23,7 @@ class AbstractOptions{
     Object.defineProperty(this, 'isBuild', {
       enumerable: true,
       configurable: false,
-      get: () => { return isBuild }
+      get: () => { return context.isBuild }
     });
 
     Object.defineProperty(this, 'defaultLoaders', {

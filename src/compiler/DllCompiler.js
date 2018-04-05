@@ -3,7 +3,7 @@ import { override } from 'core-decorators';
 import webpack from 'webpack';
 
 import Compiler from './Compiler';
-import logger from '../utils/logger';
+import logger from '../logger';
 
 class DllCompiler extends Compiler {
   @override

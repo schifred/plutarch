@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 
-import logger from '../utils/logger';
+import logger from '../logger';
 
 class Compiler extends EventEmitter{
   constructor(options, context){

@@ -1,5 +1,3 @@
-'use strict';
-
 import Chalk from 'chalk';
 
 const chalk = new Chalk.constructor({level: 1})
@@ -24,4 +22,4 @@ const Logger = {
   }
 };
 
-export default Logger
+export default Logger;

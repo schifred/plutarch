@@ -50,15 +50,14 @@ class ServerCommand extends Command {
     const runServerPath = require.resolve("../exec/runServer.js");
     const forkNodeArgv = this.helper.unparseArgv({
       ...argv, 
-      env: 'dev'
+      isBuild: false
     });
 
     this.helper.forkNode(runServerPath, forkNodeArgv, {
-      cwd: cwd
-      // 设置该属性，npm-install-webpack-plugin报错spawn npm ENOENT
-      // env: {
-      //   "NODE_ENV": "'development'"
-      // }
+      cwd,
+      env: {
+        "NODE_ENV": "'development'"
+      }
     });
   }
 
