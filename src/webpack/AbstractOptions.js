@@ -97,7 +97,7 @@ class AbstractOptions{
       js: {
         test: /\.jsx?$/,
         include: [ src ],
-        use: [ babelLoader.loader, eslintLoader.loader ]
+        use: [ babelLoader.loader/*, eslintLoader.loader*/ ]
       },
       ts: {
         test: /\.tsx?$/,

@@ -1,36 +1,34 @@
 /* global window */
 import classnames from 'classnames'
-import lodash from 'lodash'
 import config from './config'
 import request from './request'
 import { color } from './theme'
 
 // 连字符转驼峰
-String.prototype.hyphenToHump = function () {
-  return this.replace(/-(\w)/g, (...args) => {
+const hyphenToHump = function (str) {
+  return str.replace(/-(\w)/g, (...args) => {
     return args[1].toUpperCase()
   })
 }
 
 // 驼峰转连字符
-String.prototype.humpToHyphen = function () {
-  return this.replace(/([A-Z])/g, '-$1').toLowerCase()
+const humpToHyphen = function (str) {
+  return str.replace(/([A-Z])/g, '-$1').toLowerCase()
 }
 
 // 日期格式化
-Date.prototype.format = function (format) {
+const formatDate = function (date, format) {
   const o = {
-    'M+': this.getMonth() + 1,
-    'd+': this.getDate(),
-    'h+': this.getHours(),
-    'H+': this.getHours(),
-    'm+': this.getMinutes(),
-    's+': this.getSeconds(),
-    'q+': Math.floor((this.getMonth() + 3) / 3),
-    S: this.getMilliseconds(),
+    'd+': date.getDate(),
+    'h+': date.getHours(),
+    'H+': date.getHours(),
+    'm+': date.getMinutes(),
+    's+': date.getSeconds(),
+    'q+': Math.floor((date.getMonth() + 3) / 3),
+    S: date.getMilliseconds(),
   }
   if (/(y+)/.test(format)) {
-    format = format.replace(RegExp.$1, `${this.getFullYear()}`.substr(4 - RegExp.$1.length))
+    format = format.replace(RegExp.$1, `${date.getFullYear()}`.substr(4 - RegExp.$1.length))
   }
   for (let k in o) {
     if (new RegExp(`(${k})`).test(format)) {
@@ -58,5 +56,8 @@ module.exports = {
   request,
   color,
   classnames,
-  queryURL
+  queryURL,
+  hyphenToHump,
+  humpToHyphen,
+  formatDate
 }

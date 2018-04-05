@@ -2,18 +2,13 @@
 import React from 'react'
 import NProgress from 'nprogress'
 import PropTypes from 'prop-types'
-import pathToRegexp from 'path-to-regexp'
 import { connect } from 'dva'
-import { classnames, config } from 'utils'
 import { Helmet } from 'react-helmet'
 import { withRouter } from 'dva/router'
 
 let lastHref
 
 const App = ({ children, dispatch, app, loading, location }) => {
-  const { user, siderFold, darkTheme, isNavbar, menuPopoverVisible, navOpenKeys, menu, permissions } = app
-  let { pathname } = location
-  pathname = pathname.startsWith('/') ? pathname : `/${pathname}`
   const href = window.location.href
 
   if (lastHref !== href) {

@@ -1,9 +1,6 @@
 /* global window */
 /* global document */
 /* global location */
-import { routerRedux } from 'dva/router'
-import { parse } from 'qs'
-import { query, logout } from 'services/app'
 import queryString from 'query-string'
 
 export default {
@@ -33,7 +30,6 @@ export default {
       payload,
     }, { call, put, select }) {
       const { success } = yield call(test, payload)
-      const { locationPathname } = yield select(_ => _.app)
       if (success) {
         yield put({
           type: 'updateState',

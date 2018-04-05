@@ -8,16 +8,18 @@ module.exports = {
       config: 'src/utils/config'
     }
   },
-  extra: {
-    babelPlugins: [
-      [
-        require.resolve('babel-plugin-import'),
-        {
-          "libraryName": "antd",
-          "style": true
-        }
-      ],
-      require.resolve('babel-plugin-transform-runtime')
-    ]
+  module: {
+    babelLoaderOptions: {
+      plugins: [
+        [
+          require.resolve('babel-plugin-import'),
+          {
+            "libraryName": "antd",
+            "style": true
+          }
+        ],
+        require.resolve('babel-plugin-transform-runtime')
+      ]
+    }
   }
 };
