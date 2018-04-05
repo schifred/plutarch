@@ -20,7 +20,7 @@ class DevCompiler extends Compiler {
     const urls = prepareUrls(protocol, host, port);
     const client = new WebpackDevServer(compiler, devServer);
 
-    // 添加模拟路由
+    // 模拟路由
     applyMockRoutes(client.app, context);
     client.use(errorOverlayMiddleware);
 

@@ -47,39 +47,42 @@ class AbstractOptions{
   
   // 初始化
   init(opts){
-    this.setMode(opts);
-    this.setContext(opts);// loader、plugin 查找的相对路径
-    this.setEntry(opts);// 配置入口文件
-    this.setOutput(opts);// 配置输出
-    this.setModule(opts);// 配置模块加载器
-    this.setResolve(opts);// 配置解析
-    this.setPlugins(opts);// 配置插件
-    this.setDevServer(opts);// 配置调试服务器
-    this.setDevtool(opts);// 配置影响生成source map的方式
-    this.setTarget(opts);// 配置构建目标
-    this.setExternals(opts);// 声明第三方类库在运行时由外部注入
-    this.setOptimization(opts);
-    this.setNode(opts);// 由 NodeStuffPlugin 插件以全局变量形式为 'web', 'webworker' 注入类 Node 功能
-    this.setPerformance(opts);// 配置性能选项
-    this.setStats(opts);// 细粒度控制输出日志
+    const { mode, context, entry, output, module: mod, resolve: resolveConfig, plugins, devServer, 
+      devtool, target, externals, optimization, node, performance, stats } = opts || {};
+
+    this.setMode(mode, opts);
+    this.setContext(context, opts);// loader、plugin 查找的相对路径
+    this.setEntry(entry, opts);// 配置入口文件
+    this.setOutput(output, opts);// 配置输出
+    this.setModule(mod, opts);// 配置模块加载器
+    this.setResolve(resolveConfig, opts);// 配置解析
+    this.setPlugins(plugins, opts);// 配置插件
+    this.setDevServer(devServer, opts);// 配置调试服务器
+    this.setDevtool(devtool, opts);// 配置影响生成source map的方式
+    this.setTarget(target, opts);// 配置构建目标
+    this.setExternals(externals, opts);// 声明第三方类库在运行时由外部注入
+    this.setOptimization(optimization, opts);
+    this.setNode(node, opts);// 由 NodeStuffPlugin 插件以全局变量形式为 'web', 'webworker' 注入类 Node 功能
+    this.setPerformance(performance, opts);// 配置性能选项
+    this.setStats(stats, opts);// 细粒度控制输出日志
   }
 
   // 配置簇
-  setMode(opts){}
-  setContext(opts){}
-  setEntry(opts){}
-  setOutput(opts){}
-  setModule(opts){}
-  setResolve(opts){}
-  setPlugins(opts){}
-  setDevServer(opts){}
-  setDevtool(opts){}
-  setTarget(opts){}
-  setExternals(opts){}
-  setOptimization(opts){}
-  setNode(opts){}
-  setPerformance(opts){}
-  setStats(opts){}
+  setMode(mode, opts){}
+  setContext(context, opts){}
+  setEntry(entry, opts){}
+  setOutput(output, opts){}
+  setModule(mod, opts){}
+  setResolve(resolveConfig, opts){}
+  setPlugins(plugins, opts){}
+  setDevServer(devServer, opts){}
+  setDevtool(devtool, opts){}
+  setTarget(target, opts){}
+  setExternals(externals, opts){}
+  setOptimization(optimization, opts){}
+  setNode(node, opts){}
+  setPerformance(performance, opts){}
+  setStats(stats, opts){}
 
   // 获取默认加载器，对象形式
   convertLoadersToRules(loaders){

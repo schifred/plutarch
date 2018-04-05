@@ -49,7 +49,6 @@
   "dependencies": {
     "autoprefixer": "^7.1.5",
     "awesome-typescript-loader": "^3.2.3",
-    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "7.2.3",
     "babel-loader": "^7.1.2",
@@ -62,7 +61,6 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "bundle-loader": "^0.5.5",
-    "case-sensitive-paths-webpack-plugin": "^2.1.1",
     "chalk": "^2.1.0",
     "clean-webpack-plugin": "^0.1.16",
     "common-bin": "^2.7.0",
@@ -98,6 +96,7 @@
     "postcss-loader": "^2.0.6",
     "react-app-rewired": "^1.4.1",
     "react-dev-utils": "^5.0.0",
+    "react-error-overlay": "^4.0.0",
     "sass-loader": "^6.0.6",
     "shelljs": "^0.8.1",
     "style-loader": "^0.18.2",
@@ -106,7 +105,6 @@
     "url-loader": "^0.6.2",
     "webpack": "4.1.0",
     "webpack-dev-server": "3.1.0",
-    "webpack-merge": "^4.1.0",
     "xml-loader": "^1.2.1",
     "yargs": "^8.0.2"
   },

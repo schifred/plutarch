@@ -10,19 +10,19 @@ class DefaultOptions extends AbstractOptions {
   }
 
   @override
-  setMode(opts){
+  setMode(mode, opts){
     const { isBuild } = this;
     this.config.mode = isBuild ? 'production' : 'development';
   }
 
   @override
-  setContext(opts){
+  setContext(context, opts){
     let { config } = this;
     config.context = resolve(__dirname, '../../');
   }
 
   @override
-  setEntry(opts){
+  setEntry(entry, opts){
     const { context, isBuild, helpers } = this;
     const { paths: { src, devClient } } = context;
     const files = helpers.getFiles(src);
@@ -34,7 +34,7 @@ class DefaultOptions extends AbstractOptions {
   }
 
   @override
-  setOutput(opts){
+  setOutput(output, opts){
     const { context, isBuild } = this;
     const { paths: { dist } } = context;
 
@@ -69,7 +69,7 @@ class DefaultOptions extends AbstractOptions {
   }
 
   @override
-  setModule(opts){
+  setModule(mod, opts){
     const defaultRules = this.convertLoadersToRules();
     this.config.module = {
       rules: defaultRules
@@ -77,7 +77,7 @@ class DefaultOptions extends AbstractOptions {
   }
 
   @override
-  setResolve(opts){
+  setResolve(resolveConfig, opts){
     const { context } = this;
     const { paths: { src, nodeModules, buildinNodeModules } } = context;
 
@@ -101,13 +101,13 @@ class DefaultOptions extends AbstractOptions {
   }
 
   @override
-  setPlugins(opts){
+  setPlugins(plugins, opts){
     const defaultPlugins = this.getDefaultPlugins();
     this.config.plugins = defaultPlugins;
   }
 
   @override
-  setDevServer(opts){
+  setDevServer(devServer, opts){
     const { context } = this;
     const { paths: { src, dist, nodeModules, assert } } = context;
 
@@ -155,18 +155,18 @@ class DefaultOptions extends AbstractOptions {
   }
 
   @override
-  setDevtool(opts){
+  setDevtool(devtool, opts){
     const { isBuild } = this;
-    this.config.devtool = isBuild ? 'cheap-module-eval-source-map' : 'nosources-source-map';
+    this.config.devtool = isBuild ? 'none' : 'eval';
   }
 
   @override
-  setTarget(opts){
+  setTarget(target, opts){
     this.config.target = 'web';
   }
 
   @override
-  setPerformance(opts){
+  setPerformance(performance, opts){
     const { isBuild } = this;
     this.config.performance = {
       assetFilter(assetFilename){// 需要计算最大体积以节省性能的文件
@@ -179,7 +179,7 @@ class DefaultOptions extends AbstractOptions {
   }
 
   @override
-  setOptimization(opts){
+  setOptimization(optimization, opts){
     const { isBuild } = this;
     this.config.optimization = {
       removeAvailableModules: true,

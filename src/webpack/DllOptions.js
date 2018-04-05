@@ -13,13 +13,14 @@ class DllOptions extends AbstractOptions {
 
   @override
   init(opts){
-    this.setEntry(opts);
-    this.setOutput(opts);
-    this.setPlugins(opts);
+    const { entry, output, plugins } = opts || {};
+    this.setEntry(entry, opts);
+    this.setOutput(output, opts);
+    this.setPlugins(plugins, opts);
   }
 
   @override
-  setEntry(opts){
+  setEntry(entry, opts){
     const { dll } = opts;
     this.config.entry = {
       plutarch: dll
@@ -27,7 +28,7 @@ class DllOptions extends AbstractOptions {
   }
 
   @override
-  setOutput(opts){
+  setOutput(output, opts){
     const { paths: { src } } = this.context;
     this.config.output = {
       path: src,
@@ -37,7 +38,7 @@ class DllOptions extends AbstractOptions {
   }
 
   @override
-  setPlugins(opts){
+  setPlugins(plugins, opts){
     const { paths: { src } } = this.context;
     const manifestPath = this.getManifestPath();
     const { library } = this.config.output;

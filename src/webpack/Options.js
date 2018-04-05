@@ -27,15 +27,18 @@ class Options extends AbstractOptions{
     if ( isPlainObject(opts) ){
       this.config = defaultOptions.config;
 
-      this.setEntry(opts);// 设置入口文件
-      this.setOutput(opts);// 设置输出
-      this.setModule(opts);
-      this.setResolve(opts);// 设置解析
-      this.setDevServer(opts);
-      this.setDevtool(opts);
-      this.setTarget(opts);
-      this.setExternals(opts);
-      this.setNode(opts);
+      const { entry, output, module: mod, resolve: resolveConfig, devServer, devtool, 
+        target, externals, node } = opts || {};
+
+      this.setEntry(entry, opts);
+      this.setOutput(output, opts);
+      this.setModule(mod, opts);
+      this.setResolve(resolveConfig, opts);
+      this.setDevServer(devServer, opts);
+      this.setDevtool(devtool, opts);
+      this.setTarget(target, opts);
+      this.setExternals(externals, opts);
+      this.setNode(node, opts);
     } else if ( isFunction(opts) ){
       const defaultOptions = defaultOptions.config;
       const config = opts.call(this, defaultOptions, this.helpers);
@@ -45,12 +48,11 @@ class Options extends AbstractOptions{
   }
 
   @override
-  setEntry(opts){
+  setEntry(entry, opts){
+    if ( !entry ) return;
+
     const { context, isBuild } = this;
     const { paths: { app, devClient } } = context;
-    const { entry } = opts;
-
-    if ( !entry ) return;
 
     let { config } = this;
 
@@ -75,12 +77,11 @@ class Options extends AbstractOptions{
   }
 
   @override
-  setOutput(opts){
+  setOutput(output, opts){
+    if ( !output ) return;
+
     const { context, isBuild } = this;
     const { paths: { app } } = context;
-    const { output } = opts;
-
-    if ( !output ) return;
 
     const { path, publicPath } = output;
 
@@ -96,13 +97,14 @@ class Options extends AbstractOptions{
   }
 
   @override
-  setModule(opts){
+  setModule(mod, opts){
+    if ( !mod ) return;
+
     let { config, loaders } = this;
-    let { module } = this.config;
 
     function getConfig(mainKey, subKey){
-      return opts[`${mainKey}${subKey[0].toUpperCase()}${subKey.slice(1)}`] || 
-        opts[`${mainKey}.${subKey}`] || (opts[mainKey] && opts[mainKey][subKey]) || null;
+      return mod[`${mainKey}${subKey[0].toUpperCase()}${subKey.slice(1)}`] || 
+        mod[`${mainKey}.${subKey}`] || (mod[mainKey] && mod[mainKey][subKey]) || null;
     };
 
     Object.keys(loaders).map(key => {
@@ -140,19 +142,16 @@ class Options extends AbstractOptions{
       if ( exclude ) rule.exclude = exclude;
     });
 
-    module.rules = rules;
+    config.module.rules = rules;
   }
 
   @override
-  setResolve(opts){
-    const { context, isBuild } = this;
-    const { paths: { app } } = context;
-
-    let { config } = this;
-    let { resolve: resolveConfig } = opts;
-
+  setResolve(resolveConfig, opts){
     if ( !resolveConfig ) return;
 
+    const { context, isBuild } = this;
+    const { paths: { app } } = context;
+    let { config } = this;
     let { alias } = resolveConfig;
 
     Object.keys(alias).map(key => {
@@ -168,53 +167,45 @@ class Options extends AbstractOptions{
   }
 
   @override
-  setDevServer(opts){
+  setDevServer(devServer, opts){
     let { config, isBuild } = this;
-    let { output, devServer } = config;
-    
+    let { output } = config;
+
     if ( isBuild )
       delete config.devServer;
     else
-      devServer.publicPath = output.publicPath;
+      config.devServer.publicPath = output.publicPath;
   }
 
   @override
-  setDevtool(opts){
-    let { config } = this;
-    let { devtool } = opts;
-
+  setDevtool(devtool, opts){
     if ( !devtool ) return;
 
+    let { config } = this;
     config.devtool = devtool;
   }
 
   @override
-  setTarget(opts){
-    let { config } = this;
-    let { target } = opts;
-
+  setTarget(target, opts){
     if ( !target ) return;
 
+    let { config } = this;
     config.target = target;
   }
 
   @override
-  setExternals(opts){
-    let { config } = this;
-    let { externals } = opts;
-
+  setExternals(externals, opts){
     if ( !externals ) return;
 
+    let { config } = this;
     config.externals = externals;
   }
 
   @override
-  setNode(opts){
-    let { config } = this;
-    let { node } = opts;
-
+  setNode(node, opts){
     if ( !node ) return;
 
+    let { config } = this;
     config.node = node;
   }
 };
