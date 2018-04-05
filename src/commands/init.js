@@ -17,12 +17,12 @@ class InitCommand extends Command {
   }
 
   * run({ cwd, env, argv, rawArgv }) {
-    const runBuildPath = require.resolve("../exec/runInit.js");
+    const runInitPath = require.resolve("../exec/init.js");
     const forkNodeArgv = this.helper.unparseArgv({
       ...argv
     });
 
-    this.helper.forkNode(runBuildPath, forkNodeArgv, { cwd });
+    this.helper.forkNode(runInitPath, forkNodeArgv, { cwd });
   }
 
   get description() {

@@ -23,7 +23,7 @@ class AbstractOptions{
     Object.defineProperty(this, 'isBuild', {
       enumerable: true,
       configurable: false,
-      get: () => { return context.isBuild }
+      get: () => { return context.argv.isBuild }
     });
 
     Object.defineProperty(this, 'defaultLoaders', {

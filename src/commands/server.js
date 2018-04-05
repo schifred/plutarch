@@ -47,16 +47,16 @@ class ServerCommand extends Command {
   }
 
   * run({ cwd, env, argv, rawArgv }) {
-    const runServerPath = require.resolve("../exec/runServer.js");
+    const runCompilePath = require.resolve("../exec/compile.js");
     const forkNodeArgv = this.helper.unparseArgv({
       ...argv, 
       isBuild: false
     });
 
-    this.helper.forkNode(runServerPath, forkNodeArgv, {
+    this.helper.forkNode(runCompilePath, forkNodeArgv, {
       cwd,
       env: {
-        "NODE_ENV": "'development'"
+        "NODE_ENV": "development"
       }
     });
   }
