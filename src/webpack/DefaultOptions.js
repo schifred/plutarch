@@ -109,7 +109,7 @@ class DefaultOptions extends AbstractOptions {
   @override
   setDevServer(devServer, opts){
     const { context } = this;
-    const { paths: { src, dist, nodeModules, assert } } = context;
+    const { paths: { src, dist, nodeModules, assets } } = context;
 
     this.config.devServer = {
       inline: true,// 处理实时重载的 js 脚本以内联模式插入到页面中
@@ -134,7 +134,7 @@ class DefaultOptions extends AbstractOptions {
       host: '127.0.0.1',
       port: 3001,
       publicPath: '/',// 浏览器端访问打包文件的路径，默认为 '/'
-      contentBase: assert,// 额外的静态资源所在目录
+      contentBase: assets,// 额外的静态资源所在目录
       watchContentBase: true,// 监听 contentBase 静态资源改动
       staticOptions: {},// 配置通过 contentBase 访问的静态资源选项
       headers: {},// 在所有响应中添加头部配置

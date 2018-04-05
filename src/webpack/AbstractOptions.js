@@ -170,7 +170,7 @@ class AbstractOptions{
   // 获取默认插件，对象形式
   getDefaultPlugins(){
     const { context, isBuild, helpers } = this;
-    const { paths: { app, src, dist, assert, nodeModules } } = context;
+    const { paths: { app, src, dist, assets, nodeModules } } = context;
     const htmls = helpers.getFiles(src, /\.html$|\.ejs$/);
 
     const common = {
@@ -225,10 +225,10 @@ class AbstractOptions{
         }]
       },
 
-      copyWebpackPlugin: existsSync(assert) ? {
+      copyWebpackPlugin: existsSync(assets) ? {
         Constructor: CopyWebpackPlugin,
         args: [[{
-          from: assert,
+          from: assets,
           to: dist
         }]]
       } : null,
@@ -257,37 +257,42 @@ class AbstractOptions{
 
     if ( !Object.keys(config).length ) return {};
 
-    let { module: { rules }, plugins: defaultPlugins } = config;
-    let plugins = [];
+    let webpackConfig = { ...config };
+    let { module, plugins: defaultPlugins } = config;
 
-    rules = Object.keys(rules).map(key => {
-      const rule = rules[key];
+    if ( module && module.rules ){
+      let { rules } = module;
+      rules = Object.keys(rules).map(key => {
+        const rule = rules[key];
 
-      return rule;
-    });
+        return rule;
+      });
 
-    Object.keys(defaultPlugins).map(key => {
-      const defaultPlugin = defaultPlugins[key];
-
-      if ( !defaultPlugin ) return;
-
-      if ( Array.isArray(defaultPlugin) ){
-        plugins = [
-          ...plugins, 
-          ...defaultPlugin.map(plg => new plg.Constructor(...plg.args))
-        ];
-      }else{
-        plugins.push(new defaultPlugin.Constructor(...defaultPlugin.args));
-      };
-    });
-
-    return {
-      ...config,
-      module: {
-        rules
-      },
-      plugins
+      webpackConfig.module.rules = rules;
     };
+
+    if ( defaultPlugins ){
+      let plugins = [];
+
+      Object.keys(defaultPlugins).map(key => {
+        const defaultPlugin = defaultPlugins[key];
+
+        if ( !defaultPlugin ) return;
+
+        if ( Array.isArray(defaultPlugin) ){
+          plugins = [
+            ...plugins, 
+            ...defaultPlugin.map(plg => new plg.Constructor(...plg.args))
+          ];
+        }else{
+          plugins.push(new defaultPlugin.Constructor(...defaultPlugin.args));
+        };
+      });
+
+      webpackConfig.plugins = plugins;
+    };
+
+    return webpackConfig;
   }
 
   // 获取编译器

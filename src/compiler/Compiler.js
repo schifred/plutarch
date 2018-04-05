@@ -22,12 +22,12 @@ class Compiler extends EventEmitter{
         return;
       };
 
-      logger.blue(`${this.constructor.name} compile successful`);
-
       const log = stats.toString({
         colors: true
       });
       logger.log(log);
+
+      logger.blue(`${this.constructor.name} done`);
 
       this.emit('compiled');
     })

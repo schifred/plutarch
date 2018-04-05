@@ -154,13 +154,12 @@ class Options extends AbstractOptions{
     let { config } = this;
     let { alias } = resolveConfig;
 
-    Object.keys(alias).map(key => {
-      alias[key] = resolve(app, alias[key]);
-    });
+    if ( alias ){
+      Object.keys(alias).map(key => {
+        alias[key] = resolve(app, alias[key]);
+      });
 
-    resolveConfig = {
-      ...resolveConfig,
-      alias
+      resolveConfig.alias = alias;
     };
 
     extend(config.resolve, resolveConfig);

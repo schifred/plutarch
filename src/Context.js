@@ -29,7 +29,7 @@ class Context {
   getPaths(){
     const { env, argv } = this;
     const { cwd } = env;
-    const { src = 'src', dist = 'dist', assert = 'assert', 
+    const { src = 'src', dist = 'dist', assets = 'assets', 
       config = 'plutarch.config.js', server = 'plutarch.server.js', 
       mock = 'plutarch.mock.js', mocks = 'mocks' } = argv;
 
@@ -39,7 +39,7 @@ class Context {
       app,
       src: resolve(app, src),
       dist: resolve(app, dist),
-      assert: resolve(app, assert),
+      assets: resolve(app, assets),
       pkg: resolve(app, 'package.json'),
       nodeModules: resolve(app, 'node_modules'),
       plrc: resolve(app, config),

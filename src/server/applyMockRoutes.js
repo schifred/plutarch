@@ -11,7 +11,7 @@ function applyMockRoutes(app, context){
   const router = new Router(app, context);
   const mockRouter = require(plmc);
 
-  if ( !isFunction(mockRouter) || !isPlainObject(mockRouter) )
+  if ( !isFunction(mockRouter) && !isPlainObject(mockRouter) )
     throw new Error("plutarch.mock.js should export a function or an object")
 
   if ( isFunction(mockRouter) ){

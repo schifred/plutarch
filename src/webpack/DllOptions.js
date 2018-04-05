@@ -13,10 +13,19 @@ class DllOptions extends AbstractOptions {
 
   @override
   init(opts){
-    const { entry, output, plugins } = opts || {};
+    const { mode, entry, output, plugins, performance, optimization } = opts || {};
+    this.setMode(mode, opts);
     this.setEntry(entry, opts);
     this.setOutput(output, opts);
     this.setPlugins(plugins, opts);
+    this.setPerformance(performance, opts);
+    this.setOptimization(optimization, opts)
+  }
+
+  @override
+  setMode(mode, opts){
+    const { isBuild } = this;
+    this.config.mode = isBuild ? 'production' : 'development';
   }
 
   @override
@@ -29,9 +38,10 @@ class DllOptions extends AbstractOptions {
 
   @override
   setOutput(output, opts){
-    const { paths: { src } } = this.context;
+    const { context, isBuild } = this;
+    const { paths: { assets, dist } } = context;
     this.config.output = {
-      path: src,
+      path: isBuild ? dist : assets,
       filename: '[name].dll.js',
       library: '[name]',// 全局变量名，与 DllPlugin 中 name 保持一致
     }
@@ -43,7 +53,7 @@ class DllOptions extends AbstractOptions {
     const manifestPath = this.getManifestPath();
     const { library } = this.config.output;
 
-    this.config.pluigns = {
+    this.config.plugins = {
       dllPlugin: {
         Constructor: webpack.DllPlugin,
         args: [{
@@ -55,10 +65,48 @@ class DllOptions extends AbstractOptions {
     };
   }
 
+  @override
+  setPerformance(performance, opts){
+    const { isBuild } = this;
+    this.config.performance = {
+      maxAssetSize: 5000000,
+      maxEntrypointSize: 5000000,
+      hints: isBuild ? 'error' : 'warning'// 资源过大时提示级别
+    };
+  }
+
+  @override
+  setOptimization(optimization, opts){
+    const { isBuild } = this;
+    this.config.optimization = {
+      removeAvailableModules: true,
+      removeEmptyChunks: true,
+      mergeDuplicateChunks: true,
+      minimize: isBuild ? true : false
+    };
+  }
+
   // 获取 manifest.json 文件路径
   getManifestPath(){
-    const { paths: { dist } } = this.context;
-    return resolve(dist, 'plutarch-manifest.json');
+    const { context, isBuild } = this;
+    const { paths: { assets, dist } } = context;
+    return resolve(isBuild ? dist : assets, 'plutarch-manifest.json');
+  }
+
+  // 将 manifest 注入到实际的工程中
+  injectDllReferencePlugin(options){
+    const manifestPath = this.getManifestPath();
+    console.log(manifestPath)
+    let { context, config } = options;
+    const { paths: { src } } = context; 
+
+    config.plugins['dllReferencePlugin'] = {
+      Constructor: webpack.DllReferencePlugin,
+      args: [{
+        context: src,
+        manifest: manifestPath
+      }]
+    };
   }
 };
 

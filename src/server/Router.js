@@ -28,7 +28,7 @@ class Router {
 
   // 委托 app 实例配置路由控制器，仅支持单个控制器
   _delegateAppMethod(key, path, arg){
-    const controllers = this._getControllers.apply(this, key, arg);
+    const controller = this._getController.call(this, key, arg);
     this.app[key].call(this.app, path, controller);
   }
 

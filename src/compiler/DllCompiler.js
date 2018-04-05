@@ -17,18 +17,7 @@ class DllCompiler extends Compiler {
   }
 
   injectDllReferencePlugin(options){
-    const manifestPath = this.options.getManifestPath();
-    const { context, config } = options;
-    const { paths: { src } } = context; 
-    let { plugins = {} } = options.config;
-
-    plugins['dllReferencePlugin'] = {
-      Constructor: webpack.DllReferencePlugin,
-      args: [{
-        context: src,
-        manifest: manifestPath
-      }]
-    };
+    this.options.injectDllReferencePlugin(options);
   }
 }
 
