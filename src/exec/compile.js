@@ -13,7 +13,7 @@ const context = new Context();
 const opts = require(context.paths.plrc);// 客户配置
 
 let options = new Options(opts, context);
-const Compiler = context.argv.isBuild ? ProdCompiler : DevCompiler;
+const Compiler = context.isBuild ? ProdCompiler : DevCompiler;
 const compiler = new Compiler(options, context);
 let dllOptions;
 let dllCompiler;

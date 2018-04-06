@@ -18,6 +18,8 @@ class Context {
       platform,
       NODE_ENV
     };
+
+    this.isBuild = NODE_ENV === 'production';
   }
 
   getCommandArgv(){

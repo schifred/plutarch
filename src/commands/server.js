@@ -49,8 +49,7 @@ class ServerCommand extends Command {
   * run({ cwd, env, argv, rawArgv }) {
     const runCompilePath = require.resolve("../exec/compile.js");
     const forkNodeArgv = this.helper.unparseArgv({
-      ...argv, 
-      isBuild: false
+      ...argv
     });
 
     this.helper.forkNode(runCompilePath, forkNodeArgv, {

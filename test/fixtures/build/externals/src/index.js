@@ -1,2 +1,4 @@
 
-require('a');
+function Foo() {
+  return <div />;
+}

@@ -1,5 +1,5 @@
 module.exports = {
   "externals": {
-    "a": "window.a"
+    "react": "window.React"
   }
 }

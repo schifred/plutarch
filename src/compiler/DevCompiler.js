@@ -15,7 +15,7 @@ class DevCompiler extends Compiler {
   run(){
     const { context, options, compiler } = this;
     const { devServer } = options.getWebpackConfig();
-    const { https, host, port } = devServer;
+    const { https, host, port } = devServer || {};
     const protocol = https ? 'https' : 'http';
     const urls = prepareUrls(protocol, host, port);
     const client = new WebpackDevServer(compiler, devServer);

@@ -15,9 +15,12 @@ function assertResult(actualDir, expectDir) {
 }
 
 function testBuild(cwd, done) {
-  const buildPath = require.resolve('../../lib/exec/runBuild');
-  const subProcess = fork(buildPath, ['-env prod'], {
+  const buildPath = require.resolve('../../lib/exec/compile');
+  const subProcess = fork(buildPath, [], {
     cwd,
+    env: {
+      "NODE_ENV": "production"
+    } 
   });
   subProcess.on('close', (err) => {
     try {
