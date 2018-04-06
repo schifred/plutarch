@@ -1,6 +1,6 @@
 # plutarch
 
-基于webpack3实现的前端应用开发工具。
+基于 webpack4 实现的前端应用开发工具。
 
 ### 快速上手
 
@@ -10,7 +10,7 @@ $ npm i plutarch -g
 
 ## 获取版本
 $ plutarch -v
-2.0.1
+2.0.2
 
 ## 创建项目
 $ plutarch init # 创建 dva 项目
