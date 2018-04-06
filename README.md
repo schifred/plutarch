@@ -91,7 +91,7 @@ module.exports = {
 
 ```Javascript
 module.exports = function(options){
-  options.mode = 'production';
+  if ( this.isBuild ) options.devtool = 'nosources-source-map';
 
   return options;
 };

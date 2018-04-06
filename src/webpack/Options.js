@@ -24,7 +24,7 @@ class Options extends AbstractOptions{
     const { context, isBuild } = this;
     const defaultOptions = new DefaultOptions(context, isBuild);
 
-    if ( isPlainObject(opts) ){
+    if ( !isFunction(opts) ){
       this.config = defaultOptions.config;
 
       const { entry, output, module: mod, resolve: resolveConfig, devServer, devtool, 
@@ -39,9 +39,8 @@ class Options extends AbstractOptions{
       this.setTarget(target, opts);
       this.setExternals(externals, opts);
       this.setNode(node, opts);
-    } else if ( isFunction(opts) ){
-      const defaultOptions = defaultOptions.config;
-      const config = opts.call(this, defaultOptions, this.helpers);
+    } else {
+      const config = opts.call(this, defaultOptions.config, this.helpers);
 
       this.config = config ? config : defaultOptions.config;
     };
@@ -81,19 +80,18 @@ class Options extends AbstractOptions{
     if ( !output ) return;
 
     const { context, isBuild } = this;
+    let { config } = this;
     const { paths: { app } } = context;
 
     const { path, publicPath } = output;
 
-    let { config } = this;
+    if ( path )
+      output.path = resolve(app, path);
 
-    output = {
-      ...output,
-      path: resolve(app, path),// 输出目录的绝对路径
-      publicPath: isBuild ? './' : publicPath,
-    };
+    if ( publicPath )
+      output.publicPath = isBuild ? './' : publicPath;
 
-    extend(config.output, output);
+    config.output = extend(config.output, output);
   }
 
   @override
@@ -162,7 +160,7 @@ class Options extends AbstractOptions{
       resolveConfig.alias = alias;
     };
 
-    extend(config.resolve, resolveConfig);
+    config.resolve = extend(config.resolve, resolveConfig);
   }
 
   @override
