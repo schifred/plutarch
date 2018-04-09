@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A application demo built upon Ant Design and Dva.js",
   "main": "index.js",
+  "keywords": "",
   "scripts": {
     "dev": "plutarch server",
     "build": "plutarch build"
@@ -30,7 +31,6 @@
   },
   "devDependencies": {
     "babel-plugin-import": "^1.6.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "plutarch": "^1.0.1"
+    "babel-plugin-transform-runtime": "^6.23.0"
   }
 }

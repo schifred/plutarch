@@ -6,14 +6,7 @@ class InitCommand extends Command {
   constructor(rawArgv) {
     super(rawArgv);
 
-    this.options = {
-      type: {
-        type: 'string',
-        default: "dva",
-        alias: "t",
-        description: 'project type as dva'
-      }
-    };
+    this.options = {};
   }
 
   * run({ cwd, env, argv, rawArgv }) {
