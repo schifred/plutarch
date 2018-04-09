@@ -11,6 +11,12 @@ class PushCommand extends Command {
         type: 'string',
         alias: "m",
         description: 'git commit -m message'
+      },
+      build: {
+        type: 'boolean',
+        alias: "b",
+        default: false,
+        description: 'build'
       }
     };
   }
