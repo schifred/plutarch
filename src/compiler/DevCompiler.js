@@ -1,3 +1,4 @@
+import webpack from 'webpack';
 import { override } from 'core-decorators';
 import WebpackDevServer from 'webpack-dev-server';
 import clearConsole from 'react-dev-utils/clearConsole';
@@ -12,13 +13,18 @@ import applyMockRoutes from '../server/applyMockRoutes';
 
 class DevCompiler extends Compiler {
   @override
-  run(){
-    const { context, options, compiler } = this;
-    const { devServer } = options.getWebpackConfig();
-    const { https, host, port } = devServer || {};
+  async run(){
+    const webpackConfig = await this.generate(false);
+    const compiler = webpack(webpackConfig);
+    const { context } = this;
+    const { devServer } = webpackConfig
+    const { https, host = 'localhost', port = 3001 } = devServer || {};
     const protocol = https ? 'https' : 'http';
     const urls = prepareUrls(protocol, host, port);
-    const client = new WebpackDevServer(compiler, devServer);
+    const client = new WebpackDevServer(compiler, {
+      ...devServer, 
+      noInfo: true
+    });
 
     // 模拟路由
     applyMockRoutes(client.app, context);

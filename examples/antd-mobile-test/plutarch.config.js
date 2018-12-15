@@ -7,7 +7,7 @@ module.exports = {
   },
   dll: ["react","react-dom","redux","react-redux","react-router","dva","babel-ployfill"],
   module: {
-    babelLoaderOptions: {
+    babel: {
       plugins: [
         [
           require.resolve('babel-plugin-import'),
@@ -15,8 +15,7 @@ module.exports = {
             "libraryName": "antd-mobile",
             "style": "css"
           }
-        ],
-        require.resolve('babel-plugin-transform-runtime')
+        ]
       ]
     }
   }

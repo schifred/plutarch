@@ -1,17 +1,6 @@
 
 import { readdirSync, statSync } from 'fs';
 import { resolve } from 'path';
-import { isRegExp } from 'lodash';
-
-export function extend(def, source){
-  let result = { ...def, ...source };
-
-  Object.keys(source).map(key => {
-    if ( source[key] === undefined ) result[key] = def[key];
-  });
-
-  return result;
-};
 
 export function getFiles(path, pattern = /\.(js|tsx?)$/){
   let files = {};
@@ -30,3 +19,20 @@ export function getFiles(path, pattern = /\.(js|tsx?)$/){
 
   return files;
 };
+
+export function getDirs(path){
+  let dirs = {};
+
+  const dirsList = readdirSync(path);
+
+  dirsList.map(dirName => {
+    const dirPath = resolve(path, dirName);
+    const dirStat = statSync(dirPath);
+
+    if ( dirStat.isDirectory() ){
+      dirs[dirName] = dirPath;
+    };
+  });
+
+  return dirs;
+}

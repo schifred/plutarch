@@ -10,7 +10,9 @@
   "author": "alfred",
   "license": "MIT",
   "dependencies": {
+    "@babel/runtime-corejs2": "^7.2.0",
     "antd-mobile": "^2.1.5",
+    "babel-plugin-import": "^1.11.0",
     "babel-polyfill": "^6.26.0",
     "css": "^2.2.1",
     "dva": "2.1.0",

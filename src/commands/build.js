@@ -1,5 +1,3 @@
-"use strict";
-
 const Command = require('common-bin');
 import * as constants from '../constants';
 
