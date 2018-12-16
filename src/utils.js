@@ -2,6 +2,12 @@
 import { readdirSync, statSync } from 'fs';
 import { resolve } from 'path';
 
+/**
+ * 获取文件映射
+ * @param {string} path 目录名
+ * @param {RegExp} pattern 匹配的正则
+ * @return {object} 文件映射
+ */
 export function getFiles(path, pattern = /\.(js|tsx?)$/){
   let files = {};
 
@@ -20,6 +26,11 @@ export function getFiles(path, pattern = /\.(js|tsx?)$/){
   return files;
 };
 
+/**
+ * 获取目录映射
+ * @param {string} path 目录名
+ * @return {object} 目录映射
+ */
 export function getDirs(path){
   let dirs = {};
 

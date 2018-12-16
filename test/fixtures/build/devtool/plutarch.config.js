@@ -1,5 +1,5 @@
 module.exports = function(options){
-  if ( this.isBuild ) options.devtool = 'nosources-source-map';
+  if ( this.isBuild ) options.devtool = 'source-map';
 
   return options;
 };

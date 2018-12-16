@@ -7,14 +7,14 @@ import { choosePort, createCompiler, prepareProxy, prepareUrls } from 'react-dev
 import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware';
 import noopServiceWorkerMiddleware from 'react-dev-utils/noopServiceWorkerMiddleware';
 
-import Compiler from './Compiler';
+import BaseCompiler from './BaseCompiler';
 import logger from '../logger';
 import applyMockRoutes from '../server/applyMockRoutes';
 
-class DevCompiler extends Compiler {
+class DevCompiler extends BaseCompiler {
   @override
   async run(){
-    const webpackConfig = await this.generate(false);
+    const webpackConfig = await this.generate('development');
     const compiler = webpack(webpackConfig);
     const { context } = this;
     const { devServer } = webpackConfig

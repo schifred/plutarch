@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 import webpack from 'webpack';
 import logger from '../logger';
-import getWebpackConfig from '../utils/getWebpackConfig';
+import generate from './generate';
 
 class Compiler extends EventEmitter{
   constructor(options, context){
@@ -10,12 +10,32 @@ class Compiler extends EventEmitter{
     this.context = context;
   }
 
-  async generate(mode, ...args){
-    const { options, context } = this;
-    const webpackConfig = await getWebpackConfig(options, context, mode, ...args);
+  /**
+   * 生成 webpack 配置
+   * @param {string} mode 区分 build, server
+   */
+  async generate(mode = 'production'){
+    let { options, context } = this;
+    let webpackConfig;
+
+    // 根据命令切换 mode
+    const { env: { NODE_ENV } } = context;
+    if ( NODE_ENV ) mode = NODE_ENV;
+
+    if ( typeof options === 'object' ){
+      options.mode = mode;
+      webpackConfig = await generate(options, context);
+    } else if ( typeof options === 'function' ){
+      webpackConfig = await generate({ mode }, context);
+      webpackConfig = options.call(context, webpackConfig);
+    }
+
     return webpackConfig;
   }
 
+  /**
+   * 运行 webpack
+   */
   async run(){
     const webpackConfig = await this.generate(true);
     const compiler = webpack(webpackConfig);

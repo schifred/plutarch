@@ -1,8 +1,16 @@
 
-import { realpathSync, existsSync, readdirSync, statSync } from 'fs';
+import { realpathSync } from 'fs';
 import { resolve } from 'path';
 import yargs from 'yargs';
 
+const ConfigPath = 'plutarch.config.js';
+const ServerPath = 'plutarch.server.js';
+const MockPath = 'plutarch.mock.js';
+const MocksPath = 'mocks';
+
+/**
+ * 上下文相关
+ */
 class Context {
   constructor(){
     this.getProcessArgv();
@@ -10,6 +18,9 @@ class Context {
     this.getPaths();
   }
 
+  /**
+   * 参数相关
+   */
   getProcessArgv(){
     const { cwd, platform, env:{ NODE_ENV } } = process;
 
@@ -22,18 +33,33 @@ class Context {
     this.isBuild = NODE_ENV === 'production';
   }
 
+  /**
+   * 参数相关
+   */
   getCommandArgv(){
-    const { argv }  = yargs;
+    const { argv = {} }  = yargs;
+    const { src = 'src', dist = 'dist', assets = 'assets', config = ConfigPath, 
+      server = ServerPath, mock = MockPath, mocks = MocksPath } = argv;
 
-    this.argv = argv || {};
+    this.argv = {
+      src,
+      dist,
+      assets,
+      config,
+      server,
+      mock,
+      mocks,
+      ...argv
+    };
   }
 
+  /**
+   * 路径相关
+   */
   getPaths(){
     const { env, argv } = this;
     const { cwd } = env;
-    const { src = 'src', dist = 'dist', assets = 'assets', 
-      config = 'plutarch.config.js', server = 'plutarch.server.js', 
-      mock = 'plutarch.mock.js', mocks = 'mocks' } = argv;
+    const { src, dist, assets, config, server, mock, mocks } = argv;
 
     const app = realpathSync(cwd);
     
