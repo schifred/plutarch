@@ -33,7 +33,7 @@ const copyWebpackPlugin = new CopyWebpackPlugin();
 
 function applyBasic(webpackConfig, options, context){
   let { mode, entry, output, resolve, alias, devtool, externals, target } = options;
-  let { env: { cwd }, paths: { app, src } } = context;
+  let { env: { cwd }, paths: { app, src }, argv: { dist } } = context;
 
   if ( entry ){
     Object.keys(entry).map(key => {
@@ -53,7 +53,7 @@ function applyBasic(webpackConfig, options, context){
   webpackConfig.context = cwd;
   webpackConfig.entry = entry || getFiles(src);
   webpackConfig.output = output || {
-    path: './dist',
+    path: `./${dist}`,
     filename: '[name].js',
     publicPath: '/'
   };
@@ -176,7 +176,7 @@ function applyRules(webpackConfig, options, context){
 
 function applyPlugins(webpackConfig, options, context){
   const { mode } = options;
-  const { env: { cwd }, paths: { app, src, dist, assets, nodeModules } } = context;
+  const { env: { cwd }, paths: { app, src, dist, assets, nodeModules }, argv } = context;
 
   let htmls = getFiles(src, /\.html$|\.ejs$/);
 
@@ -200,7 +200,7 @@ function applyPlugins(webpackConfig, options, context){
     occurrenceOrderPlugin.getPlugin(),
     mode !== 'production' ? hotModuleReplacementPlugin.getPlugin() : undefined,
     mode === 'production' ? cssExtractPlugin.getPlugin("common.css") : undefined,
-    mode === 'production' ? cleanWebpackPlugin.getPlugin('dist') : undefined,
+    mode === 'production' ? cleanWebpackPlugin.getPlugin(argv.dist) : undefined,
     mode === 'production' && existsSync(assets) ? copyWebpackPlugin.getPlugin([{          
       from: assets,
       to: dist

@@ -23,7 +23,10 @@ class DevCompiler extends Compiler {
     const urls = prepareUrls(protocol, host, port);
     const client = new WebpackDevServer(compiler, {
       ...devServer, 
-      noInfo: true
+      noInfo: true,
+      inline: true,// 处理实时重载的 js 脚本以内联模式插入到页面中
+      hot: true,// 模块热替换
+      hotOnly: true,// 热替换时，编译失败时是否禁止刷新页面
     });
 
     // 模拟路由

@@ -1,6 +1,6 @@
 import { observable, action, computed, transaction } from "mobx";
 import CategoryService from 'services/category';
-//111
+
 export default class Category extends CategoryService {
   @observable categories = [];
 
