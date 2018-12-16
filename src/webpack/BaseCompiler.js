@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 import webpack from 'webpack';
 import logger from '../logger';
-import generate from './generate';
+import { getWebpackConfig } from 'webpackrc-cfg';
 
 class Compiler extends EventEmitter{
   constructor(options, context){
@@ -19,14 +19,15 @@ class Compiler extends EventEmitter{
     let webpackConfig;
 
     // 根据命令切换 mode
-    const { env: { NODE_ENV } } = context;
+    const { env: { NODE_ENV, cwd }, argv } = context;
+    const ctx = { cwd, paths: { ...argv } };
     if ( NODE_ENV ) mode = NODE_ENV;
 
     if ( typeof options === 'object' ){
       options.mode = mode;
-      webpackConfig = await generate(options, context);
+      webpackConfig = await getWebpackConfig(options, ctx);
     } else if ( typeof options === 'function' ){
-      webpackConfig = await generate({ mode }, context);
+      webpackConfig = await getWebpackConfig({ mode }, ctx);
       webpackConfig = options.call(context, webpackConfig);
     }
 

@@ -16,25 +16,25 @@ class ServerCommand extends Command {
       },
       config: {
         type: 'string',
-        default: constants.PlutarchConfigPath,
+        default: constants.ConfigPath,
         alias: 'c',
         description: 'plutarch config file path'
       },
       server: {
         type: 'string',
-        default: constants.PlutarchServerPath,
+        default: constants.ServerPath,
         alias: 's',
         description: 'plutarch server file path'
       },
       mock: {
         type: 'string',
-        default: constants.PlutarchMockPath,
+        default: constants.MockPath,
         alias: 'm',
         description: 'plutarch mock file path'
       },
       mocks: {
         type: 'string',
-        default: constants.PlutarchMocksPath,
+        default: constants.MocksPath,
         description: 'plutarch mock directory path'
       },
       dll: {

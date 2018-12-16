@@ -1,12 +1,7 @@
-
 import { realpathSync } from 'fs';
 import { resolve } from 'path';
 import yargs from 'yargs';
-
-const ConfigPath = 'plutarch.config.js';
-const ServerPath = 'plutarch.server.js';
-const MockPath = 'plutarch.mock.js';
-const MocksPath = 'mocks';
+import { ConfigPath, ServerPath, MockPath, MocksPath } from './constants';
 
 /**
  * 上下文相关
