@@ -1,7 +1,9 @@
 import EventEmitter from 'events';
 import webpack from 'webpack';
 import logger from '../logger';
-import { getWebpackConfig } from 'webpackrc-cfg';
+import { getWebpackConfig, WebpackConfig } from 'webpackrc-cfg';
+
+const friendlyErrorsWebpackPlugin = new WebpackConfig.plugins.FriendlyErrorsWebpackPlugin();
 
 class Compiler extends EventEmitter{
   constructor(options, context){
@@ -31,6 +33,8 @@ class Compiler extends EventEmitter{
       webpackConfig = options.call(context, webpackConfig);
     }
 
+    webpackConfig.plugins.push(friendlyErrorsWebpackPlugin.getPlugin());
+
     return webpackConfig;
   }
 
@@ -47,17 +51,17 @@ class Compiler extends EventEmitter{
 
     compiler.run((err, stats) => {
       if ( err ){
-        logger.red(`${this.constructor.name} compile failed`);
+        logger.red('compile failed');
         this.emit('failed', err);
         return;
       };
 
-      const log = stats.toString({
-        colors: true
-      });
-      logger.log(log);
+      // const log = stats.toString({
+      //   colors: true
+      // });
+      // logger.log(log);
 
-      logger.blue(`${this.constructor.name} done`);
+      logger.blue('compile done');
 
       this.emit('compiled');
     })
