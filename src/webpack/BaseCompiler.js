@@ -1,7 +1,6 @@
 import EventEmitter from 'events';
-import webpack from 'webpack';
 import logger from '../logger';
-import { getWebpackConfig, WebpackConfig } from 'webpackrc-cfg';
+import { webpack, getWebpackConfig, WebpackConfig } from 'webpackrc-cfg';
 
 const friendlyErrorsWebpackPlugin = new WebpackConfig.plugins.FriendlyErrorsWebpackPlugin();
 

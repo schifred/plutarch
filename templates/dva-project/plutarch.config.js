@@ -2,12 +2,6 @@ module.exports = {
   entry: {
     index: 'src/index'
   },
-  resolve: {
-    alias: {
-      utils: 'src/utils',
-      config: 'src/utils/config'
-    }
-  },
   module: {
     babelLoaderOptions: {
       plugins: [
@@ -15,10 +9,9 @@ module.exports = {
           require.resolve('babel-plugin-import'),
           {
             "libraryName": "antd",
-            "style": true
+            "style": 'css'
           }
-        ],
-        require.resolve('babel-plugin-transform-runtime')
+        ]
       ]
     }
   }

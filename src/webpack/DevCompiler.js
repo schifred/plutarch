@@ -1,4 +1,4 @@
-import webpack from 'webpack';
+import { webpack } from 'webpackrc-cfg';
 import { override } from 'core-decorators';
 import WebpackDevServer from 'webpack-dev-server';
 import openBrowser from 'react-dev-utils/openBrowser';

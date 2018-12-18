@@ -1,4 +1,0 @@
-
-function doSomething() {
-  console.log('...')
-}
