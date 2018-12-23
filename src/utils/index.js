@@ -1,4 +1,4 @@
-
+import install from './install';
 import { readdirSync, statSync } from 'fs';
 import { resolve } from 'path';
 
@@ -8,7 +8,7 @@ import { resolve } from 'path';
  * @param {RegExp} pattern 匹配的正则
  * @return {object} 文件映射
  */
-export function getFiles(path, pattern = /\.(js|tsx?)$/){
+function getFiles(path, pattern = /\.(js|tsx?)$/){
   let files = {};
 
   const fsList = readdirSync(path);
@@ -31,7 +31,7 @@ export function getFiles(path, pattern = /\.(js|tsx?)$/){
  * @param {string} path 目录名
  * @return {object} 目录映射
  */
-export function getDirs(path){
+function getDirs(path){
   let dirs = {};
 
   const dirsList = readdirSync(path);
@@ -47,3 +47,9 @@ export function getDirs(path){
 
   return dirs;
 }
+
+export default {
+  install,
+  getFiles,
+  getDirs
+};

@@ -1,8 +1,7 @@
 import EventEmitter from 'events';
+import { webpack, getWebpackConfig } from 'webpackrc-cfg';
 import logger from '../logger';
-import { webpack, getWebpackConfig, WebpackConfig } from 'webpackrc-cfg';
-
-const friendlyErrorsWebpackPlugin = new WebpackConfig.plugins.FriendlyErrorsWebpackPlugin();
+import { install } from '../utils';
 
 class Compiler extends EventEmitter{
   constructor(options, context){
@@ -24,15 +23,19 @@ class Compiler extends EventEmitter{
     const ctx = { cwd, paths: { ...argv } };
     if ( NODE_ENV ) mode = NODE_ENV;
 
+    install('plutarch', { 
+      cwd,
+      npm: options.npm
+    });
+
     if ( typeof options === 'object' ){
       options.mode = mode;
-      webpackConfig = await getWebpackConfig(options, ctx);
+      options.installMode = false;
+      webpackConfig = await getWebpackConfig(options, ctx, false);
     } else if ( typeof options === 'function' ){
-      webpackConfig = await getWebpackConfig({ mode }, ctx);
+      webpackConfig = await getWebpackConfig({ mode }, ctx, false);
       webpackConfig = options.call(context, webpackConfig);
     }
-
-    webpackConfig.plugins.push(friendlyErrorsWebpackPlugin.getPlugin());
 
     return webpackConfig;
   }
