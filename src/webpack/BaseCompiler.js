@@ -1,7 +1,6 @@
 import EventEmitter from 'events';
 import { webpack, getWebpackConfig } from 'webpackrc-cfg';
 import logger from '../logger';
-import { install } from '../utils';
 
 class Compiler extends EventEmitter{
   constructor(options, context){
@@ -23,17 +22,11 @@ class Compiler extends EventEmitter{
     const ctx = { cwd, paths: { ...argv } };
     if ( NODE_ENV ) mode = NODE_ENV;
 
-    install('plutarch', { 
-      cwd,
-      npm: options.npm
-    });
-
     if ( typeof options === 'object' ){
-      options.mode = mode;
-      options.installMode = false;
-      webpackConfig = await getWebpackConfig(options, ctx, false);
+      options.mode = options.mode || mode;
+      webpackConfig = await getWebpackConfig(options, ctx);
     } else if ( typeof options === 'function' ){
-      webpackConfig = await getWebpackConfig({ mode }, ctx, false);
+      webpackConfig = await getWebpackConfig({ mode }, ctx);
       webpackConfig = options.call(context, webpackConfig);
     }
 
@@ -57,11 +50,6 @@ class Compiler extends EventEmitter{
         this.emit('failed', err);
         return;
       };
-
-      // const log = stats.toString({
-      //   colors: true
-      // });
-      // logger.log(log);
 
       logger.blue('compile done');
 

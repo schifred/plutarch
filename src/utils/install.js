@@ -13,17 +13,13 @@ export default function install(name, options = { }){
   if ( name && fs.existsSync(modulePath) ) return;
 
   let args = [npm === 'yarn' ? 'add' : 'install', name];
-  if ( save ) args.push('--save-dev');
+  if ( name && save ) args.push('--save-dev');
 
   console.info(`Installing ${name ? name : 'dependencies'} ...`);
 
   const output = spawn.sync(npm, args, { 
     stdio: ["ignore", "pipe", "inherit"]
   });
-  // spawn.sync(npm, args, { 
-  //   stdio: ["ignore", "pipe", "inherit"]
-  //   cwd
-  // });
 
   if ( output.error ) console.info(output.error);
   else console.info('Done');

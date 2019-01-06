@@ -1,5 +1,5 @@
-"use strict";
-
+import path from 'path';
+import fs from 'fs';
 import Command from 'common-bin';
 import * as constants from '../constants';
 
@@ -13,12 +13,6 @@ class ServerCommand extends Command {
         default: 3001,
         alias: "p",
         description: 'dev server port'
-      },
-      config: {
-        type: 'string',
-        default: constants.ConfigPath,
-        alias: 'c',
-        description: 'plutarch config file path'
       },
       server: {
         type: 'string',
@@ -49,7 +43,9 @@ class ServerCommand extends Command {
   * run({ cwd, env, argv, rawArgv }) {
     const runCompilePath = require.resolve("../exec/compile.js");
     const forkNodeArgv = this.helper.unparseArgv({
-      ...argv
+      ...argv,
+      config: fs.existsSync(path.resolve(cwd, constants.DevConfigPath)) ? 
+        constants.DevConfigPath : constants.PlutarchConfigPath
     });
 
     this.helper.forkNode(runCompilePath, forkNodeArgv, {

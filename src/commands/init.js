@@ -1,6 +1,4 @@
-"use strict";
-
-const Command = require('common-bin');
+import Command from 'common-bin';
 
 class InitCommand extends Command {
   constructor(rawArgv) {

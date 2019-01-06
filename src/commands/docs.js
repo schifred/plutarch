@@ -3,16 +3,16 @@ import fs from 'fs';
 import Command from 'common-bin';
 import * as constants from '../constants';
 
-class BuildCommand extends Command {
+class DocsCommand extends Command {
   constructor(rawArgv) {
     super(rawArgv);
 
     this.options = {
-      watch: {
-        type: 'boolean',
-        default: false,
-        alias: "w",
-        description: 'watch'
+      config: {
+        type: 'string',
+        default: constants.PlutarchConfigPath,
+        alias: 'c',
+        description: 'plutarch config filePath'
       },
       debug: {
         type: 'boolean',
@@ -26,8 +26,9 @@ class BuildCommand extends Command {
     const runCompilePath = require.resolve("../exec/compile.js");
     const forkNodeArgv = this.helper.unparseArgv({
       ...argv,
-      config: fs.existsSync(path.resolve(cwd, constants.ProdConfigPath)) ? 
-        constants.ProdConfigPath : constants.PlutarchConfigPath
+      dist: 'docs',
+      config: fs.existsSync(path.resolve(cwd, constants.DevConfigPath)) ? 
+        constants.DevConfigPath : constants.PlutarchConfigPath
     });
 
     this.helper.forkNode(runCompilePath, forkNodeArgv, { 
@@ -43,4 +44,4 @@ class BuildCommand extends Command {
   }
 };
 
-module.exports = BuildCommand;
+module.exports = DocsCommand;
