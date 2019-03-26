@@ -18,6 +18,12 @@ class BuildCommand extends Command {
         type: 'boolean',
         default: false,
         description: 'build without compress'
+      },
+      dist: {
+        type: 'string',
+        default: 'dist',
+        alias: 'd',
+        description: 'dist'
       }
     };
   }
