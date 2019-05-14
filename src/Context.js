@@ -1,7 +1,7 @@
 import { realpathSync } from 'fs';
 import { resolve } from 'path';
 import yargs from 'yargs';
-import { ConfigPath, ServerPath, MockPath, MocksPath } from './constants';
+import { PlutarchConfigPath, ServerPath, MockPath, MocksPath } from './constants';
 
 /**
  * 上下文相关
@@ -33,7 +33,7 @@ class Context {
    */
   getCommandArgv(){
     const { argv = {} }  = yargs;
-    const { src = 'src', dist = 'dist', assets = 'assets', config = ConfigPath, 
+    const { src = 'src', dist = 'dist', assets = 'assets', config = PlutarchConfigPath, 
       server = ServerPath, mock = MockPath, mocks = MocksPath } = argv;
 
     this.argv = {
