@@ -42,10 +42,11 @@ class ServerCommand extends Command {
 
   * run({ cwd, env, argv, rawArgv }) {
     const runCompilePath = require.resolve("../exec/compile.js");
+    const devConfigPath = fs.existsSync(path.resolve(cwd, constants.DevConfigPath)) ? 
+      constants.DevConfigPath : constants.PlutarchConfigPath;
     const forkNodeArgv = this.helper.unparseArgv({
       ...argv,
-      config: fs.existsSync(path.resolve(cwd, constants.DevConfigPath)) ? 
-        constants.DevConfigPath : constants.PlutarchConfigPath
+      config: devConfigPath
     });
 
     this.helper.forkNode(runCompilePath, forkNodeArgv, {
