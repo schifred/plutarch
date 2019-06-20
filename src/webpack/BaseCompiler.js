@@ -1,5 +1,10 @@
 import EventEmitter from 'events';
+import { resolve } from 'path';
+import { mkdirSync, existsSync, readFileSync } from 'fs';
+import rimraf from 'rimraf';
 import { webpack, getWebpackConfig } from 'webpackrc-cfg';
+import VModulePlugin from 'vmodule-webpack-plugin';
+import jsyaml from 'js-yaml';
 import logger from '../logger';
 
 class Compiler extends EventEmitter{
@@ -18,15 +23,36 @@ class Compiler extends EventEmitter{
     let webpackConfig;
 
     // 根据命令切换 mode
-    const { env: { NODE_ENV, cwd }, argv } = context;
+    const { env: { NODE_ENV, cwd }, argv, paths } = context;
     const ctx = { cwd, paths: { ...argv } };
     if ( NODE_ENV ) mode = NODE_ENV;
 
+    const vmodulePlugin =  new VModulePlugin({
+      name: 'configs',
+      handler: function() {
+        if ( !existsSync(paths.envConfig) ) return {};
+
+        rimraf.sync(paths.tmpdir);
+        mkdirSync(paths.tmpdir);
+        return jsyaml.load(readFileSync(paths.envConfig));
+      },
+      watch: ['all'] 
+    });
+    let opts = {
+      entry: {
+        configs: vmodulePlugin.moduleFile
+      },
+      alias: {
+        configs: vmodulePlugin.moduleFile
+      },
+      plugins: [ vmodulePlugin ]
+    };
     if ( typeof options === 'object' ){
-      options.mode = options.mode || mode;
-      webpackConfig = await getWebpackConfig(options, ctx);
+      opts.mode = options.mode || mode;
+      webpackConfig = await getWebpackConfig({...options, ...opts}, ctx);
     } else if ( typeof options === 'function' ){
-      webpackConfig = await getWebpackConfig({ mode }, ctx);
+      opts.mode = mode;
+      webpackConfig = await getWebpackConfig(opts, ctx);
       webpackConfig = options.call(context, webpackConfig);
     }
 
@@ -37,6 +63,7 @@ class Compiler extends EventEmitter{
    * 运行 webpack
    */
   async run(){
+    const { paths } = this.context;
     const webpackConfig = await this.generate(true);
     const compiler = webpack(webpackConfig);
 
@@ -45,6 +72,8 @@ class Compiler extends EventEmitter{
     this.emit('start');
 
     compiler.run((err, stats) => {
+      rimraf.sync(paths.tmpdir);
+
       if ( err ){
         logger.red('compile failed');
         this.emit('failed', err);

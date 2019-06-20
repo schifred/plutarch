@@ -8,6 +8,12 @@ class BuildCommand extends Command {
     super(rawArgv);
 
     this.options = {
+      pre: {
+        type: 'boolean',
+        default: false,
+        alias: "p",
+        description: 'pre'
+      },
       watch: {
         type: 'boolean',
         default: false,
@@ -39,7 +45,9 @@ class BuildCommand extends Command {
     this.helper.forkNode(runCompilePath, forkNodeArgv, { 
       cwd,
       env: {
-        "NODE_ENV": "production"
+        "NODE_ENV": "production",
+        environment: argv.pre ? 'pre' : 'prod',
+        "TMPDIR": path.resolve(cwd, '.tmpdir')
       } 
     });
   }

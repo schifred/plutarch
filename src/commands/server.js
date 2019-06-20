@@ -52,7 +52,9 @@ class ServerCommand extends Command {
     this.helper.forkNode(runCompilePath, forkNodeArgv, {
       cwd,
       env: {
-        "NODE_ENV": "development"
+        "NODE_ENV": "development",
+        environment: 'dev',
+        "TMPDIR": path.resolve(cwd, '.tmpdir')
       }
     });
   }
