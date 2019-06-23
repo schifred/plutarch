@@ -10,7 +10,7 @@ $ npm i plutarch -g
 
 ## 获取版本
 $ plutarch -v
-3.0.17
+3.0.18
 
 ## 创建项目
 $ plutarch init # 创建 dva 项目

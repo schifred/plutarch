@@ -19,6 +19,7 @@ class Compiler extends EventEmitter{
    * @param {string} mode 区分 build, server
    */
   async generate(mode = 'production'){
+    const that = this;
     let { options, context } = this;
     let webpackConfig;
 
@@ -40,6 +41,9 @@ class Compiler extends EventEmitter{
             jsyaml.load(readFileSync(paths.localConfig)) : {};
           const envConfig = envConfigExist ? 
             jsyaml.load(readFileSync(paths.envConfig)) : {};
+
+            that.refreshBrowser && that.refreshBrowser();
+
           return { ...localConfig, ...envConfig };
         },
         watch: ['all'] 

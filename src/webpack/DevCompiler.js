@@ -19,9 +19,16 @@ class DevCompiler extends BaseCompiler {
 
     // 监听文件变更
     watch('plutarch dev', [plrc, plsv, plmc, plmcs]).on('all', () => {
+      this.refreshBrowser();
       this.server.close();
       this.run();
     });
+  }
+
+  refreshBrowser(){
+    if ( this.server ){
+      this.server.sockWrite(this.server.sockets, 'content-changed');
+    };
   }
 
   @override
@@ -29,7 +36,7 @@ class DevCompiler extends BaseCompiler {
     const webpackConfig = await this.generate('development');
     const compiler = webpack(webpackConfig);
     const { context } = this;
-    const { devServer, open } = this.options || {};
+    const { devServer } = this.options || {};
     const { https, host = defaultHost, port = 3001 } = devServer || {};
     const protocol = https ? 'https' : 'http';
     const urls = prepareUrls(protocol, host, port);
@@ -61,6 +68,8 @@ class DevCompiler extends BaseCompiler {
           }
           return;
         };
+
+        this.refreshBrowser();
     
         if ( isFirstCompile ){
           let copied;
@@ -77,6 +86,11 @@ class DevCompiler extends BaseCompiler {
             `  - Network: ${logger.blue(urls.lanUrlForTerminal, true)}`,
           ].join('\n'));
 
+
+          if ( openBrowser(urls.localUrlForBrowser) ){
+            logger.log('The browser tab has been opened!');
+          };
+
           isFirstCompile = false;
         };
       });
@@ -85,10 +99,6 @@ class DevCompiler extends BaseCompiler {
         if (err) {
           logger.log(err.stack || err.message);
           return;
-        };
-    
-        if ( open && openBrowser(urls.localUrlForBrowser) ){
-          logger.log('The browser tab has been opened!');
         };
       });
     }).catch(err => {
