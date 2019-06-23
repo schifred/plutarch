@@ -7,13 +7,19 @@ import spawn from 'cross-spawn';
  * @param {string} name 依赖
  */
 export default function install(name, options = { }){
-  const { cwd = process.cwd, npm = 'npm', save } = options || cwd;
+  if ( Array.isArray(name) ){
+    name.map(realname => install(realname, options));
+    return;
+  };
+  
+  const cwd = options.cwd || process.cwd();
+  const npm = options.npm || 'npm';
   const modulePath = name && path.resolve(cwd, `./node_modules/${name}`);
 
   if ( name && fs.existsSync(modulePath) ) return;
 
   let args = [npm === 'yarn' ? 'add' : 'install', name];
-  if ( name && save ) args.push('--save-dev');
+  if ( name && options.save ) args.push('--save-dev');
 
   console.info(`Installing ${name ? name : 'dependencies'} ...`);
 

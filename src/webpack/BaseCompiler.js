@@ -27,26 +27,34 @@ class Compiler extends EventEmitter{
     const ctx = { cwd, paths: { ...argv } };
     if ( NODE_ENV ) mode = NODE_ENV;
 
-    const vmodulePlugin =  new VModulePlugin({
-      name: 'configs',
-      handler: function() {
-        if ( !existsSync(paths.envConfig) ) return {};
+    let opts = { };
+    const localConfigExist = existsSync(paths.localConfig);
+    const envConfigExist = existsSync(paths.envConfig);
+    if ( localConfigExist || envConfigExist ){
+      const vmodulePlugin =  new VModulePlugin({
+        name: 'configs',
+        handler: function() {
+          rimraf.sync(paths.tmpdir);
+          mkdirSync(paths.tmpdir);
+          const localConfig = localConfigExist ? 
+            jsyaml.load(readFileSync(paths.localConfig)) : {};
+          const envConfig = envConfigExist ? 
+            jsyaml.load(readFileSync(paths.envConfig)) : {};
+          return { ...localConfig, ...envConfig };
+        },
+        watch: ['all'] 
+      });
 
-        rimraf.sync(paths.tmpdir);
-        mkdirSync(paths.tmpdir);
-        return jsyaml.load(readFileSync(paths.envConfig));
-      },
-      watch: ['all'] 
-    });
-    let opts = {
-      entry: {
-        configs: vmodulePlugin.moduleFile
-      },
-      alias: {
-        configs: vmodulePlugin.moduleFile
-      },
-      plugins: [ vmodulePlugin ]
-    };
+      opts = {
+        entry: {
+          configs: vmodulePlugin.moduleFile
+        },
+        alias: {
+          configs: vmodulePlugin.moduleFile
+        },
+        plugins: [ vmodulePlugin ]
+      }
+    }
     if ( typeof options === 'object' ){
       opts.mode = options.mode || mode;
       webpackConfig = await getWebpackConfig({...options, ...opts}, ctx);

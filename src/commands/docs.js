@@ -17,7 +17,7 @@ class DocsCommand extends Command {
       debug: {
         type: 'boolean',
         default: false,
-        description: 'build without compress'
+        description: 'debug'
       }
     };
   }
@@ -34,13 +34,15 @@ class DocsCommand extends Command {
     this.helper.forkNode(runCompilePath, forkNodeArgv, { 
       cwd,
       env: {
-        "NODE_ENV": "production"
+        "NODE_ENV": "production",
+        environment: 'dev',
+        "TMPDIR": path.resolve(cwd, '.tmpdir')
       } 
     });
   }
 
   get description() {
-    return 'build';
+    return 'docs';
   }
 };
 

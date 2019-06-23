@@ -10,7 +10,7 @@ $ npm i plutarch -g
 
 ## 获取版本
 $ plutarch -v
-3.0.12
+3.0.17
 
 ## 创建项目
 $ plutarch init # 创建 dva 项目
@@ -22,6 +22,9 @@ $ plutarch server
 
 ## 打包
 $ plutarch build
+
+## storybook
+$ plutarch story
 ```
 
 ## 配置

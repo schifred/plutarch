@@ -67,6 +67,7 @@ class Context {
       assets: resolve(app, assets),
       pkg: resolve(app, 'package.json'),
       tmpdir: resolve(app, '.tmpdir'),
+      localConfig: resolve(app, `${configs}/local.yaml`),
       envConfig: resolve(app, `${configs}/${environment}.yaml`),
       nodeModules: resolve(app, 'node_modules'),
       plrc: resolve(app, config),
