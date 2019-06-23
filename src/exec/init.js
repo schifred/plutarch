@@ -17,7 +17,7 @@ inquirer.prompt([{
   type: 'list',
   name: 'type',
   message: 'which project do you want to initilize?',
-  choices: ['dva', 'redux', 'mobx']
+  choices: ['dva', 'redux', 'mobx', 'lib']
 }, {
   type: 'input',
   name: 'name',
@@ -27,7 +27,7 @@ inquirer.prompt([{
   type: 'input',
   name: 'version',
   message: `version: `,
-  default: '1.0.0'
+  default: '0.0.1'
 }, {
   type: 'input',
   name: 'description',

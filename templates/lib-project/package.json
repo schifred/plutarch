@@ -1,0 +1,19 @@
+{
+  "name": "plutarch-lib-project",
+  "version": "1.0.0",
+  "description": "A project for library",
+  "main": "index.js",
+  "scripts": {
+    "dev": "plutarch story",
+    "build": "plutarch build",
+    "docs": "plutarch story"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  },
+  "devDependencies": {
+  }
+}
