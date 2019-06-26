@@ -38,7 +38,9 @@ class BuildCommand extends Command {
     const runCompilePath = require.resolve("../exec/compile.js");
     const forkNodeArgv = this.helper.unparseArgv({
       ...argv,
-      config: fs.existsSync(path.resolve(cwd, constants.ProdConfigPath)) ? 
+      config: argv.pre && fs.existsSync(path.resolve(cwd, constants.PreConfigPath)) ? 
+        constants.PreConfigPath : 
+        fs.existsSync(path.resolve(cwd, constants.ProdConfigPath)) ? 
         constants.ProdConfigPath : constants.PlutarchConfigPath
     });
 

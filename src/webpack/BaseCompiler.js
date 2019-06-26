@@ -50,15 +50,13 @@ class Compiler extends EventEmitter{
       });
 
       opts = {
-        entry: {
-          configs: vmodulePlugin.moduleFile
-        },
         alias: {
           configs: vmodulePlugin.moduleFile
         },
         plugins: [ vmodulePlugin ]
       }
-    }
+    };
+
     if ( typeof options === 'object' ){
       opts.mode = options.mode || mode;
       webpackConfig = await getWebpackConfig({...options, ...opts}, ctx);
