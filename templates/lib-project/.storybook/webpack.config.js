@@ -1,6 +1,6 @@
 module.exports = ({config}) => {
   config.module.rules.shift();
-  config.module.rules.unshift({
+  const jsloader = {
   "test": /\.(js|jsx|mjs)$/,
   "loader": [
     {
@@ -79,12 +79,14 @@ module.exports = ({config}) => {
   "exclude": [
     /node_modules/,
   ],
-});
+};
+  config.module.rules.unshift(jsloader);
   config.module.rules.push({
     test: /.tsx?$/,
     use: [
+      ...jsloader.loader,
       {
-        loader: require.resolve('ts-loader'),
+        loader: "/Users/alfred/Desktop/dvp/plutarch/node_modules/_ts-loader@5.4.5@ts-loader/index.js",
         options: {
           transpileOnly: true,
         },
@@ -95,23 +97,31 @@ module.exports = ({config}) => {
   config.module.rules.push({
     test: /.less$/,
     use: [
+      'style-loader', 
       {
-        loader: 'style-loader',
-      },
-      {
-        loader: 'css-loader',
-      },
-      {
-        loader: 'less-loader',
+  "loader": "/Users/alfred/Desktop/dvp/plutarch/node_modules/_css-loader@1.0.1@css-loader/index.js",
+  "options": {
+    "modules": true,
+    "camelCase": true,
+    "localIdentName": "[local]",
+    "importLoaders": 2,
+  },
+},
+      { loader: "/Users/alfred/Desktop/dvp/plutarch/node_modules/_postcss-loader@2.1.6@postcss-loader/lib/index.js", 
         options: {
-          javascriptEnabled: true,
+          plugins: [require("autoprefixer")("last 100 versions")]
         },
       },
+      "/Users/alfred/Desktop/dvp/plutarch/node_modules/_less-loader@4.1.0@less-loader/dist/cjs.js"
     ],
   });
   config.resolve.alias = {
     ...config.resolve.alias, 
     ...{"@babel/runtime-corejs2":"/Users/alfred/Desktop/dvp/plutarch/node_modules/_webpackrc-cfg@1.1.19@webpackrc-cfg/node_modules/@babel/runtime-corejs2","@babel/plugin-transform-runtime":"/Users/alfred/Desktop/dvp/plutarch/node_modules/_webpackrc-cfg@1.1.19@webpackrc-cfg/node_modules/@babel/plugin-transform-runtime","lib":"/Users/alfred/Desktop/dvp/plutarch/templates/lib-project/src"}
   };
+  config.resolve.extensions = [
+    ...config.resolve.extensions, 
+    ...[".web.js",".js",".jsx",".tsx",".json"]
+  ];
   return config;
 };

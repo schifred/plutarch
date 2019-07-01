@@ -1,7 +1,6 @@
 import path from 'path';
 import fs from 'fs';
 import Command from 'common-bin';
-import inquirer from 'inquirer';
 import install from '../utils/install';
 import copy from '../utils/copy';
 import stringify from '../utils/stringify';
@@ -26,33 +25,53 @@ class StoryCommand extends Command {
         alias: 'c',
         description: 'config'
       },
+      output: {
+        type: 'string',
+        default: 'docs',
+        alias: 'o',
+        description: 'output'
+      },
       npm: {
         type: 'string',
         default: 'npm',
         alias: 'n',
         description: 'npm'
       },
+      build: {
+        type: 'boolean',
+        default: false,
+        alias: 'b',
+        description: 'build'
+      },
     };
   }
 
   * run({ cwd, env, argv, rawArgv }) {
-    const prompts = yield inquirer.prompt({
-      type: 'list',
-      name: 'cmd',
-      message: "choice command",
-      paginated: true,
-      choices: [{ 
-        name: 'start storybook', value: 'start' 
-      }, {
-        name: 'build storybook', value: 'build'
-      }]
-    });
+    let prompts;
+    if ( argv.build ){
+      prompts = { cmd: 'build' };
+    } else {
+      prompts = { cmd: 'start' };
+      // prompts = yield inquirer.prompt({
+      //   type: 'list',
+      //   name: 'cmd',
+      //   message: "choice command",
+      //   paginated: true,
+      //   choices: [{ 
+      //     name: 'start storybook', value: 'start' 
+      //   }, {
+      //     name: 'build storybook', value: 'build'
+      //   }]
+      // });
+    };
 
-    install([
-      'babel-loader', '@babel/core', 'ts-loader', 'react-docgen-typescript-loader',
-      'style-loader', 'less-loader', 'less', '@storybook/react', '@babel/runtime-corejs2',
-      '@storybook/addon-actions', '@storybook/addon-links'
+    const installFlag = install([
+      'typescript', 'react-docgen-typescript-loader', 
+      'autoprefixer', '@storybook/core', '@storybook/react', 
+      '@babel/runtime-corejs2', '@storybook/addon-actions', 
+      '@storybook/addon-links', '@storybook/addon-info'
     ], { npm: argv.npm });
+    if ( !installFlag ) return;
 
     const cfgDir = path.resolve(cwd, `./${argv.config}`);
     if ( !fs.existsSync(cfgDir) ) {
@@ -77,16 +96,19 @@ class StoryCommand extends Command {
       const compiler = new BaseCompiler(opts, context);
       const webpackConfig = yield compiler.generate(prompts.cmd === 'start' ? 'development' : 'production');
       const jsloader = webpackConfig.module.rules[0];
+      const lessloader = webpackConfig.module.rules[5].loader;
 
       fs.writeFileSync(webpackrc, 
 `module.exports = ({config}) => {
   config.module.rules.shift();
-  config.module.rules.unshift(${stringify(jsloader)});
+  const jsloader = ${stringify(jsloader)};
+  config.module.rules.unshift(jsloader);
   config.module.rules.push({
     test: /\.tsx?$/,
     use: [
+      ...jsloader.loader,
       {
-        loader: require.resolve('ts-loader'),
+        loader: "${require.resolve('ts-loader')}",
         options: {
           transpileOnly: true,
         },
@@ -97,24 +119,24 @@ class StoryCommand extends Command {
   config.module.rules.push({
     test: /\.less$/,
     use: [
-      {
-        loader: 'style-loader',
-      },
-      {
-        loader: 'css-loader',
-      },
-      {
-        loader: 'less-loader',
+      "${require.resolve('style-loader')}", 
+      ${stringify(lessloader[1])},
+      { loader: "${require.resolve('postcss-loader')}", 
         options: {
-          javascriptEnabled: true,
+          plugins: [require("autoprefixer")("last 100 versions")]
         },
       },
+      "${require.resolve('less-loader')}"
     ],
   });
   config.resolve.alias = {
     ...config.resolve.alias, 
     ...${JSON.stringify(webpackConfig.resolve.alias)}
   };
+  config.resolve.extensions = [
+    ...config.resolve.extensions, 
+    ...${JSON.stringify(webpackConfig.resolve.extensions)}
+  ];
   return config;
 };`);
     };
@@ -124,6 +146,7 @@ class StoryCommand extends Command {
     const forkNodeArgv = this.helper.unparseArgv({
       port: argv.port,
       config: argv.config,
+      'output-dir': argv.output
     });
 
     this.helper.forkNode(binPath, ['', ...forkNodeArgv], { 

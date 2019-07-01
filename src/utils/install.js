@@ -14,11 +14,10 @@ export default function install(name, options = { }){
       const modulePath = path.resolve(cwd, `./node_modules/${realname}`);
       if ( !fs.existsSync(modulePath) ) return true;
     });
-    if ( !name.length ) return;
+    if ( !name.length ) return true;
   } else {
     name = [name];
-    install(name, options);
-    return;
+    return install(name, options);
   };
 
   let args = [npm === 'yarn' ? 'add' : 'install', ...name];
@@ -30,6 +29,11 @@ export default function install(name, options = { }){
     stdio: ["ignore", "pipe", "inherit"]
   });
 
-  if ( output.error ) console.info(output.error);
-  else console.info('Done');
+  if ( output.error ){
+    console.info(output.error);
+    return false;
+  } else {
+    console.info('Done');
+    return true;
+  };
 }

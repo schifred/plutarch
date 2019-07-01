@@ -13,3 +13,4 @@ yarn.lock
 /test/
 /node_modules/
 /.vscode/
+/examples
