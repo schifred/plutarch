@@ -6,7 +6,7 @@
 
 ```bash
 ## 全局或本地安装
-$ npm i plutarch -g
+$ cnpm i plutarch -g
 
 ## 获取版本
 $ plutarch -v

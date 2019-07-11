@@ -77,7 +77,7 @@ class Context {
       cache: resolve(app, 'node_modules/.cache/babel-loader'),
       devClient: resolve(__dirname, '../node_modules/react-dev-utils/webpackHotDevClient'),
       buildinNodeModules: resolve(__dirname, '../node_modules'),
-      tpls: resolve(__dirname, '../templates')
+      tpls: resolve(__dirname, '../tpls')
     };
   };
 };
