@@ -23,6 +23,7 @@ export default class ProductDetail extends Component {
   }
 
   render(){
+    console.log(123456781)
     const { productDetail: product } = this.props;
     
     return (

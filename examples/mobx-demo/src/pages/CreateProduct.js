@@ -64,6 +64,7 @@ class CreateProduct extends Component {
   }
 
   render(){
+    console.log(123456782)
     const { productEdit: product, form } = this.props;
     const { getFieldDecorator } = form;
 
