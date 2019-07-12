@@ -72,6 +72,8 @@ let Context = class Context {
     const { cwd, environment } = env;
     const { src, dist, assets, config, server, mock, mocks, configs } = argv;
 
+    console.log(environment);
+
     const app = (0, _fs.realpathSync)(cwd);
 
     this.paths = {

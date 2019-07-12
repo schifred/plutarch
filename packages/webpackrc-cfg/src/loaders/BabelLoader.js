@@ -30,13 +30,6 @@ class Babel_Preset_React extends Mod {
     this.init();
   };
 };
-class Babel_Preset_Flow extends Mod { 
-  constructor(opts = {}){
-    super(opts);
-    this.mod = '@babel/preset-flow';
-    this.init();
-  };
-};
 
 // 注入最新的 api
 class Babel_Plugin_Transform_Runtime extends Mod {
@@ -57,12 +50,9 @@ class Babel_Plugin_Transform_Runtime extends Mod {
     return ['@babel/runtime-corejs2', this.mod];
   }; 
 };
-// common.js 模块加载，无需 default
-class Babel_Plugin_Add_Module_Exports extends Mod { };
-// flow 的类型注释转换
-class Babel_Plugin_Typecheck extends Mod { };
-// 加载样式等模块
-class Babel_Plugin_Import extends Mod { };
+
+// Babel_Plugin_Add_Module_Exports::common.js 模块加载，无需 default
+// 加载时导致 import('./a') 多 default 属性
 
 // stage_0
 class Babel_Plugin_Prorosal_Function_Bind extends Mod { 
@@ -84,17 +74,6 @@ class Babel_Plugin_Proposal_Logical_Assignment_Operators extends Mod {
   constructor(opts = {}){
     super(opts);
     this.mod = '@babel/plugin-proposal-logical-assignment-operators';
-    this.init();
-  };
-};
-class Babel_Plugin_Proposal_Optional_Chaining extends Mod { 
-  defaultOptions = {
-    loose: false
-  };
-
-  constructor(opts = {}){
-    super(opts);
-    this.mod = '@babel/plugin-proposal-optional-chaining';
     this.init();
   };
 };
@@ -251,16 +230,11 @@ class Babel_Plugins_Stage_0 {
 export default class BabelLoader extends Mod {
   static Babel_Preset_Env = Babel_Preset_Env;
   static Babel_Preset_React = Babel_Preset_React;
-  static Babel_Preset_Flow = Babel_Preset_Flow;
 
   static Babel_Plugin_Transform_Runtime = Babel_Plugin_Transform_Runtime;
-  static Babel_Plugin_Add_Module_Exports = Babel_Plugin_Add_Module_Exports;
-  static Babel_Plugin_Typecheck = Babel_Plugin_Typecheck;
-  static Babel_Plugin_Import = Babel_Plugin_Import;
   static Babel_Plugin_Prorosal_Function_Bind = Babel_Plugin_Prorosal_Function_Bind;
   static Babel_Plugin_Proposal_Export_Default_From = Babel_Plugin_Proposal_Export_Default_From;
   static Babel_Plugin_Proposal_Logical_Assignment_Operators = Babel_Plugin_Proposal_Logical_Assignment_Operators;
-  static Babel_Plugin_Proposal_Optional_Chaining = Babel_Plugin_Proposal_Optional_Chaining;
   static Babel_Plugin_Proposal_Pipeline_Operator = Babel_Plugin_Proposal_Pipeline_Operator;
   static Babel_Plugin_Proposal_Nullish_Coalescing_Operator = Babel_Plugin_Proposal_Nullish_Coalescing_Operator;
   static Babel_Plugin_Proposal_Do_Expressions = Babel_Plugin_Proposal_Do_Expressions;
@@ -287,7 +261,6 @@ export default class BabelLoader extends Mod {
     ],
     plugins: [ 
       new BabelLoader.Babel_Plugin_Transform_Runtime(),
-      new BabelLoader.Babel_Plugin_Add_Module_Exports(),
       // https://babeljs.io/blog/2018/07/27/removing-babels-stage-presets
       ...new Babel_Plugins_Stage_0().plugin,
     ],

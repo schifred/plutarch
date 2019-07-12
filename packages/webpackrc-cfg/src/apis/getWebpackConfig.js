@@ -7,7 +7,7 @@ import WebpackConfig from './WebpackConfig';
 import { createCtx, getFiles, getDirs } from '../utils';
 
 const { EslintLoader, BabelLoader, TsLoader, RawLoader, UrlLoader, CssLoader, 
-  PostcssLoader, LessLoader/*, FastSassLoader*/, MiniCssExtractLoader } = WebpackConfig.loaders;
+  PostcssLoader, LessLoader, MiniCssExtractLoader } = WebpackConfig.loaders;
 const { MiniCssExtractPlugin, DefinePlugin, HtmlWebpackPlugin, OccurrenceOrderPlugin, 
   HotModuleReplacementPlugin, CleanWebpackPlugin, Webpackbar, CopyWebpackPlugin, 
   UglifyjsWebpackPlugin, OptimizeCssAssetsWebpackPlugin } = WebpackConfig.plugins;
@@ -20,7 +20,6 @@ const urlLoader = new UrlLoader();
 const cssLoader = new CssLoader();
 const postcssLoader = new PostcssLoader();
 const lessLoader = new LessLoader();
-// const fastSassLoader = new FastSassLoader();
 const tsLoader = new TsLoader();
 const miniCssExtractLoader = new MiniCssExtractLoader()
 
@@ -45,7 +44,8 @@ const friendlyErrorsWebpackPlugin = new WebpackConfig.plugins.FriendlyErrorsWebp
  */
 function applyBasic(webpackConfig, options, context){
   let { mode, folders, entry = {}, output = {}, publicPath, resolve = {}, alias, devtool, 
-    externals, target, compress = true, common = 'common', splitChunksOptions = {} } = options;
+    externals, target, compress = true, common = 'common', splitChunksOptions = {}, 
+    runtimeChunk } = options;
   let { cwd, realPaths: { app, src }, paths: { dist } } = context;
 
   if ( entry ){
@@ -92,7 +92,7 @@ function applyBasic(webpackConfig, options, context){
   webpackConfig.output =  {
     path: `./${dist}`,
     filename: folders && folders.js ? `${folders.js}/[name].js` : '[name].js',
-    chunkFilename: folders && folders.js ? `${folders.js}/[chunkhash].async.js` : '[chunkhash].async.js',
+    chunkFilename: folders && folders.js ? `${folders.js}/[name].js` : '[name].js',
     publicPath: mode === 'production' ? publicPath || './' : '/',
     ...output,
   };
@@ -120,18 +120,21 @@ function applyBasic(webpackConfig, options, context){
           name: folders && folders.style ? `${folders.style}/${common}` : common,
           test: /\.(css|less|scss|sass)$/,
           chunks: 'all',
-          minChunks: 2,
+          priority: 20,
           ...splitChunksOptions
         },
         js: {
           name: folders && folders.js ? `${folders.js}/${common}` : common,
           test: /\.js$/,
           chunks: 'all',
-          minChunks: 2,
+          priority: -20,
           ...splitChunksOptions
         }
       }
-    }
+    },
+    ...(mode === 'production' && runtimeChunk ? {
+      runtimeChunk: 'single'
+    } : { })
   };
   if ( externals ) webpackConfig.externals = externals;
   if ( target ) webpackConfig.target = target;
@@ -198,19 +201,7 @@ function applyRules(webpackConfig, options, context){
       loader: postcssLoader.module, 
       options: postcssLoader.options 
     }, lessLoader.module]
-  }/*, {
-    test: /\.(scss|sass)$/,
-    loader: [miniCssExtractLoader.module, {
-      loader: cssLoader.module, 
-      options: cssLoader.getOptions({
-        ...css,
-        importLoaders: 2
-      })
-    }, {
-      loader: postcssLoader.module, 
-      options: postcssLoader.options 
-    }, fastSassLoader.module]
-  }*/, {
+  }, {
     test: /\.css$/,
     loader: [miniCssExtractLoader.module, { 
       loader: cssLoader.module, 
