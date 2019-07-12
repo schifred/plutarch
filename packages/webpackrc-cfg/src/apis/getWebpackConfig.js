@@ -65,23 +65,7 @@ function applyBasic(webpackConfig, options, context){
     alias = {};
   };
 
-  let runtimeCorejs2Path = path.resolve(__dirname, 
-    '../../node_modules/@babel/runtime-corejs2');
-  if ( !existsSync(runtimeCorejs2Path) ){
-    runtimeCorejs2Path = path.resolve(__dirname, 
-      '../../../@babel/runtime-corejs2');
-  };
-
-  let pluginTransformRuntimePath = path.resolve(__dirname, 
-    '../../node_modules/@babel/plugin-transform-runtime');
-  if ( !existsSync(pluginTransformRuntimePath) ){
-    pluginTransformRuntimePath = path.resolve(__dirname, 
-      '../../../@babel/plugin-transform-runtime');
-  };
-
   alias = {
-    "@babel/runtime-corejs2": runtimeCorejs2Path,
-    "@babel/plugin-transform-runtime": pluginTransformRuntimePath,
     ...getDirs(src),
     ...alias
   };

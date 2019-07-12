@@ -9,6 +9,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _class7, _temp;
 
+var _path = require('path');
+
 var _Mod = require('../Mod');
 
 // https://babeljs.io/docs/en/next/babel-preset-env.html
@@ -47,10 +49,10 @@ let Babel_Plugin_Transform_Runtime = class Babel_Plugin_Transform_Runtime extend
   constructor(opts = {}) {
     super(opts);
     this.defaultOptions = {
-      'helpers': true,
-      'regenerator': true,
-      //'absoluteRuntime': '@babel/runtime-corejs2',
-      'corejs': '2'
+      // 'helpers': true,
+      // 'regenerator': true,
+      // 'corejs': '2',
+      // 'absoluteRuntime': dirname(require.resolve('../../package')),
     };
     this.mod = '@babel/plugin-transform-runtime';
     this.init();

@@ -88,20 +88,7 @@ function applyBasic(webpackConfig, options, context) {
     alias = {};
   };
 
-  let runtimeCorejs2Path = _path2.default.resolve(__dirname, '../../node_modules/@babel/runtime-corejs2');
-  if (!(0, _fs.existsSync)(runtimeCorejs2Path)) {
-    runtimeCorejs2Path = _path2.default.resolve(__dirname, '../../../@babel/runtime-corejs2');
-  };
-
-  let pluginTransformRuntimePath = _path2.default.resolve(__dirname, '../../node_modules/@babel/plugin-transform-runtime');
-  if (!(0, _fs.existsSync)(pluginTransformRuntimePath)) {
-    pluginTransformRuntimePath = _path2.default.resolve(__dirname, '../../../@babel/plugin-transform-runtime');
-  };
-
-  alias = _extends({
-    "@babel/runtime-corejs2": runtimeCorejs2Path,
-    "@babel/plugin-transform-runtime": pluginTransformRuntimePath
-  }, (0, _utils.getDirs)(src), alias);
+  alias = _extends({}, (0, _utils.getDirs)(src), alias);
 
   webpackConfig.mode = mode || 'development';
   webpackConfig.context = cwd;

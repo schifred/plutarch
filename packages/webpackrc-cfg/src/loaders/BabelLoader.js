@@ -1,3 +1,4 @@
+import { dirname } from 'path';
 import { Mod } from '../Mod';
 
 // https://babeljs.io/docs/en/next/babel-preset-env.html
@@ -34,10 +35,10 @@ class Babel_Preset_React extends Mod {
 // 注入最新的 api
 class Babel_Plugin_Transform_Runtime extends Mod {
   defaultOptions = {
-    'helpers': true,
-    'regenerator': true,
-    //'absoluteRuntime': '@babel/runtime-corejs2',
-    'corejs': '2'
+    // 'helpers': true,
+    // 'regenerator': true,
+    // 'corejs': '2',
+    // 'absoluteRuntime': dirname(require.resolve('../../package')),
   };
 
   constructor(opts = {}){

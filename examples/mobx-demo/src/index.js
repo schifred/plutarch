@@ -9,6 +9,8 @@ import $i18n from "utils/$i18n";
 import zh from 'locales/zh';
 import router from './router';
 
+console.log("foobar".includes("foo"))
+
 $i18n.setLocale('zh');
 $i18n.registerLanguagePack('zh', zh);
 
