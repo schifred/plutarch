@@ -1,6 +1,6 @@
 {
   "name": "plutarch",
-  "version": "3.0.26",
+  "version": "3.0.27-alpha.0",
   "description": "Cli tool for serve and build react app, support JSON pattern config.",
   "main": "index.js",
   "bin": {
@@ -63,7 +63,7 @@
     "vmodule-webpack-plugin": "^1.0.9",
     "webpack": "^4.35.3",
     "webpack-dev-server": "^3.1.10",
-    "webpackrc-cfg": "1.1.25",
+    "webpackrc-cfg": "1.1.26-alpha.0",
     "yargs": "^8.0.2"
   },
   "devDependencies": {
