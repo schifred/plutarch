@@ -53,7 +53,9 @@ class Babel_Plugin_Transform_Runtime extends Mod {
 };
 
 // Babel_Plugin_Add_Module_Exports::common.js 模块加载，无需 default
-// 加载时导致 import('./a') 多 default 属性
+class Babel_Plugin_Add_Module_Exports extends Mod {}
+// 懒加载 import('./a')，无需 default
+class Babel_Plugin_Transform_Dynamic_Import_Default extends Mod {}
 
 // stage_0
 class Babel_Plugin_Prorosal_Function_Bind extends Mod { 
@@ -262,6 +264,8 @@ export default class BabelLoader extends Mod {
     ],
     plugins: [ 
       new BabelLoader.Babel_Plugin_Transform_Runtime(),
+      new Babel_Plugin_Add_Module_Exports(),
+      new Babel_Plugin_Transform_Dynamic_Import_Default(),
       // https://babeljs.io/blog/2018/07/27/removing-babels-stage-presets
       ...new Babel_Plugins_Stage_0().plugin,
     ],

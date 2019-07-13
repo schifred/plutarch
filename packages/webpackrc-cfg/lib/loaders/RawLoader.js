@@ -1,13 +1,14 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = undefined;
+exports.default = void 0;
 
-var _Mod = require('../Mod');
+var _Mod = require("../Mod");
 
-let RawLoader = class RawLoader extends _Mod.Mod {};
+class RawLoader extends _Mod.Mod {}
+
 exports.default = RawLoader;
 ;
 module.exports = exports.default;

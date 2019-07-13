@@ -1,13 +1,14 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = undefined;
+exports.default = void 0;
 
-var _Mod = require('../Mod');
+var _Mod = require("../Mod");
 
-let FriendlyErrorsWebpackPlugin = class FriendlyErrorsWebpackPlugin extends _Mod.Plugin {};
+class FriendlyErrorsWebpackPlugin extends _Mod.Plugin {}
+
 exports.default = FriendlyErrorsWebpackPlugin;
 ;
 module.exports = exports.default;

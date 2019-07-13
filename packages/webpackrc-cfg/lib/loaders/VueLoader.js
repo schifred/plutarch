@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = undefined;
+exports.default = void 0;
 
-var _Mod = require('../Mod');
+var _Mod = require("../Mod");
 
-let VueLoader = class VueLoader extends _Mod.Mod {
+class VueLoader extends _Mod.Mod {
   constructor(opts = {}) {
     super(opts);
     this.init();
@@ -16,7 +16,9 @@ let VueLoader = class VueLoader extends _Mod.Mod {
   get dependencies() {
     return ['css-loader', this.mod];
   }
-};
+
+}
+
 exports.default = VueLoader;
 ;
 module.exports = exports.default;

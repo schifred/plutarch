@@ -1,43 +1,44 @@
-'use strict';
+"use strict";
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _debug2 = _interopRequireDefault(require("debug"));
 
-var _debug2 = require('debug');
+var _path = require("path");
 
-var _debug3 = _interopRequireDefault(_debug2);
+var _fs = require("fs");
 
-var _path = require('path');
+var _shelljs = _interopRequireDefault(require("shelljs"));
 
-var _fs = require('fs');
+var _inquirer = _interopRequireDefault(require("inquirer"));
 
-var _shelljs = require('shelljs');
+var _lodash = require("lodash");
 
-var _shelljs2 = _interopRequireDefault(_shelljs);
+var _logger = _interopRequireDefault(require("../logger"));
 
-var _inquirer = require('inquirer');
-
-var _inquirer2 = _interopRequireDefault(_inquirer);
-
-var _lodash = require('lodash');
-
-var _logger = require('../logger');
-
-var _logger2 = _interopRequireDefault(_logger);
-
-var _Context = require('../Context');
-
-var _Context2 = _interopRequireDefault(_Context);
+var _Context = _interopRequireDefault(require("../Context"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
 
-const _debug = (0, _debug3.default)('plutarch');
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-const context = new _Context2.default();
-const { paths: { app, tpls } } = context;
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-_inquirer2.default.prompt([{
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
+const _debug = (0, _debug2.default)('plutarch');
+
+const context = new _Context.default();
+const {
+  paths: {
+    app,
+    tpls
+  }
+} = context;
+
+_inquirer.default.prompt([{
   type: 'list',
   name: 'type',
   message: 'which project do you want to initilize?',
@@ -83,15 +84,23 @@ _inquirer2.default.prompt([{
   message: 'license: ',
   default: 'ISC'
 }]).then(answers => {
-  const { type, entry, test, keywords, git } = answers,
-        pkgConifg = _objectWithoutProperties(answers, ['type', 'entry', 'test', 'keywords', 'git']);
+  const {
+    type,
+    entry,
+    test,
+    keywords,
+    git
+  } = answers,
+        pkgConifg = _objectWithoutProperties(answers, ["type", "entry", "test", "keywords", "git"]);
 
   _debug(`init ${type} project`);
 
   const tplPath = (0, _path.resolve)(tpls, `${type}-project`);
   const pkgPath = (0, _path.resolve)(app, 'package.json');
+
   let pkg = require((0, _path.resolve)(tplPath, 'package.json'));
-  pkg = (0, _lodash.merge)(pkg, _extends({}, pkgConifg, {
+
+  pkg = (0, _lodash.merge)(pkg, _objectSpread({}, pkgConifg, {
     main: entry,
     scripts: {
       test: test ? test : 'echo \"Error: no test specified\" && exit 1'
@@ -104,19 +113,24 @@ _inquirer2.default.prompt([{
   }));
 
   try {
-    _logger2.default.blue(`begin to initilaize ${type} project`);
+    _logger.default.blue(`begin to initilaize ${type} project`);
 
-    _shelljs2.default.cp('-R', `${tplPath}/*`, app);
+    _shelljs.default.cp('-R', `${tplPath}/*`, app);
 
-    (0, _fs.writeFileSync)(pkgPath, format(pkg), { encoding: 'utf8' });
+    (0, _fs.writeFileSync)(pkgPath, format(pkg), {
+      encoding: 'utf8'
+    });
 
-    _logger2.default.blue('loading dependencies');
+    _logger.default.blue('loading dependencies');
 
-    _shelljs2.default.cd(app);
-    _shelljs2.default.exec('npm install -q');
+    _shelljs.default.cd(app);
+
+    _shelljs.default.exec('npm install -q');
   } catch (e) {
-    _logger2.default.red(e);
-  };
+    _logger.default.red(e);
+  }
+
+  ;
 });
 
 function format(pkg) {
@@ -128,6 +142,7 @@ function format(pkg) {
     return item;
   }).join('');
   pkg = `{${pkg}\r\n}`;
-
   return pkg;
-};
+}
+
+;

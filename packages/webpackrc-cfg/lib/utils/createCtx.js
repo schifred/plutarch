@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = createCtx;
 
-var _fs = require('fs');
+var _fs = require("fs");
 
-var _path = require('path');
+var _path = require("path");
 
-var _config = require('../apis/config');
+var _config = require("../apis/config");
 
 /**
  * 获取上下文
@@ -18,9 +18,13 @@ var _config = require('../apis/config');
  * @return {object} 包含路径的上下文
  */
 function createCtx(paths = {}, cwd) {
-  const { src = 'src', dist = 'dist', assets = 'assets', nodeModules = 'node_modules' } = paths;
+  const {
+    src = 'src',
+    dist = 'dist',
+    assets = 'assets',
+    nodeModules = 'node_modules'
+  } = paths;
   const app = (0, _fs.realpathSync)(cwd || (0, _config.getConfig)('cwd'));
-
   return {
     cwd,
     paths: {
@@ -38,4 +42,5 @@ function createCtx(paths = {}, cwd) {
     }
   };
 }
+
 module.exports = exports.default;

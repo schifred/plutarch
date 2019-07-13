@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = getFiles;
 
-var _fs = require('fs');
+var _fs = require("fs");
 
-var _path = require('path');
+var _path = require("path");
 
 /**
  * 获取文件映射
@@ -17,9 +17,7 @@ var _path = require('path');
  */
 function getFiles(path, pattern = /\.(js|tsx?)$/) {
   let files = {};
-
   const fsList = (0, _fs.readdirSync)(path);
-
   fsList.map(fs => {
     const fsPath = (0, _path.resolve)(path, fs);
     const fsStat = (0, _fs.statSync)(fsPath);
@@ -27,9 +25,12 @@ function getFiles(path, pattern = /\.(js|tsx?)$/) {
     if (fsStat.isFile() && fsPath.match(pattern)) {
       const fileName = fs.replace(pattern, '');
       files[fileName] = fsPath;
-    };
-  });
+    }
 
+    ;
+  });
   return files;
-};
+}
+
+;
 module.exports = exports.default;

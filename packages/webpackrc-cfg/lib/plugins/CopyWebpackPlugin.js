@@ -1,13 +1,14 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = undefined;
+exports.default = void 0;
 
-var _Mod = require('../Mod');
+var _Mod = require("../Mod");
 
-let CopyWebpackPlugin = class CopyWebpackPlugin extends _Mod.Plugin {};
+class CopyWebpackPlugin extends _Mod.Plugin {}
+
 exports.default = CopyWebpackPlugin;
 ;
 module.exports = exports.default;

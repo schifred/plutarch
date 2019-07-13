@@ -3,37 +3,32 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = void 0;
 
-var _path = require('path');
+var _path = _interopRequireDefault(require("path"));
 
-var _path2 = _interopRequireDefault(_path);
+var _commonBin = _interopRequireDefault(require("common-bin"));
 
-var _commonBin = require('common-bin');
-
-var _commonBin2 = _interopRequireDefault(_commonBin);
-
-var _package = require('../package.json');
-
-var _package2 = _interopRequireDefault(_package);
+var _package = _interopRequireDefault(require("../package.json"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-let MainCommand = class MainCommand extends _commonBin2.default {
+class MainCommand extends _commonBin.default {
   constructor(rawArgv) {
     super(rawArgv);
+    this.usage = 'Usage: plutarch <command> [options]'; // load entire command directory
 
-    this.usage = 'Usage: plutarch <command> [options]';
+    this.load(_path.default.join(__dirname, 'commands')); // more custom with `yargs` api, such as you can use `plutarch -V`
 
-    // load entire command directory
-    this.load(_path2.default.join(__dirname, 'commands'));
-
-    // more custom with `yargs` api, such as you can use `plutarch -V`
     this.yargs.alias('v', 'version');
   }
 
   get version() {
-    return _package2.default.version || '1.0.0';
+    return _package.default.version || '1.0.0';
   }
-};
-exports.default = MainCommand;
+
+}
+
+var _default = MainCommand;
+exports.default = _default;
 module.exports = exports.default;

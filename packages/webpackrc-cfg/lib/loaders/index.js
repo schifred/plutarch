@@ -1,71 +1,49 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = void 0;
 
-var _BabelLoader = require('./BabelLoader');
+var _BabelLoader = _interopRequireDefault(require("./BabelLoader"));
 
-var _BabelLoader2 = _interopRequireDefault(_BabelLoader);
+var _CssLoader = _interopRequireDefault(require("./CssLoader"));
 
-var _CssLoader = require('./CssLoader');
+var _EslintLoader = _interopRequireDefault(require("./EslintLoader"));
 
-var _CssLoader2 = _interopRequireDefault(_CssLoader);
+var _JsonLoader = _interopRequireDefault(require("./JsonLoader"));
 
-var _EslintLoader = require('./EslintLoader');
+var _LessLoader = _interopRequireDefault(require("./LessLoader"));
 
-var _EslintLoader2 = _interopRequireDefault(_EslintLoader);
+var _MiniCssExtractLoader = _interopRequireDefault(require("./MiniCssExtractLoader"));
 
-var _JsonLoader = require('./JsonLoader');
+var _PostcssLoader = _interopRequireDefault(require("./PostcssLoader"));
 
-var _JsonLoader2 = _interopRequireDefault(_JsonLoader);
+var _RawLoader = _interopRequireDefault(require("./RawLoader"));
 
-var _LessLoader = require('./LessLoader');
+var _StyleLoader = _interopRequireDefault(require("./StyleLoader"));
 
-var _LessLoader2 = _interopRequireDefault(_LessLoader);
+var _TsLoader = _interopRequireDefault(require("./TsLoader"));
 
-var _MiniCssExtractLoader = require('./MiniCssExtractLoader');
+var _UrlLoader = _interopRequireDefault(require("./UrlLoader"));
 
-var _MiniCssExtractLoader2 = _interopRequireDefault(_MiniCssExtractLoader);
-
-var _PostcssLoader = require('./PostcssLoader');
-
-var _PostcssLoader2 = _interopRequireDefault(_PostcssLoader);
-
-var _RawLoader = require('./RawLoader');
-
-var _RawLoader2 = _interopRequireDefault(_RawLoader);
-
-var _StyleLoader = require('./StyleLoader');
-
-var _StyleLoader2 = _interopRequireDefault(_StyleLoader);
-
-var _TsLoader = require('./TsLoader');
-
-var _TsLoader2 = _interopRequireDefault(_TsLoader);
-
-var _UrlLoader = require('./UrlLoader');
-
-var _UrlLoader2 = _interopRequireDefault(_UrlLoader);
-
-var _VueLoader = require('./VueLoader');
-
-var _VueLoader2 = _interopRequireDefault(_VueLoader);
+var _VueLoader = _interopRequireDefault(require("./VueLoader"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = {
-  BabelLoader: _BabelLoader2.default,
-  CssLoader: _CssLoader2.default,
-  EslintLoader: _EslintLoader2.default,
-  JsonLoader: _JsonLoader2.default,
-  LessLoader: _LessLoader2.default,
-  MiniCssExtractLoader: _MiniCssExtractLoader2.default,
-  PostcssLoader: _PostcssLoader2.default,
-  RawLoader: _RawLoader2.default,
-  StyleLoader: _StyleLoader2.default,
-  TsLoader: _TsLoader2.default,
-  UrlLoader: _UrlLoader2.default,
-  VueLoader: _VueLoader2.default
+var _default = {
+  BabelLoader: _BabelLoader.default,
+  CssLoader: _CssLoader.default,
+  EslintLoader: _EslintLoader.default,
+  JsonLoader: _JsonLoader.default,
+  LessLoader: _LessLoader.default,
+  MiniCssExtractLoader: _MiniCssExtractLoader.default,
+  PostcssLoader: _PostcssLoader.default,
+  RawLoader: _RawLoader.default,
+  StyleLoader: _StyleLoader.default,
+  TsLoader: _TsLoader.default,
+  UrlLoader: _UrlLoader.default,
+  VueLoader: _VueLoader.default
 };
+exports.default = _default;
 module.exports = exports.default;

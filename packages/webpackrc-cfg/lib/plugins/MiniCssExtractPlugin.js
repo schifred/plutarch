@@ -1,13 +1,14 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = undefined;
+exports.default = void 0;
 
-var _Mod = require('../Mod');
+var _Mod = require("../Mod");
 
-let MiniCssExtractPlugin = class MiniCssExtractPlugin extends _Mod.Plugin {};
+class MiniCssExtractPlugin extends _Mod.Plugin {}
+
 exports.default = MiniCssExtractPlugin;
 ;
 module.exports = exports.default;

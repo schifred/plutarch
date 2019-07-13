@@ -1,87 +1,59 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = void 0;
 
-var _CleanWebpackPlugin = require('./CleanWebpackPlugin');
+var _CleanWebpackPlugin = _interopRequireDefault(require("./CleanWebpackPlugin"));
 
-var _CleanWebpackPlugin2 = _interopRequireDefault(_CleanWebpackPlugin);
+var _CopyWebpackPlugin = _interopRequireDefault(require("./CopyWebpackPlugin"));
 
-var _CopyWebpackPlugin = require('./CopyWebpackPlugin');
+var _DefinePlugin = _interopRequireDefault(require("./DefinePlugin"));
 
-var _CopyWebpackPlugin2 = _interopRequireDefault(_CopyWebpackPlugin);
+var _DllPlugin = _interopRequireDefault(require("./DllPlugin"));
 
-var _DefinePlugin = require('./DefinePlugin');
+var _DLLReferencePlugin = _interopRequireDefault(require("./DLLReferencePlugin"));
 
-var _DefinePlugin2 = _interopRequireDefault(_DefinePlugin);
+var _FriendlyErrorsWebpackPlugin = _interopRequireDefault(require("./FriendlyErrorsWebpackPlugin"));
 
-var _DllPlugin = require('./DllPlugin');
+var _HotModuleReplacementPlugin = _interopRequireDefault(require("./HotModuleReplacementPlugin"));
 
-var _DllPlugin2 = _interopRequireDefault(_DllPlugin);
+var _HtmlWebpackPlugin = _interopRequireDefault(require("./HtmlWebpackPlugin"));
 
-var _DLLReferencePlugin = require('./DLLReferencePlugin');
+var _MiniCssExtractPlugin = _interopRequireDefault(require("./MiniCssExtractPlugin"));
 
-var _DLLReferencePlugin2 = _interopRequireDefault(_DLLReferencePlugin);
+var _OccurrenceOrderPlugin = _interopRequireDefault(require("./OccurrenceOrderPlugin"));
 
-var _FriendlyErrorsWebpackPlugin = require('./FriendlyErrorsWebpackPlugin');
+var _OptimizeCssAssetsWebpackPlugin = _interopRequireDefault(require("./OptimizeCssAssetsWebpackPlugin"));
 
-var _FriendlyErrorsWebpackPlugin2 = _interopRequireDefault(_FriendlyErrorsWebpackPlugin);
+var _SourceMapDevToolPlugin = _interopRequireDefault(require("./SourceMapDevToolPlugin"));
 
-var _HotModuleReplacementPlugin = require('./HotModuleReplacementPlugin');
+var _UglifyjsWebpackPlugin = _interopRequireDefault(require("./UglifyjsWebpackPlugin"));
 
-var _HotModuleReplacementPlugin2 = _interopRequireDefault(_HotModuleReplacementPlugin);
+var _VmoduleWebpackPlugin = _interopRequireDefault(require("./VmoduleWebpackPlugin"));
 
-var _HtmlWebpackPlugin = require('./HtmlWebpackPlugin');
-
-var _HtmlWebpackPlugin2 = _interopRequireDefault(_HtmlWebpackPlugin);
-
-var _MiniCssExtractPlugin = require('./MiniCssExtractPlugin');
-
-var _MiniCssExtractPlugin2 = _interopRequireDefault(_MiniCssExtractPlugin);
-
-var _OccurrenceOrderPlugin = require('./OccurrenceOrderPlugin');
-
-var _OccurrenceOrderPlugin2 = _interopRequireDefault(_OccurrenceOrderPlugin);
-
-var _OptimizeCssAssetsWebpackPlugin = require('./OptimizeCssAssetsWebpackPlugin');
-
-var _OptimizeCssAssetsWebpackPlugin2 = _interopRequireDefault(_OptimizeCssAssetsWebpackPlugin);
-
-var _SourceMapDevToolPlugin = require('./SourceMapDevToolPlugin');
-
-var _SourceMapDevToolPlugin2 = _interopRequireDefault(_SourceMapDevToolPlugin);
-
-var _UglifyjsWebpackPlugin = require('./UglifyjsWebpackPlugin');
-
-var _UglifyjsWebpackPlugin2 = _interopRequireDefault(_UglifyjsWebpackPlugin);
-
-var _VmoduleWebpackPlugin = require('./VmoduleWebpackPlugin');
-
-var _VmoduleWebpackPlugin2 = _interopRequireDefault(_VmoduleWebpackPlugin);
-
-var _Webpackbar = require('./Webpackbar');
-
-var _Webpackbar2 = _interopRequireDefault(_Webpackbar);
+var _Webpackbar = _interopRequireDefault(require("./Webpackbar"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = {
-  CleanWebpackPlugin: _CleanWebpackPlugin2.default,
-  CopyWebpackPlugin: _CopyWebpackPlugin2.default,
-  DefinePlugin: _DefinePlugin2.default,
-  DllPlugin: _DllPlugin2.default,
-  DLLReferencePlugin: _DLLReferencePlugin2.default,
-  FriendlyErrorsWebpackPlugin: _FriendlyErrorsWebpackPlugin2.default,
-  HotModuleReplacementPlugin: _HotModuleReplacementPlugin2.default,
-  HtmlWebpackPlugin: _HtmlWebpackPlugin2.default,
-  MiniCssExtractPlugin: _MiniCssExtractPlugin2.default,
-  OccurrenceOrderPlugin: _OccurrenceOrderPlugin2.default,
-  OccurrenceOrderPlugin: _OccurrenceOrderPlugin2.default,
-  OptimizeCssAssetsWebpackPlugin: _OptimizeCssAssetsWebpackPlugin2.default,
-  SourceMapDevToolPlugin: _SourceMapDevToolPlugin2.default,
-  UglifyjsWebpackPlugin: _UglifyjsWebpackPlugin2.default,
-  VmoduleWebpackPlugin: _VmoduleWebpackPlugin2.default,
-  Webpackbar: _Webpackbar2.default
+var _default = {
+  CleanWebpackPlugin: _CleanWebpackPlugin.default,
+  CopyWebpackPlugin: _CopyWebpackPlugin.default,
+  DefinePlugin: _DefinePlugin.default,
+  DllPlugin: _DllPlugin.default,
+  DLLReferencePlugin: _DLLReferencePlugin.default,
+  FriendlyErrorsWebpackPlugin: _FriendlyErrorsWebpackPlugin.default,
+  HotModuleReplacementPlugin: _HotModuleReplacementPlugin.default,
+  HtmlWebpackPlugin: _HtmlWebpackPlugin.default,
+  MiniCssExtractPlugin: _MiniCssExtractPlugin.default,
+  OccurrenceOrderPlugin: _OccurrenceOrderPlugin.default,
+  OccurrenceOrderPlugin: _OccurrenceOrderPlugin.default,
+  OptimizeCssAssetsWebpackPlugin: _OptimizeCssAssetsWebpackPlugin.default,
+  SourceMapDevToolPlugin: _SourceMapDevToolPlugin.default,
+  UglifyjsWebpackPlugin: _UglifyjsWebpackPlugin.default,
+  VmoduleWebpackPlugin: _VmoduleWebpackPlugin.default,
+  Webpackbar: _Webpackbar.default
 };
+exports.default = _default;
 module.exports = exports.default;

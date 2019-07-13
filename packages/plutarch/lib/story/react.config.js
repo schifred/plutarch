@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-var _react = require('@storybook/react');
+var _react = require("@storybook/react");
 
 const req = require.context('../stories', true, /\.js$/);
 

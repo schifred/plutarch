@@ -2,7 +2,6 @@
 import path from 'path';
 import { existsSync } from 'fs';
 import { config } from './config';
-// import { installDependencies } from './installDependencies';
 import WebpackConfig from './WebpackConfig';
 import { createCtx, getFiles, getDirs } from '../utils';
 
@@ -263,9 +262,6 @@ export default async function getWebpackConfig(
     npm: npm || 'npm',
     cwd
   });
-
-  // 安装依赖
-  // await installDependencies(installMode);
 
   // 生成 webpack 配置
   let webpackConfig = new WebpackConfig();
