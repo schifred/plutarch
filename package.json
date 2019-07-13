@@ -6,7 +6,8 @@
     "build": "lerna run build --npm-client=cnpm",
     "dev": "npm run build && node scripts/dev.js",
     "pre": "npm run build && node scripts/pre.js",
-    "prod": "npm run build && node scripts/prod.js"
+    "prod": "npm run build && node scripts/prod.js",
+    "publish": "npm run build && lerna publish"
   },
   "bin": {
     "plu": "bin/plutarch.js",
