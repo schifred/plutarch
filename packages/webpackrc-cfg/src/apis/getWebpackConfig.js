@@ -43,8 +43,8 @@ const friendlyErrorsWebpackPlugin = new WebpackConfig.plugins.FriendlyErrorsWebp
  */
 function applyBasic(webpackConfig, options, context){
   let { mode, folders, entry = {}, output = {}, publicPath, resolve = {}, alias, devtool, 
-    externals, target, compress = true, common = 'common', splitChunksOptions = {}, 
-    runtimeChunk } = options;
+    externals, target, compress = true, common = 'common', disableSplitChunk, 
+    splitChunksOptions = {}, runtimeChunk } = options;
   let { cwd, realPaths: { app, src }, paths: { dist } } = context;
 
   if ( entry ){
@@ -97,12 +97,13 @@ function applyBasic(webpackConfig, options, context){
       ]
     }),
     minimize: mode === 'production' && compress ? true : false,
-    splitChunks: {
+    splitChunks: disableSplitChunk ? undefined : {
       cacheGroups: {
         styles: {
           name: folders && folders.style ? `${folders.style}/${common}` : common,
           test: /\.(css|less|scss|sass)$/,
           chunks: 'all',
+          minChunks: 2,
           priority: 20,
           ...splitChunksOptions
         },
@@ -110,6 +111,7 @@ function applyBasic(webpackConfig, options, context){
           name: folders && folders.js ? `${folders.js}/${common}` : common,
           test: /\.js$/,
           chunks: 'all',
+          minChunks: 2,
           priority: -20,
           ...splitChunksOptions
         }
