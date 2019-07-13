@@ -1,6 +1,6 @@
 {
   "name": "plutarch",
-  "version": "3.0.25",
+  "version": "3.0.26-alpha.0",
   "description": "Cli tool for serve and build react app, support JSON pattern config.",
   "main": "index.js",
   "bin": {
@@ -63,12 +63,12 @@
     "vmodule-webpack-plugin": "^1.0.9",
     "webpack": "^4.35.3",
     "webpack-dev-server": "^3.1.10",
-    "webpackrc-cfg": "1.1.24",
+    "webpackrc-cfg": "1.1.25-alpha.0",
     "yargs": "^8.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.4",
     "@babel/cli": "^7.5.0",
+    "@babel/core": "^7.5.4",
     "@babel/plugin-proposal-class-properties": "^7.5.0",
     "@babel/plugin-proposal-decorators": "^7.4.4",
     "@babel/plugin-proposal-do-expressions": "^7.5.0",
