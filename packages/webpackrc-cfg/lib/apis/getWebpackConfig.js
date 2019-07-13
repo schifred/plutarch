@@ -95,6 +95,7 @@ function applyBasic(webpackConfig, options, context) {
     target,
     compress = true,
     common = 'common',
+    disableSplitChunk,
     splitChunksOptions = {},
     runtimeChunk
   } = options;
@@ -156,18 +157,20 @@ function applyBasic(webpackConfig, options, context) {
     }), optimizeCssAssetsWebpackPlugin.getPlugin({})]
   }, {
     minimize: mode === 'production' && compress ? true : false,
-    splitChunks: {
+    splitChunks: disableSplitChunk ? undefined : {
       cacheGroups: {
         styles: _objectSpread({
           name: folders && folders.style ? `${folders.style}/${common}` : common,
           test: /\.(css|less|scss|sass)$/,
           chunks: 'all',
+          minChunks: 2,
           priority: 20
         }, splitChunksOptions),
         js: _objectSpread({
           name: folders && folders.js ? `${folders.js}/${common}` : common,
           test: /\.js$/,
           chunks: 'all',
+          minChunks: 2,
           priority: -20
         }, splitChunksOptions)
       }
