@@ -14,7 +14,8 @@ class Babel_Preset_Env extends Mod {
     loose: true,
     useBuiltIns: 'usage',
     corejs: '2',
-    modules: 'commonjs'// https://stackoverflow.com/questions/43042889/typescript-referenceerror-exports-is-not-defined
+    modules: false// 设置成 'commonjs' 将使懒加载失效
+    // https://stackoverflow.com/questions/43042889/typescript-referenceerror-exports-is-not-defined
   };
 
   constructor(opts = {}){
@@ -38,7 +39,7 @@ class Babel_Plugin_Transform_Runtime extends Mod {
     // 'helpers': true,
     // 'regenerator': true,
     // 'corejs': '2',
-    // 'absoluteRuntime': dirname(require.resolve('../../package')),
+    'absoluteRuntime': dirname(require.resolve('../../package')),
   };
 
   constructor(opts = {}){
@@ -266,7 +267,6 @@ export default class BabelLoader extends Mod {
       new BabelLoader.Babel_Plugin_Transform_Runtime(),
       new Babel_Plugin_Add_Module_Exports(),
       new Babel_Plugin_Transform_Dynamic_Import_Default(),
-      // https://babeljs.io/blog/2018/07/27/removing-babels-stage-presets
       ...new Babel_Plugins_Stage_0().plugin,
     ],
     cacheDirectory: true// 缓存babel-loader编译结果 

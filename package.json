@@ -18,8 +18,5 @@
       "prettier --write",
       "git add"
     ]
-  },
-  "devDependencies": {
-    "lerna": "3.6.0"
   }
 }

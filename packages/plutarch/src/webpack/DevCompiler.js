@@ -36,8 +36,9 @@ class DevCompiler extends BaseCompiler {
     const webpackConfig = await this.generate('development');
     const compiler = webpack(webpackConfig);
     const { context } = this;
-    const { devServer } = this.options || {};
-    const { https, host = defaultHost, port = 3001 } = devServer || {};
+    const { devServer = {} } = this.options || {};
+    const { https, host = defaultHost } = devServer;
+    const port = devServer.port || this.context.argv.port || 3001;
     const protocol = https ? 'https' : 'http';
     const urls = prepareUrls(protocol, host, port);
     this.server = new WebpackDevServer(compiler, {

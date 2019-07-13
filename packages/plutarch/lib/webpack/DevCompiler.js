@@ -77,13 +77,13 @@ let DevCompiler = (_class = class DevCompiler extends _BaseCompiler.default {
         context
       } = _this;
       const {
-        devServer
+        devServer = {}
       } = _this.options || {};
       const {
         https,
-        host = defaultHost,
-        port = 3001
-      } = devServer || {};
+        host = defaultHost
+      } = devServer;
+      const port = devServer.port || _this.context.argv.port || 3001;
       const protocol = https ? 'https' : 'http';
       const urls = (0, _WebpackDevServerUtils.prepareUrls)(protocol, host, port);
       _this.server = new _webpackDevServer.default(compiler, _objectSpread({

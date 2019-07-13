@@ -140,7 +140,7 @@ function applyBasic(webpackConfig, options, context) {
   webpackConfig.output = _objectSpread({
     path: `./${dist}`,
     filename: folders && folders.js ? `${folders.js}/[name].js` : '[name].js',
-    chunkFilename: folders && folders.js ? `${folders.js}/[name].js` : '[name].js',
+    chunkFilename: folders && folders.js ? `${folders.js}/[name].[hash].js` : '[name].[hash].js',
     publicPath: mode === 'production' ? publicPath || './' : '/'
   }, output);
   webpackConfig.resolve = _objectSpread({
@@ -157,7 +157,7 @@ function applyBasic(webpackConfig, options, context) {
     }), optimizeCssAssetsWebpackPlugin.getPlugin({})]
   }, {
     minimize: mode === 'production' && compress ? true : false,
-    splitChunks: disableSplitChunk ? undefined : {
+    splitChunks: {
       cacheGroups: {
         styles: _objectSpread({
           name: folders && folders.style ? `${folders.style}/${common}` : common,
@@ -174,10 +174,9 @@ function applyBasic(webpackConfig, options, context) {
           priority: -20
         }, splitChunksOptions)
       }
-    }
-  }, mode === 'production' && runtimeChunk ? {
-    runtimeChunk: 'single'
-  } : {});
+    },
+    runtimeChunk: false
+  });
   if (externals) webpackConfig.externals = externals;
   if (target) webpackConfig.target = target;
 }
@@ -299,7 +298,9 @@ function applyPlugins(webpackConfig, options, context) {
       chunks: [fileName, common],
       showErrors: true
     });
-  }), occurrenceOrderPlugin.getPlugin(), mode !== 'production' ? hotModuleReplacementPlugin.getPlugin() : undefined, miniCssExtractPlugin.getPlugin({
+  }), occurrenceOrderPlugin.getPlugin(), mode !== 'production' ? hotModuleReplacementPlugin.getPlugin() : undefined, // mini-css-extract-plugin 插件排序问题
+  // https://github.com/webpack-contrib/mini-css-extract-plugin/issues/250
+  miniCssExtractPlugin.getPlugin({
     filename: folders && folders.style ? `${folders.style}/[name].css` : "[name].css"
   }), mode === 'production' ? cleanWebpackPlugin.getPlugin([dist], {
     root: app

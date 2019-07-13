@@ -75,17 +75,21 @@ function applyBasic(webpackConfig, options, context){
   webpackConfig.output =  {
     path: `./${dist}`,
     filename: folders && folders.js ? `${folders.js}/[name].js` : '[name].js',
-    chunkFilename: folders && folders.js ? `${folders.js}/[name].js` : '[name].js',
+    chunkFilename: folders && folders.js ? `${folders.js}/[name].[hash].js` : '[name].[hash].js',
     publicPath: mode === 'production' ? publicPath || './' : '/',
     ...output,
   };
+
   webpackConfig.resolve = {
     extensions: [ '.web.js', '.js', '.jsx', '.ts', '.tsx', '.json' ],
     ...resolve,
     alias
   };
+
   webpackConfig.devtool = mode !== 'production' ? devtool || 'source-map' : false;
+
   if ( mode !== 'production' ) webpackConfig.watch = true;
+
   webpackConfig.optimization = {
     ...(mode !== 'production' || !compress ? {} : {
       minimizer: [
@@ -97,7 +101,7 @@ function applyBasic(webpackConfig, options, context){
       ]
     }),
     minimize: mode === 'production' && compress ? true : false,
-    splitChunks: disableSplitChunk ? undefined : {
+    splitChunks: {
       cacheGroups: {
         styles: {
           name: folders && folders.style ? `${folders.style}/${common}` : common,
@@ -117,10 +121,9 @@ function applyBasic(webpackConfig, options, context){
         }
       }
     },
-    ...(mode === 'production' && runtimeChunk ? {
-      runtimeChunk: 'single'
-    } : { })
+    runtimeChunk: false
   };
+
   if ( externals ) webpackConfig.externals = externals;
   if ( target ) webpackConfig.target = target;
 }
@@ -229,6 +232,8 @@ function applyPlugins(webpackConfig, options, context){
     }),
     occurrenceOrderPlugin.getPlugin(),
     mode !== 'production' ? hotModuleReplacementPlugin.getPlugin() : undefined,
+    // mini-css-extract-plugin 插件排序问题
+    // https://github.com/webpack-contrib/mini-css-extract-plugin/issues/250
     miniCssExtractPlugin.getPlugin({
       filename: folders && folders.style ? `${folders.style}/[name].css` :  "[name].css"
     }),

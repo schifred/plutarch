@@ -19,16 +19,6 @@
     "sourceMap": true,
     "instrument": false
   },
-  "devDependencies": {
-    "@babel/cli": "^7.5.0",
-    "@babel/register": "^7.4.4",
-    "cross-env": "^5.0.5",
-    "expect": "^21.2.1",
-    "glob": "^7.1.2",
-    "mocha": "^5.2.0",
-    "nyc": "^11.2.1",
-    "rimraf": "^2.6.2"
-  },
   "dependencies": {
     "@babel/core": "^7.5.4",
     "@babel/plugin-proposal-class-properties": "^7.5.0",
@@ -75,7 +65,7 @@
     "json-loader": "^0.5.7",
     "less": "^3.8.1",
     "less-loader": "^4.1.0",
-    "mini-css-extract-plugin": "^0.4.4",
+    "mini-css-extract-plugin": "^0.4.5",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "postcss-loader": "^2.0.6",
     "raw-loader": "^0.5.1",
@@ -89,5 +79,15 @@
     "vue-loader": "^15.4.2",
     "webpack": "^4.35.3",
     "webpackbar": "^3.2.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.0",
+    "@babel/register": "^7.4.4",
+    "cross-env": "^5.0.5",
+    "expect": "^21.2.1",
+    "glob": "^7.1.2",
+    "mocha": "^5.2.0",
+    "nyc": "^11.2.1",
+    "rimraf": "^2.6.2"
   }
 }

@@ -20,7 +20,7 @@ function Loading(props) {
 }
 
 const ProductList = 
-loadable(() => import(/* webpackChunkName: "ProductList" */'./pages/ProductList'), {
+loadable(() => import(/* webpackChunkName: "ProductList", WebpackMode: "lazy" */'../pages/ProductList'), {
   fallback: Loading,
 });
 // Loadable({
@@ -30,12 +30,12 @@ loadable(() => import(/* webpackChunkName: "ProductList" */'./pages/ProductList'
 // });
 const CreateProduct = Loadable({
   loader: () =>
-    import(/* webpackChunkName: "CreateProduct" */ "./pages/CreateProduct"),
+    import(/* webpackChunkName: "CreateProduct" */ "../pages/CreateProduct").then(({default: c}) => c),
     loading: Loading
 });
 const ProductDetail = Loadable({
   loader: () =>
-    import(/* webpackChunkName: "ProductDetail" */ "./pages/ProductDetail"),
+    import(/* webpackChunkName: "ProductDetail" */ "../pages/ProductDetail").then(({default: c}) => c),
     loading: Loading
 });
 

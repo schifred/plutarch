@@ -28,7 +28,8 @@ class Babel_Preset_Env extends _Mod.Mod {
       loose: true,
       useBuiltIns: 'usage',
       corejs: '2',
-      modules: 'commonjs' // https://stackoverflow.com/questions/43042889/typescript-referenceerror-exports-is-not-defined
+      modules: false // 设置成 'commonjs' 将使懒加载失效
+      // https://stackoverflow.com/questions/43042889/typescript-referenceerror-exports-is-not-defined
 
     });
 
@@ -55,10 +56,11 @@ class Babel_Plugin_Transform_Runtime extends _Mod.Mod {
   constructor(opts = {}) {
     super(opts);
 
-    _defineProperty(this, "defaultOptions", {// 'helpers': true,
+    _defineProperty(this, "defaultOptions", {
+      // 'helpers': true,
       // 'regenerator': true,
       // 'corejs': '2',
-      // 'absoluteRuntime': dirname(require.resolve('../../package')),
+      'absoluteRuntime': (0, _path.dirname)(require.resolve('../../package'))
     });
 
     this.mod = '@babel/plugin-transform-runtime';
@@ -308,8 +310,7 @@ class BabelLoader extends _Mod.Mod {
     _defineProperty(this, "defaultOptions", {
       babelrc: true,
       presets: [new BabelLoader.Babel_Preset_Env(), new BabelLoader.Babel_Preset_React()],
-      plugins: [new BabelLoader.Babel_Plugin_Transform_Runtime(), new Babel_Plugin_Add_Module_Exports(), new Babel_Plugin_Transform_Dynamic_Import_Default(), // https://babeljs.io/blog/2018/07/27/removing-babels-stage-presets
-      ...new Babel_Plugins_Stage_0().plugin],
+      plugins: [new BabelLoader.Babel_Plugin_Transform_Runtime(), new Babel_Plugin_Add_Module_Exports(), new Babel_Plugin_Transform_Dynamic_Import_Default(), ...new Babel_Plugins_Stage_0().plugin],
       cacheDirectory: true // 缓存babel-loader编译结果 
 
     });
