@@ -14,7 +14,7 @@ class Babel_Preset_Env extends Mod {
     loose: true,
     useBuiltIns: 'usage',
     corejs: '2',
-    modules: false// 设置成 'commonjs' 将使懒加载失效
+    modules: 'umd'// 设置成 'commonjs' 将使懒加载失效
     // https://stackoverflow.com/questions/43042889/typescript-referenceerror-exports-is-not-defined
   };
 
