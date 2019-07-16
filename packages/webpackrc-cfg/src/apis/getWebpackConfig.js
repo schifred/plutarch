@@ -43,8 +43,8 @@ const friendlyErrorsWebpackPlugin = new WebpackConfig.plugins.FriendlyErrorsWebp
  */
 function applyBasic(webpackConfig, options, context){
   let { mode, folders, entry = {}, output = {}, publicPath, resolve = {}, alias, devtool, 
-    externals, target, compress = true, common = 'common', disableSplitChunk, 
-    splitChunksOptions = {}, runtimeChunk } = options;
+    externals, target, compress = true, common = 'common', 
+    splitChunksOptions = {}, uglifyjsOptions } = options;
   let { cwd, realPaths: { app, src }, paths: { dist } } = context;
 
   if ( entry ){
@@ -95,7 +95,8 @@ function applyBasic(webpackConfig, options, context){
       minimizer: [
         uglifyjsWebpackPlugin.getPlugin({
           cache: true,
-          parallel: true
+          parallel: true,
+          ...(uglifyjsOptions || {})
         }), 
         optimizeCssAssetsWebpackPlugin.getPlugin({})
       ]

@@ -107,6 +107,7 @@ class Context {
       configs
     } = argv;
     const app = (0, _fs.realpathSync)(cwd);
+    console.log(environment);
     this.paths = {
       app,
       src: (0, _path.resolve)(app, src),

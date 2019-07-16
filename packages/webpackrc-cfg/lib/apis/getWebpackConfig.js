@@ -95,9 +95,8 @@ function applyBasic(webpackConfig, options, context) {
     target,
     compress = true,
     common = 'common',
-    disableSplitChunk,
     splitChunksOptions = {},
-    runtimeChunk
+    uglifyjsOptions
   } = options;
   let {
     cwd,
@@ -151,10 +150,10 @@ function applyBasic(webpackConfig, options, context) {
   webpackConfig.devtool = mode !== 'production' ? devtool || 'source-map' : false;
   if (mode !== 'production') webpackConfig.watch = true;
   webpackConfig.optimization = _objectSpread({}, mode !== 'production' || !compress ? {} : {
-    minimizer: [uglifyjsWebpackPlugin.getPlugin({
+    minimizer: [uglifyjsWebpackPlugin.getPlugin(_objectSpread({
       cache: true,
       parallel: true
-    }), optimizeCssAssetsWebpackPlugin.getPlugin({})]
+    }, uglifyjsOptions || {})), optimizeCssAssetsWebpackPlugin.getPlugin({})]
   }, {
     minimize: mode === 'production' && compress ? true : false,
     splitChunks: {
