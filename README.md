@@ -10,7 +10,7 @@ $ cnpm i plutarch -g
 
 ## 获取版本
 $ plutarch -v
-3.0.18
+3.1.3
 
 ## 创建项目
 $ plutarch init # 创建 dva 项目
@@ -30,6 +30,12 @@ $ plutarch story
 ## 配置
 
 [webpackrc-cfg](https://github.com/Alfred-sg/webpackrc-cfg)
+
+### 配置文件
+
+* .plutarch/dev.config.js 本地调试环境配置文件。
+* .plutarch/pre.config.js 预发环境配置文件。
+* .plutarch/prod.config.js 生产环境配置文件。
 
 ## 数据模拟
 

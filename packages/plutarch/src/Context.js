@@ -1,4 +1,4 @@
-import { realpathSync } from 'fs';
+import { realpathSync, existsSync } from 'fs';
 import { resolve } from 'path';
 import yargs from 'yargs';
 import { PlutarchConfigPath, ServerPath, MockPath, MocksPath, ConfigsPath } from './constants';
@@ -34,14 +34,13 @@ class Context {
    */
   getCommandArgv(){
     const { argv = {} }  = yargs;
-    const { src = 'src', dist = 'dist', assets = 'assets', config = PlutarchConfigPath, 
+    const { src = 'src', dist = 'dist', assets = 'assets', 
       server = ServerPath, mock = MockPath, mocks = MocksPath, configs = ConfigsPath } = argv;
 
     this.argv = {
       src,
       dist,
       assets,
-      config,
       server,
       mock,
       mocks,
@@ -60,7 +59,10 @@ class Context {
 
     const app = realpathSync(cwd);
 
-    console.log(environment)
+    let plurcPath = resolve(app, `.plutarch/${environment}.config.js`);
+    if (!existsSync(plurcPath)){
+      plurcPath = resolve(app, 'plutarch.config.js');
+    }
     
     this.paths = {
       app,
@@ -72,7 +74,7 @@ class Context {
       localConfig: resolve(app, `${configs}/local.yaml`),
       envConfig: resolve(app, `${configs}/${environment}.yaml`),
       nodeModules: resolve(app, 'node_modules'),
-      plrc: resolve(app, config),
+      plrc: plurcPath,
       plsv: resolve(app, server),
       plmc: resolve(app, mock),
       plmcs: resolve(app, mocks),

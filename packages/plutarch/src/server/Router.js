@@ -1,13 +1,11 @@
-import { basename, dirname, extname, resolve } from 'path';
+import { extname, resolve } from 'path';
 import { existsSync, statSync } from 'fs';
 import { isFunction, isString } from 'lodash';
 
 class Router {
   constructor(app, context){
-    const { paths: { plmcs } } = context;
     this.app = app;
     this.context = context;
-    this.controllers = { };
   }
   
   get(...args){
@@ -52,17 +50,16 @@ class Router {
     return controller;
   }
 
-  // 通过文件路径获取单个控制器
+  // 通过文件路径获取 mocks 文件夹下的单个控制器
   _getFileController(path){
     const { paths: { plmcs } } = this.context;
-    const fullpath = resolve(plmcs, path);
-    let ext = extname(path) || '.js';
+    let ext = extname(path);
+    const fullpath = resolve(plmcs, ext ? path : `${path}.js`);
+    ext = ext || '.js';
 
-    if ( ext !== '.json' || ext !== '.js' || !existsSync(fullpath) || !statSync(fullpath).isFile() )
+    if ( ext !== '.json' && ext !== '.js' && 
+      !existsSync(fullpath) && !statSync(fullpath).isFile() )
       throw new Error(`controller ${path} should be a json file or a js file`);
-
-    if ( this.controllers[path] )
-      return this.controllers[path];
 
     let controller = require(fullpath);
     
@@ -70,8 +67,6 @@ class Router {
       controller = (req, res) => {
         return res.send(controller);
       };
-
-    this.controllers[path] = controller;
 
     return controller;
   }

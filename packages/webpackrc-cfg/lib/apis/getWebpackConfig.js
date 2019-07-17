@@ -139,7 +139,7 @@ function applyBasic(webpackConfig, options, context) {
   webpackConfig.output = _objectSpread({
     path: `./${dist}`,
     filename: folders && folders.js ? `${folders.js}/[name].js` : '[name].js',
-    chunkFilename: folders && folders.js ? `${folders.js}/[name].[hash].js` : '[name].[hash].js',
+    chunkFilename: folders && folders.js ? `${folders.js}/[name].js` : '[name].js',
     publicPath: mode === 'production' ? publicPath || './' : '/'
   }, output);
   webpackConfig.resolve = _objectSpread({
@@ -167,14 +167,13 @@ function applyBasic(webpackConfig, options, context) {
         }, splitChunksOptions),
         js: _objectSpread({
           name: folders && folders.js ? `${folders.js}/${common}` : common,
-          test: /\.js$/,
+          test: /[\\/]node_modules[\\/]/,
           chunks: 'all',
           minChunks: 2,
           priority: -20
         }, splitChunksOptions)
       }
-    },
-    runtimeChunk: false
+    }
   });
   if (externals) webpackConfig.externals = externals;
   if (target) webpackConfig.target = target;

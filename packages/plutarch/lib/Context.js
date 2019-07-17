@@ -65,7 +65,6 @@ class Context {
       src = 'src',
       dist = 'dist',
       assets = 'assets',
-      config = _constants.PlutarchConfigPath,
       server = _constants.ServerPath,
       mock = _constants.MockPath,
       mocks = _constants.MocksPath,
@@ -75,7 +74,6 @@ class Context {
       src,
       dist,
       assets,
-      config,
       server,
       mock,
       mocks,
@@ -107,7 +105,12 @@ class Context {
       configs
     } = argv;
     const app = (0, _fs.realpathSync)(cwd);
-    console.log(environment);
+    let plurcPath = (0, _path.resolve)(app, `.plutarch/${environment}.config.js`);
+
+    if (!(0, _fs.existsSync)(plurcPath)) {
+      plurcPath = (0, _path.resolve)(app, 'plutarch.config.js');
+    }
+
     this.paths = {
       app,
       src: (0, _path.resolve)(app, src),
@@ -118,7 +121,7 @@ class Context {
       localConfig: (0, _path.resolve)(app, `${configs}/local.yaml`),
       envConfig: (0, _path.resolve)(app, `${configs}/${environment}.yaml`),
       nodeModules: (0, _path.resolve)(app, 'node_modules'),
-      plrc: (0, _path.resolve)(app, config),
+      plrc: plurcPath,
       plsv: (0, _path.resolve)(app, server),
       plmc: (0, _path.resolve)(app, mock),
       plmcs: (0, _path.resolve)(app, mocks),

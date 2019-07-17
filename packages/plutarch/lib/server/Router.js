@@ -13,14 +13,8 @@ var _lodash = require("lodash");
 
 class Router {
   constructor(app, context) {
-    const {
-      paths: {
-        plmcs
-      }
-    } = context;
     this.app = app;
     this.context = context;
-    this.controllers = {};
   }
 
   get(...args) {
@@ -57,7 +51,7 @@ class Router {
       res.send(arg);
     };
     return controller;
-  } // 通过文件路径获取单个控制器
+  } // 通过文件路径获取 mocks 文件夹下的单个控制器
 
 
   _getFileController(path) {
@@ -66,17 +60,16 @@ class Router {
         plmcs
       }
     } = this.context;
-    const fullpath = (0, _path.resolve)(plmcs, path);
-    let ext = (0, _path.extname)(path) || '.js';
-    if (ext !== '.json' || ext !== '.js' || !(0, _fs.existsSync)(fullpath) || !(0, _fs.statSync)(fullpath).isFile()) throw new Error(`controller ${path} should be a json file or a js file`);
-    if (this.controllers[path]) return this.controllers[path];
+    let ext = (0, _path.extname)(path);
+    const fullpath = (0, _path.resolve)(plmcs, ext ? path : `${path}.js`);
+    ext = ext || '.js';
+    if (ext !== '.json' && ext !== '.js' && !(0, _fs.existsSync)(fullpath) && !(0, _fs.statSync)(fullpath).isFile()) throw new Error(`controller ${path} should be a json file or a js file`);
 
     let controller = require(fullpath);
 
     if (ext === '.json') controller = (req, res) => {
       return res.send(controller);
     };
-    this.controllers[path] = controller;
     return controller;
   }
 

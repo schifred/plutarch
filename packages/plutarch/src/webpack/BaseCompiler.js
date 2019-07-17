@@ -1,5 +1,4 @@
 import EventEmitter from 'events';
-import { resolve } from 'path';
 import { mkdirSync, existsSync, readFileSync } from 'fs';
 import rimraf from 'rimraf';
 import { webpack, getWebpackConfig } from 'webpackrc-cfg';

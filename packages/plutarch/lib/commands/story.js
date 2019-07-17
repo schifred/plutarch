@@ -78,17 +78,7 @@ class StoryCommand extends _commonBin.default {
     } else {
       prompts = {
         cmd: 'start'
-      }; // prompts = yield inquirer.prompt({
-      //   type: 'list',
-      //   name: 'cmd',
-      //   message: "choice command",
-      //   paginated: true,
-      //   choices: [{ 
-      //     name: 'start storybook', value: 'start' 
-      //   }, {
-      //     name: 'build storybook', value: 'build'
-      //   }]
-      // });
+      };
     }
 
     ;

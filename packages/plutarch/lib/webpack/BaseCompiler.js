@@ -7,8 +7,6 @@ exports.default = void 0;
 
 var _events = _interopRequireDefault(require("events"));
 
-var _path = require("path");
-
 var _fs = require("fs");
 
 var _rimraf = _interopRequireDefault(require("rimraf"));

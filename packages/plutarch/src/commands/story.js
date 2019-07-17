@@ -56,17 +56,6 @@ class StoryCommand extends Command {
       prompts = { cmd: 'build' };
     } else {
       prompts = { cmd: 'start' };
-      // prompts = yield inquirer.prompt({
-      //   type: 'list',
-      //   name: 'cmd',
-      //   message: "choice command",
-      //   paginated: true,
-      //   choices: [{ 
-      //     name: 'start storybook', value: 'start' 
-      //   }, {
-      //     name: 'build storybook', value: 'build'
-      //   }]
-      // });
     };
 
     const installFlag = install([

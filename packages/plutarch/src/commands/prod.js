@@ -1,9 +1,7 @@
 import path from 'path';
-import fs from 'fs';
 import Command from 'common-bin';
-import * as constants from '../constants';
 
-class PreCommand extends Command {
+class ProdCommand extends Command {
   constructor(rawArgv) {
     super(rawArgv);
 
@@ -28,13 +26,7 @@ class PreCommand extends Command {
 
   * run({ cwd, env, argv, rawArgv }) {
     const runCompilePath = require.resolve("../exec/compile.js");
-    const forkNodeArgv = this.helper.unparseArgv({
-      ...argv,
-      config: argv.pre && fs.existsSync(path.resolve(cwd, constants.PreConfigPath)) ? 
-        constants.PreConfigPath : 
-        fs.existsSync(path.resolve(cwd, constants.ProdConfigPath)) ? 
-        constants.ProdConfigPath : constants.PlutarchConfigPath
-    });
+    const forkNodeArgv = this.helper.unparseArgv(argv);
 
     this.helper.forkNode(runCompilePath, forkNodeArgv, { 
       cwd: argv.cwd || cwd,
@@ -47,8 +39,8 @@ class PreCommand extends Command {
   }
 
   get description() {
-    return 'pre';
+    return 'prod';
   }
 };
 
-module.exports = PreCommand;
+module.exports = ProdCommand;

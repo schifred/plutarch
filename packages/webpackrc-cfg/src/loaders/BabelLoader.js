@@ -10,11 +10,10 @@ class Babel_Preset_Env extends Mod {
         'IE >= 9'
       ]
     },
-    forceAllTransforms: true,
-    loose: true,
+    loose: false,
     useBuiltIns: 'usage',
     corejs: '2',
-    modules: 'umd'// 设置成 'commonjs' 将使懒加载失效
+    modules: false// 设置成 'commonjs' 将使懒加载失效
     // https://stackoverflow.com/questions/43042889/typescript-referenceerror-exports-is-not-defined
   };
 
@@ -36,9 +35,6 @@ class Babel_Preset_React extends Mod {
 // 注入最新的 api
 class Babel_Plugin_Transform_Runtime extends Mod {
   defaultOptions = {
-    // 'helpers': true,
-    // 'regenerator': true,
-    // 'corejs': '2',
     'absoluteRuntime': dirname(require.resolve('../../package')),
   };
 
@@ -52,11 +48,6 @@ class Babel_Plugin_Transform_Runtime extends Mod {
     return ['@babel/runtime-corejs2', this.mod];
   }; 
 };
-
-// Babel_Plugin_Add_Module_Exports::common.js 模块加载，无需 default
-class Babel_Plugin_Add_Module_Exports extends Mod {}
-// 懒加载 import('./a')，无需 default
-class Babel_Plugin_Transform_Dynamic_Import_Default extends Mod {}
 
 // stage_0
 class Babel_Plugin_Prorosal_Function_Bind extends Mod { 
@@ -265,8 +256,6 @@ export default class BabelLoader extends Mod {
     ],
     plugins: [ 
       new BabelLoader.Babel_Plugin_Transform_Runtime(),
-      new Babel_Plugin_Add_Module_Exports(),
-      new Babel_Plugin_Transform_Dynamic_Import_Default(),
       ...new Babel_Plugins_Stage_0().plugin,
     ],
     cacheDirectory: true// 缓存babel-loader编译结果 

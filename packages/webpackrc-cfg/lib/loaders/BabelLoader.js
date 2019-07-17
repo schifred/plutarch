@@ -24,11 +24,10 @@ class Babel_Preset_Env extends _Mod.Mod {
       targets: {
         browsers: ['last 2 versions', 'IE >= 9']
       },
-      forceAllTransforms: true,
-      loose: true,
+      loose: false,
       useBuiltIns: 'usage',
       corejs: '2',
-      modules: 'umd' // 设置成 'commonjs' 将使懒加载失效
+      modules: false // 设置成 'commonjs' 将使懒加载失效
       // https://stackoverflow.com/questions/43042889/typescript-referenceerror-exports-is-not-defined
 
     });
@@ -57,9 +56,6 @@ class Babel_Plugin_Transform_Runtime extends _Mod.Mod {
     super(opts);
 
     _defineProperty(this, "defaultOptions", {
-      // 'helpers': true,
-      // 'regenerator': true,
-      // 'corejs': '2',
       'absoluteRuntime': (0, _path.dirname)(require.resolve('../../package'))
     });
 
@@ -73,13 +69,7 @@ class Babel_Plugin_Transform_Runtime extends _Mod.Mod {
 
 }
 
-; // Babel_Plugin_Add_Module_Exports::common.js 模块加载，无需 default
-
-class Babel_Plugin_Add_Module_Exports extends _Mod.Mod {} // 懒加载 import('./a')，无需 default
-
-
-class Babel_Plugin_Transform_Dynamic_Import_Default extends _Mod.Mod {} // stage_0
-
+; // stage_0
 
 class Babel_Plugin_Prorosal_Function_Bind extends _Mod.Mod {
   constructor(opts = {}) {
@@ -310,7 +300,7 @@ class BabelLoader extends _Mod.Mod {
     _defineProperty(this, "defaultOptions", {
       babelrc: true,
       presets: [new BabelLoader.Babel_Preset_Env(), new BabelLoader.Babel_Preset_React()],
-      plugins: [new BabelLoader.Babel_Plugin_Transform_Runtime(), new Babel_Plugin_Add_Module_Exports(), new Babel_Plugin_Transform_Dynamic_Import_Default(), ...new Babel_Plugins_Stage_0().plugin],
+      plugins: [new BabelLoader.Babel_Plugin_Transform_Runtime(), ...new Babel_Plugins_Stage_0().plugin],
       cacheDirectory: true // 缓存babel-loader编译结果 
 
     });

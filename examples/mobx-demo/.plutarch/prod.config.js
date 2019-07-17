@@ -1,7 +1,4 @@
 module.exports = {
-  // entry: {
-  //   index: 'src/index'
-  // },
   module: {
     babel: {
       plugins: [
@@ -13,7 +10,8 @@ module.exports = {
           }
         ]
       ]
-    }
+    },
+    // eslint: {}
   },
-  devtool: 'cheap-module-eval-source-map'
+  bbb: 111,
 };
