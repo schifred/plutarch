@@ -36,6 +36,7 @@ class Babel_Preset_React extends Mod {
 class Babel_Plugin_Transform_Runtime extends Mod {
   defaultOptions = {
     'absoluteRuntime': dirname(require.resolve('../../package')),
+    'corejs': { version: 2 }
   };
 
   constructor(opts = {}){

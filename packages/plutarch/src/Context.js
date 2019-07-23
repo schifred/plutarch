@@ -1,7 +1,7 @@
 import { realpathSync, existsSync } from 'fs';
 import { resolve } from 'path';
 import yargs from 'yargs';
-import { PlutarchConfigPath, ServerPath, MockPath, MocksPath, ConfigsPath } from './constants';
+import { ServerPath, MockPath, MocksPath, ConfigsPath } from './constants';
 
 /**
  * 上下文相关
