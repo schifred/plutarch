@@ -6,14 +6,39 @@
   "scripts": {
     "dev": "plutarch story",
     "build": "plutarch build",
-    "docs": "plutarch story"
+    "docs": "plutarch story",
+    "lint": "eslint --ext **/*.js src",
+    "lint:fix": "eslint --fix **/*.js src"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.js": ["npm run lint:fix", "git add"]
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@storybook/addon-actions": "^5.1.9",
+    "@storybook/addon-info": "^5.1.9",
+    "@storybook/addon-links": "^5.1.9",
+    "@storybook/core": "^5.1.9",
+    "@storybook/react": "^5.1.9",
+    "autoprefixer": "^9.6.1",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-docgen-typescript-loader": "^3.1.0",
+    "react-dom": "^16.8.6",
+    "typescript": "^3.5.3"
   },
   "devDependencies": {
+    "babel-plugin-import": "^1.6.0",
+    "eslint": "^6.1.0",
+    "eslint-config-alloy": "^2.0.5",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "husky": "^3.0.1",
+    "lint-staged": "^9.2.1"
   }
 }

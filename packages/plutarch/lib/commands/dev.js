@@ -15,7 +15,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-class ServerCommand extends _commonBin.default {
+class DevCommand extends _commonBin.default {
   constructor(rawArgv) {
     super(rawArgv);
     this.options = {
@@ -80,6 +80,6 @@ class ServerCommand extends _commonBin.default {
 
 }
 
-var _default = ServerCommand;
+var _default = DevCommand;
 exports.default = _default;
 module.exports = exports.default;

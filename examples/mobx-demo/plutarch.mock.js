@@ -1,7 +1,7 @@
 // plutarch.mock.js
 module.exports = function(app){
   // 获取产品类目
-  app.get('/api/category', 'attributes');
+  app.get('/api/category', {'attributes': true});
 
   // 获取产品属性
   app.get('/api/attributes', (req, res) => {

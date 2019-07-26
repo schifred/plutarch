@@ -2,7 +2,7 @@ import path from 'path';
 import Command from 'common-bin';
 import * as constants from '../constants';
 
-class ServerCommand extends Command {
+class DevCommand extends Command {
   constructor(rawArgv) {
     super(rawArgv);
 
@@ -62,4 +62,4 @@ class ServerCommand extends Command {
   }
 }
 
-export default ServerCommand;
+export default DevCommand;

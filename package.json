@@ -7,7 +7,8 @@
     "dev": "npm run build && node scripts/dev.js",
     "pre": "npm run build && node scripts/pre.js",
     "prod": "npm run build && node scripts/prod.js",
-    "publish": "npm run build && lerna publish"
+    "publish": "npm run build && lerna publish",
+    "story:start": "npm run build && node scripts/story-start.js"
   },
   "bin": {
     "plu": "bin/plutarch.js",
@@ -18,5 +19,18 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "dependencies": {
+    "@babel/runtime-corejs2": "^7.5.5",
+    "@storybook/addon-actions": "^5.1.9",
+    "@storybook/addon-info": "^5.1.9",
+    "@storybook/addon-links": "^5.1.9",
+    "@storybook/core": "^5.1.9",
+    "@storybook/react": "^5.1.9",
+    "autoprefixer": "^9.6.1",
+    "dargs": "^7.0.0",
+    "execa": "^2.0.3",
+    "react-docgen-typescript-loader": "^3.1.0",
+    "typescript": "^3.5.3"
   }
 }
