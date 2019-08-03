@@ -70,7 +70,6 @@ class ServerCommand extends _commonBin.default {
     const runCompilePath = require.resolve("../exec/compile.js");
 
     const forkNodeArgv = this.helper.unparseArgv(argv);
-    console.log("1111", argv.cwd);
     this.helper.forkNode(runCompilePath, forkNodeArgv, {
       cwd: argv.cwd || cwd,
       env: _objectSpread({}, process.env, {
