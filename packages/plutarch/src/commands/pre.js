@@ -35,7 +35,7 @@ class PreCommand extends Command {
         ...process.env,
         "NODE_ENV": "production",
         environment: 'pre',
-        "TMPDIR": path.resolve(cwd, '.tmpdir')
+        "TMPDIR": path.resolve(argv.cwd || cwd, '.tmpdir')
       } 
     });
   }

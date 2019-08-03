@@ -63,6 +63,8 @@ class Context {
     if (!existsSync(plurcPath)){
       plurcPath = resolve(app, 'plutarch.config.js');
     }
+
+    console.log(app)
     
     this.paths = {
       app,

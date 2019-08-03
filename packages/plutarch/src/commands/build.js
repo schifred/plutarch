@@ -47,7 +47,7 @@ class BuildCommand extends Command {
         ...process.env,
         "NODE_ENV": "production",
         environment: argv.pre ? 'pre' : 'prod',
-        "TMPDIR": path.resolve(cwd, '.tmpdir')
+        "TMPDIR": path.resolve(argv.cwd || cwd, '.tmpdir')
       } 
     });
   }

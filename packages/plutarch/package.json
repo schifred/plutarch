@@ -16,8 +16,8 @@
   ],
   "files": [
     "bin",
-    "src",
-    "lib"
+    "lib",
+    "tpls"
   ],
   "scripts": {
     "build": "rimraf lib && babel src --out-dir lib",

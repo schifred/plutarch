@@ -111,6 +111,7 @@ class Context {
       plurcPath = (0, _path.resolve)(app, 'plutarch.config.js');
     }
 
+    console.log(app);
     this.paths = {
       app,
       src: (0, _path.resolve)(app, src),

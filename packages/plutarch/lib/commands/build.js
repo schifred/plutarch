@@ -60,7 +60,7 @@ class BuildCommand extends _commonBin.default {
       env: _objectSpread({}, process.env, {
         "NODE_ENV": "production",
         environment: argv.pre ? 'pre' : 'prod',
-        "TMPDIR": _path.default.resolve(cwd, '.tmpdir')
+        "TMPDIR": _path.default.resolve(argv.cwd || cwd, '.tmpdir')
       })
     });
   }
