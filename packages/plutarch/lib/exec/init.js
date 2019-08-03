@@ -12,6 +12,8 @@ var _inquirer = _interopRequireDefault(require("inquirer"));
 
 var _lodash = require("lodash");
 
+var _stringify = _interopRequireDefault(require("../utils/stringify"));
+
 var _logger = _interopRequireDefault(require("../logger"));
 
 var _Context = _interopRequireDefault(require("../Context"));
@@ -64,10 +66,6 @@ _inquirer.default.prompt([{
   default: 'index.js'
 }, {
   type: 'input',
-  name: 'test',
-  message: 'test command: '
-}, {
-  type: 'input',
   name: 'keywords',
   message: 'keywords: '
 }, {
@@ -87,11 +85,10 @@ _inquirer.default.prompt([{
   const {
     type,
     entry,
-    test,
     keywords,
     git
   } = answers,
-        pkgConifg = _objectWithoutProperties(answers, ["type", "entry", "test", "keywords", "git"]);
+        pkgConifg = _objectWithoutProperties(answers, ["type", "entry", "keywords", "git"]);
 
   _debug(`init ${type} project`);
 
@@ -102,9 +99,6 @@ _inquirer.default.prompt([{
 
   pkg = (0, _lodash.merge)(pkg, _objectSpread({}, pkgConifg, {
     main: entry,
-    scripts: {
-      test: test ? test : 'echo \"Error: no test specified\" && exit 1'
-    },
     keywords: keywords ? keywords : [],
     repository: {
       type: 'git',
@@ -117,32 +111,14 @@ _inquirer.default.prompt([{
 
     _shelljs.default.cp('-R', `${tplPath}/*`, app);
 
-    (0, _fs.writeFileSync)(pkgPath, format(pkg), {
+    (0, _fs.writeFileSync)(pkgPath, (0, _stringify.default)(pkg), {
       encoding: 'utf8'
     });
 
     _logger.default.blue('loading dependencies');
-
-    _shelljs.default.cd(app);
-
-    _shelljs.default.exec('npm install -q');
   } catch (e) {
     _logger.default.red(e);
   }
 
   ;
 });
-
-function format(pkg) {
-  pkg = JSON.stringify(pkg);
-  pkg = pkg.slice(1, pkg.length - 1);
-  pkg = pkg.replace(/(\"[^\"]+\"):/g, key => `\r\n  ${key} `).replace(/\}/g, str => `\r\n${str}`);
-  pkg = pkg.split(/\{|\}/).map((item, idx) => {
-    if (idx % 2 !== 0) return `{${item.replace(/(\"[^\"]+\"):/g, key => `  ${key} `)}  }`;
-    return item;
-  }).join('');
-  pkg = `{${pkg}\r\n}`;
-  return pkg;
-}
-
-;
