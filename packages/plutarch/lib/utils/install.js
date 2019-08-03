@@ -35,8 +35,11 @@ function install(name, options = {}) {
 
   ;
   let args = [npm === 'yarn' ? 'add' : 'install', ...name];
-  if (name && options.save) args.push('--save-dev');
-  console.info(`Installing ${name ? name : 'dependencies'} ...`);
+  let saveArg = '';
+  if (name && options.save) saveArg = '--save';
+  if (name && options.dev) saveArg = '--save-dev';
+  args.push(saveArg);
+  console.info(`Installing ${name ? name : 'dependencies ...'}${saveArg ? ' ' + saveArg : ''}`);
 
   const output = _crossSpawn.default.sync(npm, args, {
     stdio: ["ignore", "pipe", "inherit"]

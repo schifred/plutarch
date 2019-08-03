@@ -11,8 +11,10 @@ class Babel_Preset_Env extends Mod {
       ]
     },
     loose: false,
-    useBuiltIns: 'usage',
-    corejs: '2',
+    // https://segmentfault.com/q/1010000018937075/a-1020000018937692
+    // useBuiltIns 不能和 transform-runtime 一起使用；corejs 选项必须结合 useBuiltIns
+    // useBuiltIns: 'usage',
+    // corejs: '2',
     modules: false// 设置成 'commonjs' 将使懒加载失效
     // https://stackoverflow.com/questions/43042889/typescript-referenceerror-exports-is-not-defined
   };

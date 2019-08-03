@@ -18,6 +18,7 @@
     "indent": "off",
     "react/jsx-indent-props": "off",
     "react/jsx-curly-newline": "off",
+    "react/jsx-indent": "off",
     "eqeqeq": "off",
     "react/jsx-fragments": "off"
   }

@@ -31,6 +31,8 @@ class ProdCommand extends Command {
     this.helper.forkNode(runCompilePath, forkNodeArgv, { 
       cwd: argv.cwd || cwd,
       env: {
+        // 避免深度嵌套的子进程丢失 process.env 信息
+        ...process.env,
         "NODE_ENV": "production",
         environment: 'prod',
         "TMPDIR": path.resolve(cwd, '.tmpdir')

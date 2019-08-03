@@ -46,12 +46,13 @@ class StoryCommand extends Command {
   * run({ cwd, env, argv, rawArgv }) {
     const runStoryPath = require.resolve("../exec/story.js");
     const forkNodeArgv = this.helper.unparseArgv(argv);
-    console.log(111)
 
     this.helper.forkNode(runStoryPath, forkNodeArgv, { 
       ...argv,
       cwd: argv.cwd || cwd,
       env: {
+        // 避免深度嵌套的子进程丢失 process.env 信息
+        ...process.env,
         "NODE_ENV": "development",
         environment: argv.build ? 'prod' : 'dev',
         "TMPDIR": path.resolve(cwd, '.tmpdir')

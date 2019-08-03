@@ -188,6 +188,8 @@ function applyBasic(webpackConfig, options, context) {
 
 function applyRules(webpackConfig, options, context) {
   const {
+    mode,
+    enableCssModules = false,
     folders,
     rules = [],
     module = {}
@@ -241,7 +243,10 @@ function applyRules(webpackConfig, options, context) {
     test: /\.less$/,
     loader: [miniCssExtractLoader.module, {
       loader: cssLoader.module,
-      options: cssLoader.getOptions(_objectSpread({}, css, {
+      options: cssLoader.getOptions(_objectSpread({}, css, {}, enableCssModules ? {
+        modules: true,
+        localIdentName: '[local]-[hash:base64:8]'
+      } : {}, {
         importLoaders: 2
       }))
     }, {
@@ -323,8 +328,7 @@ function getWebpackConfig() {
 function _getWebpackConfig() {
   _getWebpackConfig = _asyncToGenerator(function* (opts = {
     mode: 'production'
-  }, context) // installMode
-  {
+  }, context) {
     const options = _extends({}, opts);
 
     const {

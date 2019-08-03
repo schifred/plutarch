@@ -136,7 +136,7 @@ function applyBasic(webpackConfig, options, context){
  * @param {object} context 上下文
  */
 function applyRules(webpackConfig, options, context){
-  const { folders, rules = [], module = {} } = options;
+  const { mode, enableCssModules = false, folders, rules = [], module = {} } = options;
   const { eslint, babel = {}, ts = {}, css = {}, img = {}, font = {} } = module;
 
   webpackConfig.rules = [{
@@ -184,6 +184,10 @@ function applyRules(webpackConfig, options, context){
       loader: cssLoader.module, 
       options: cssLoader.getOptions({
         ...css,
+        ...(enableCssModules ? {
+          modules: true,
+          localIdentName: '[local]-[hash:base64:8]'
+        } : {}),
         importLoaders: 2
       })
     }, {
@@ -260,7 +264,6 @@ function applyPlugins(webpackConfig, options, context){
 export default async function getWebpackConfig(
   opts = { mode: 'production' }, 
   context, 
-  // installMode
 ){
   const { ...options } = opts;
   const { npm, cwd, paths } = context;

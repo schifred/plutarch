@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "plutarch server",
     "build": "plutarch build",
-    "lint": "eslint --ext **/*.js src",
-    "lint:fix": "eslint --fix **/*.js src"
+    "lint": "eslint --ext src/**/*.js",
+    "lint:fix": "eslint --fix src/**/*.js"
   },
   "husky": {
     "hooks": {
@@ -15,25 +15,37 @@
     }
   },
   "lint-staged": {
-    "src/**/*.js": ["npm run lint:fix", "git add"]
+    "src/**/*.js": [
+      "npm run lint:fix",
+      "git add"
+    ]
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "antd": "^3.20.7",
+    "axios": "^0.19.0",
     "babel-plugin-import": "^1.12.0",
+    "enquire-js": "^0.2.1",
     "mobx": "^5.13.0",
     "mobx-react": "^6.1.1",
     "mobx-react-devtools": "^6.1.1",
+    "prop-types": "^15.7.2",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "react-loadable": "^5.5.0",
+    "react-router-dom": "^5.0.1"
   },
   "devDependencies": {
+    "babel-eslint": "^10.0.2",
     "babel-plugin-import": "^1.6.0",
     "eslint": "^6.1.0",
     "eslint-config-alloy": "^2.0.5",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
     "husky": "^3.0.1",
-    "lint-staged": "^9.2.1"
+    "lint-staged": "^9.2.1",
+    "prettier": "^1.18.2"
   }
 }

@@ -1,8 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import debug from 'debug';
-import execa from 'execa';
-import cp from 'child_process';
 import unparse from 'dargs';
 import Context from '../Context';
 import BaseCompiler from '../webpack/BaseCompiler';
@@ -10,7 +8,6 @@ import install from '../utils/install';
 import copy from '../utils/copy';
 import stringify from '../utils/stringify';
 import fork from '../utils/fork';
-import * as constants from '../constants';
 
 async function run() {
   const ctx = new Context();
@@ -18,11 +15,11 @@ async function run() {
   const { npm, config, build, port, output } = ctx.argv;
 
   const installFlag = install([
-    'typescript', 'react-docgen-typescript-loader', 
-    'autoprefixer', '@storybook/core', '@storybook/react', 
-    '@storybook/addon-actions', 
+    'ts-loader', 'typescript', 'react-docgen-typescript-loader', 'style-loader', 
+    'postcss-loader', 'autoprefixer', 'less', 'less-loader', 
+    '@storybook/core', '@storybook/react', '@storybook/addon-actions', 
     '@storybook/addon-links', '@storybook/addon-info'
-  ], { npm });
+  ], { npm, dev: true });
   if ( !installFlag ) return;
   
   const cfgDir = path.resolve(cwd, `./${config}`);
@@ -40,14 +37,15 @@ async function run() {
   );
 
   const webpackrc = path.resolve(cwd, `./${config}/webpack.config.js`);
-  const opts = require(ctx.paths.plrc);// 客户配置
-  const compiler = new BaseCompiler(opts, ctx);
-  const webpackConfig = await compiler.generate(!build ? 'development' : 'production');
-
-  const jsloader = webpackConfig.module.rules[0];
-  const lessloader = webpackConfig.module.rules[5].loader;
-
-  fs.writeFileSync(webpackrc, 
+  if (!fs.existsSync(webpackrc)){
+    const opts = require(ctx.paths.plrc);// 客户配置
+    const compiler = new BaseCompiler(opts, ctx);
+    const webpackConfig = await compiler.generate(!build ? 'development' : 'production');
+  
+    const jsloader = webpackConfig.module.rules[0];
+    const lessloader = webpackConfig.module.rules[5].loader;
+  
+    fs.writeFileSync(webpackrc, 
 `module.exports = ({config}) => {
   config.module.rules.shift();
   const jsloader = ${stringify(jsloader)};
@@ -57,7 +55,7 @@ async function run() {
     use: [
       ...jsloader.loader,
       {
-        loader: "${require.resolve('ts-loader')}",
+        loader: require.resolve('ts-loader'),
         options: {
           transpileOnly: true,
         },
@@ -68,14 +66,14 @@ async function run() {
   config.module.rules.push({
     test: /\.less$/,
     use: [
-      "${require.resolve('style-loader')}", 
+      require.resolve('style-loader'), 
       ${stringify(lessloader[1])},
-      { loader: "${require.resolve('postcss-loader')}", 
+      { loader: require.resolve('postcss-loader'), 
         options: {
           plugins: [require("autoprefixer")("last 100 versions")]
         },
       },
-      "${require.resolve('less-loader')}"
+      require.resolve('less-loader')
     ],
   });
   config.resolve.alias = {
@@ -88,6 +86,7 @@ async function run() {
   ];
   return config;
 };`);
+  }
 
   const binPath = path.resolve(cwd, 
     `./node_modules/@storybook/react/bin/${!build ? 'index' : 'build'}.js`);

@@ -6,10 +6,6 @@ var _path = _interopRequireDefault(require("path"));
 
 var _debug = _interopRequireDefault(require("debug"));
 
-var _execa = _interopRequireDefault(require("execa"));
-
-var _child_process = _interopRequireDefault(require("child_process"));
-
 var _dargs = _interopRequireDefault(require("dargs"));
 
 var _Context = _interopRequireDefault(require("../Context"));
@@ -23,10 +19,6 @@ var _copy = _interopRequireDefault(require("../utils/copy"));
 var _stringify = _interopRequireDefault(require("../utils/stringify"));
 
 var _fork = _interopRequireDefault(require("../utils/fork"));
-
-var constants = _interopRequireWildcard(require("../constants"));
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -51,8 +43,9 @@ function _run() {
       port,
       output
     } = ctx.argv;
-    const installFlag = (0, _install.default)(['typescript', 'react-docgen-typescript-loader', 'autoprefixer', '@storybook/core', '@storybook/react', '@storybook/addon-actions', '@storybook/addon-links', '@storybook/addon-info'], {
-      npm
+    const installFlag = (0, _install.default)(['ts-loader', 'typescript', 'react-docgen-typescript-loader', 'style-loader', 'postcss-loader', 'autoprefixer', 'less', 'less-loader', '@storybook/core', '@storybook/react', '@storybook/addon-actions', '@storybook/addon-links', '@storybook/addon-info'], {
+      npm,
+      dev: true
     });
     if (!installFlag) return;
 
@@ -68,15 +61,16 @@ function _run() {
 
     const webpackrc = _path.default.resolve(cwd, `./${config}/webpack.config.js`);
 
-    const opts = require(ctx.paths.plrc); // 客户配置
+    if (!_fs.default.existsSync(webpackrc)) {
+      const opts = require(ctx.paths.plrc); // 客户配置
 
 
-    const compiler = new _BaseCompiler.default(opts, ctx);
-    const webpackConfig = yield compiler.generate(!build ? 'development' : 'production');
-    const jsloader = webpackConfig.module.rules[0];
-    const lessloader = webpackConfig.module.rules[5].loader;
+      const compiler = new _BaseCompiler.default(opts, ctx);
+      const webpackConfig = yield compiler.generate(!build ? 'development' : 'production');
+      const jsloader = webpackConfig.module.rules[0];
+      const lessloader = webpackConfig.module.rules[5].loader;
 
-    _fs.default.writeFileSync(webpackrc, `module.exports = ({config}) => {
+      _fs.default.writeFileSync(webpackrc, `module.exports = ({config}) => {
   config.module.rules.shift();
   const jsloader = ${(0, _stringify.default)(jsloader)};
   config.module.rules.unshift(jsloader);
@@ -85,7 +79,7 @@ function _run() {
     use: [
       ...jsloader.loader,
       {
-        loader: "${require.resolve('ts-loader')}",
+        loader: require.resolve('ts-loader'),
         options: {
           transpileOnly: true,
         },
@@ -96,14 +90,14 @@ function _run() {
   config.module.rules.push({
     test: /\.less$/,
     use: [
-      "${require.resolve('style-loader')}", 
+      require.resolve('style-loader'), 
       ${(0, _stringify.default)(lessloader[1])},
-      { loader: "${require.resolve('postcss-loader')}", 
+      { loader: require.resolve('postcss-loader'), 
         options: {
           plugins: [require("autoprefixer")("last 100 versions")]
         },
       },
-      "${require.resolve('less-loader')}"
+      require.resolve('less-loader')
     ],
   });
   config.resolve.alias = {
@@ -116,6 +110,7 @@ function _run() {
   ];
   return config;
 };`);
+    }
 
     const binPath = _path.default.resolve(cwd, `./node_modules/@storybook/react/bin/${!build ? 'index' : 'build'}.js`);
 

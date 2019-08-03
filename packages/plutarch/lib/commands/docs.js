@@ -54,11 +54,11 @@ class DocsCommand extends _commonBin.default {
     }));
     this.helper.forkNode(runCompilePath, forkNodeArgv, {
       cwd: argv.cwd || cwd,
-      env: {
+      env: _objectSpread({}, process.env, {
         "NODE_ENV": "production",
         environment: 'dev',
         "TMPDIR": _path.default.resolve(cwd, '.tmpdir')
-      }
+      })
     });
   }
 

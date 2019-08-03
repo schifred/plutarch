@@ -18,6 +18,7 @@
 | module | 内置加载器选项配置 | undefined |
 | splitChunksOptions | 公共模块抽取，自动提取到 commons 文件内 | undefined |
 | compress | 是否压缩 | true |
+| enableCssModules | 是否开启 css modules | false |
 
 ## 上下文
 

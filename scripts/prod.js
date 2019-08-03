@@ -24,7 +24,7 @@ function startDevServer(opts = {}) {
 
 function start() {
   const devServers = [
-    [12341, '../examples/mobx-demo']
+    [12341, '../packages/plutarch/tpls/mobx-project']
   ];
 
   return Promise.all(

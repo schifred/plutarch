@@ -13,13 +13,16 @@ var _getDirs = _interopRequireDefault(require("./getDirs"));
 
 var _hyphen = _interopRequireDefault(require("./hyphen"));
 
+var _stringify = _interopRequireDefault(require("./stringify"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _default = {
   createCtx: _createCtx.default,
   getFiles: _getFiles.default,
   getDirs: _getDirs.default,
-  hyphen: _hyphen.default
+  hyphen: _hyphen.default,
+  stringify: _stringify.default
 };
 exports.default = _default;
 module.exports = exports.default;

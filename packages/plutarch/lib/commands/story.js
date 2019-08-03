@@ -62,14 +62,13 @@ class StoryCommand extends _commonBin.default {
     const runStoryPath = require.resolve("../exec/story.js");
 
     const forkNodeArgv = this.helper.unparseArgv(argv);
-    console.log(111);
     this.helper.forkNode(runStoryPath, forkNodeArgv, _objectSpread({}, argv, {
       cwd: argv.cwd || cwd,
-      env: {
+      env: _objectSpread({}, process.env, {
         "NODE_ENV": "development",
         environment: argv.build ? 'prod' : 'dev',
         "TMPDIR": _path.default.resolve(cwd, '.tmpdir')
-      }
+      })
     }));
   }
 
