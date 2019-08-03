@@ -12,4 +12,5 @@ yarn.lock
 
 /test/
 node_modules/
+**/*/node_modules/
 /.vscode/
