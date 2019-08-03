@@ -14,11 +14,6 @@
     "create-react-app",
     "webpack"
   ],
-  "files": [
-    "bin",
-    "lib",
-    "tpls"
-  ],
   "scripts": {
     "build": "rimraf lib && babel src --out-dir lib",
     "test": "npm run build && cross-env NODE_ENV=test nyc mocha --no-timeouts test/**/*-test.js"
@@ -93,5 +88,6 @@
     "glob": "^7.1.2",
     "mocha": "^4.0.0",
     "nyc": "^14.1.1"
-  }
+  },
+  "gitHead": "9651be94981d646439e18b9e667189db3e8d4ede"
 }
