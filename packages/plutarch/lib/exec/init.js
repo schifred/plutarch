@@ -115,7 +115,7 @@ _inquirer.default.prompt([{
       encoding: 'utf8'
     });
 
-    _logger.default.blue('loading dependencies');
+    _logger.default.blue('Done');
   } catch (e) {
     _logger.default.red(e);
   }

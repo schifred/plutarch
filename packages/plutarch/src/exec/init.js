@@ -80,7 +80,7 @@ inquirer.prompt([{
 
     writeFileSync(pkgPath, stringify(pkg), { encoding: 'utf8' });
 
-    logger.blue('loading dependencies');
+    logger.blue('Done');
   }catch(e){
     logger.red(e);
   };

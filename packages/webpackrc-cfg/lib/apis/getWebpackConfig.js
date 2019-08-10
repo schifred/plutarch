@@ -234,7 +234,7 @@ function applyRules(webpackConfig, options, context) {
       name: folders && folders.img ? `${folders.img}/[hash].[ext]` : '[hash].[ext]'
     }, img))
   }, {
-    test: /\.(eot|woff|woff2|webfont|ttf|svg)\?*.*$/,
+    test: /\.(eot|woff|woff2|webfont|ttf)\?*.*$/,
     loader: urlLoader.module,
     options: urlLoader.getOptions(_objectSpread({
       name: folders && folders.font ? `${folders.font}/[hash].[ext]` : '[hash].[ext]'

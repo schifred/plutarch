@@ -104,6 +104,14 @@ class Compiler extends _events.default {
         webpackConfig = options.call(context, webpackConfig);
       }
 
+      if ((0, _fs.existsSync)(paths.webpackrc)) {
+        const webpackrc = require(paths.webpackrc);
+
+        if (typeof webpackrc === 'function') {
+          webpackConfig = webpackrc(webpackConfig, mode);
+        }
+      }
+
       return webpackConfig;
     })();
   }

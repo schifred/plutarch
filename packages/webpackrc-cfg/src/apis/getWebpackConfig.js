@@ -172,7 +172,7 @@ function applyRules(webpackConfig, options, context){
       ...img
     })
   }, {
-    test: /\.(eot|woff|woff2|webfont|ttf|svg)\?*.*$/,
+    test: /\.(eot|woff|woff2|webfont|ttf)\?*.*$/,
     loader: urlLoader.module,
     options: urlLoader.getOptions({
       name: folders && folders.font ? `${folders.font}/[hash].[ext]` : '[hash].[ext]',

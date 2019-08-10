@@ -66,6 +66,13 @@ class Compiler extends EventEmitter{
       webpackConfig = options.call(context, webpackConfig);
     }
 
+    if ( existsSync(paths.webpackrc) ){
+      const webpackrc = require(paths.webpackrc);
+      if ( typeof webpackrc === 'function' ){
+        webpackConfig = webpackrc(webpackConfig, mode);
+      }
+    }
+
     return webpackConfig;
   }
 

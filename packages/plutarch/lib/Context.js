@@ -111,7 +111,6 @@ class Context {
       plurcPath = (0, _path.resolve)(app, 'plutarch.config.js');
     }
 
-    console.log(app);
     this.paths = {
       app,
       src: (0, _path.resolve)(app, src),
@@ -123,6 +122,7 @@ class Context {
       envConfig: (0, _path.resolve)(app, `${configs}/${environment}.yaml`),
       nodeModules: (0, _path.resolve)(app, 'node_modules'),
       plrc: plurcPath,
+      webpackrc: (0, _path.resolve)(app, `.plutarch/webpack.config.js`),
       plsv: (0, _path.resolve)(app, server),
       plmc: (0, _path.resolve)(app, mock),
       plmcs: (0, _path.resolve)(app, mocks),

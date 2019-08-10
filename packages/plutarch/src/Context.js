@@ -63,8 +63,6 @@ class Context {
     if (!existsSync(plurcPath)){
       plurcPath = resolve(app, 'plutarch.config.js');
     }
-
-    console.log(app)
     
     this.paths = {
       app,
@@ -77,6 +75,7 @@ class Context {
       envConfig: resolve(app, `${configs}/${environment}.yaml`),
       nodeModules: resolve(app, 'node_modules'),
       plrc: plurcPath,
+      webpackrc: resolve(app, `.plutarch/webpack.config.js`),
       plsv: resolve(app, server),
       plmc: resolve(app, mock),
       plmcs: resolve(app, mocks),
