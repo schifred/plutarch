@@ -8,15 +8,15 @@
 		"preset",
 		"tac"
 	],
-  "scripts": {
-    "build": "rimraf lib && tsc --outDir lib",
-    "lint:fix": "eslint --fix --cache --ext .js,.jsx,.ts,.tsx --format=codeframe ./src",
-    "lint": "eslint --cache --ext .js,.jsx,.ts,.tsx --format=codeframe ./src"
-  },
+	"scripts": {
+		"build": "rimraf lib && tsc --outDir lib",
+		"lint:fix": "eslint --fix --cache --ext .js,.jsx,.ts,.tsx --format=codeframe ./src",
+		"lint": "eslint --cache --ext .js,.jsx,.ts,.tsx --format=codeframe ./src"
+	},
 	"author": "alfred.qiu",
 	"license": "MIT",
 	"dependencies": {
-    "@babel/core": "^7.5.4",
+		"@babel/core": "^7.5.4",
 		"@babel/plugin-proposal-class-properties": "^7.5.0",
 		"@babel/plugin-proposal-decorators": "^7.4.4",
 		"@babel/plugin-proposal-do-expressions": "^7.5.0",

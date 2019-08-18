@@ -1,6 +1,6 @@
 {
   "name": "webpackrc-cfg",
-  "version": "1.1.32",
+  "version": "1.2.0",
   "description": "",
   "main": "./lib/index.js",
   "scripts": {
@@ -26,7 +26,7 @@
     "babel-eslint": "^9.0.0",
     "babel-loader": "^8.0.2",
     "babel-plugin-add-module-exports": "^1.0.2",
-    "babel-preset-plu": "^0.0.1",
+    "babel-preset-plu": "0.0.1",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.2",
     "cross-spawn": "^6.0.5",
