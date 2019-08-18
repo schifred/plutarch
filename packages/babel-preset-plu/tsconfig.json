@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "outDir": "./lib",
+    "strictNullChecks": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "noImplicitAny": true,
+    "target": "es5",
+    "module": "commonjs",
+    "lib": [
+      "dom",
+      "es7"
+    ],
+  },
+  "include": [
+    "./src/**/*"
+  ]
+}

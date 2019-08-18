@@ -13,4 +13,5 @@ module.exports = {
     }
   },
   enableCssModules: true,
+  // enableMiniCssExtract: false
 };

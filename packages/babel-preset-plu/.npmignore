@@ -1,0 +1,17 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/src
+yarn.lock
+.DS_Store
+package-lock.json
+yarn.lock
+.nyc_output
+
+/test/
+/node_modules/
+/.vscode/
+.DS_Store

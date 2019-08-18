@@ -1,7 +1,7 @@
-export classnames from 'classnames'
-export lodash from 'lodash'
-export configDefault from './config'
-export requestDefault from './request'
+export { default as classnames } from 'classnames'
+export { default as lodash } from 'lodash'
+export { default as config } from './config'
+export { default as request } from './request'
 
 export const getCallApiTypes = namespace => {
   const requestType = `${namespace.toUpperCase()}_REQUEST`

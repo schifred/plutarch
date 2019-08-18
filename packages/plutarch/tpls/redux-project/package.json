@@ -4,7 +4,7 @@
   "description": "A application demo built upon Ant Design and Redux.js",
   "main": "index.js",
   "scripts": {
-    "server": "plutarch server",
+    "dev": "plutarch server",
     "build": "plutarch build"
   },
   "author": "",

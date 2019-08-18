@@ -5,7 +5,7 @@ import { config } from './config';
 import WebpackConfig from './WebpackConfig';
 import { createCtx, getFiles, getDirs } from '../utils';
 
-const { EslintLoader, BabelLoader, TsLoader, RawLoader, UrlLoader, CssLoader, 
+const { EslintLoader, BabelLoader, TsLoader, RawLoader, UrlLoader, CssLoader, StyleLoader,
   PostcssLoader, LessLoader, MiniCssExtractLoader } = WebpackConfig.loaders;
 const { MiniCssExtractPlugin, DefinePlugin, HtmlWebpackPlugin, OccurrenceOrderPlugin, 
   HotModuleReplacementPlugin, CleanWebpackPlugin, Webpackbar, CopyWebpackPlugin, 
@@ -16,6 +16,7 @@ const eslintLoader = new EslintLoader();
 const babelLoader = new BabelLoader();
 const rawLoader = new RawLoader();
 const urlLoader = new UrlLoader();
+const styleLoader = new StyleLoader();
 const cssLoader = new CssLoader();
 const postcssLoader = new PostcssLoader();
 const lessLoader = new LessLoader();
@@ -136,8 +137,11 @@ function applyBasic(webpackConfig, options, context){
  * @param {object} context 上下文
  */
 function applyRules(webpackConfig, options, context){
-  const { mode, enableCssModules = false, folders, rules = [], module = {} } = options;
+  const { mode, enableCssModules = false, enableMiniCssExtract = true, folders, 
+    rules = [], module = {} } = options;
   const { eslint, babel = {}, ts = {}, css = {}, img = {}, font = {} } = module;
+
+  console.log(enableMiniCssExtract);
 
   webpackConfig.rules = [{
     test: /\.(js|jsx|mjs)$/,
@@ -180,7 +184,7 @@ function applyRules(webpackConfig, options, context){
     })
   },{
     test: /\.less$/,
-    loader: [miniCssExtractLoader.module, {
+    loader: [enableMiniCssExtract ? miniCssExtractLoader.module : styleLoader.module, {
       loader: cssLoader.module, 
       options: cssLoader.getOptions({
         ...css,
@@ -196,7 +200,7 @@ function applyRules(webpackConfig, options, context){
     }, lessLoader.module]
   }, {
     test: /\.css$/,
-    loader: [miniCssExtractLoader.module, { 
+    loader: [enableMiniCssExtract ? miniCssExtractLoader.module : styleLoader.module, { 
       loader: cssLoader.module, 
       options: cssLoader.getOptions({
         ...css,
@@ -216,8 +220,10 @@ function applyRules(webpackConfig, options, context){
  * @param {object} context 上下文
  */
 function applyPlugins(webpackConfig, options, context){
-  const { mode, folders, template, common = 'common' } = options;
+  const { mode, folders, template, common = 'common', enableMiniCssExtract = true } = options;
   const { realPaths: { app, src, dist, assets } } = context;
+
+  console.log(enableMiniCssExtract);
 
   let htmls = getFiles(template ? path.resolve(src, template) : src, /\.html$|\.ejs$/);
 
@@ -239,9 +245,9 @@ function applyPlugins(webpackConfig, options, context){
     mode !== 'production' ? hotModuleReplacementPlugin.getPlugin() : undefined,
     // mini-css-extract-plugin 插件排序问题
     // https://github.com/webpack-contrib/mini-css-extract-plugin/issues/250
-    miniCssExtractPlugin.getPlugin({
+    enableMiniCssExtract ? miniCssExtractPlugin.getPlugin({
       filename: folders && folders.style ? `${folders.style}/[name].css` :  "[name].css"
-    }),
+    }) : undefined,
     mode === 'production' ? cleanWebpackPlugin.getPlugin([dist], {
       root: app
     }) : undefined,
